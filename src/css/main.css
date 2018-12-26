@@ -85,22 +85,34 @@ footer a {
     margin-top: 72px;
 }
 
-.rbn-success {
+.symbol-success {
     color: green;
 }
 
-.rbn-success:after {
+.symbol-success:after {
     content: " ✓ "
 }
 
-.rbn-failure {
+.symbol-failure {
     color: firebrick;
 }
 
-.rbn-failure:after {
+.symbol-failure:after {
     content: " ✗ "
+}
+
+.symbol-error {
+    color: red;
+}
+
+.symbol-error:after {
+    content: " ⚠ ";
 }
 
 .mui-table td {
     border-bottom: 1px solid #eee;
+}
+
+.hide {
+    display: none;
 }

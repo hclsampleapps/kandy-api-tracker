@@ -42,35 +42,35 @@
                 <tbody>
                     <tr>
                         <td>Token API</td>
-                        <td><span id="tokenstatus" class="rbn-failure"></span></td>
+                        <td><span id="tokenstatus" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>Channel API</td>
-                        <td><span id="channelstatus" class="rbn-failure"></span></td>
+                        <td><span id="channelstatus" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>WebSocket Connection</td>
-                        <td><span id="websocketstatus" class="rbn-failure"></span></td>
+                        <td><span id="websocketstatus" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>OutBound SMS</td>
-                        <td><span id="outboundsms" class="rbn-failure"></span></td>
+                        <td><span id="outboundsms" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>Subscription</td>
-                        <td><span id="subscriptionstatus" class="rbn-failure"></span></td>
+                        <td><span id="subscriptionstatus" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>Chat</td>
-                        <td><span id="chatstatus" class="rbn-failure"></span></td>
+                        <td><span id="chatstatus" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>Presence Lists</td>
-                        <td><span id="presenceliststatus" class="rbn-failure"></span></td>
+                        <td><span id="presenceliststatus" class="symbol-failure"></span></td>
                     </tr>
                     <tr>
                         <td>Presence List Subscriptions</td>
-                        <td><span id="prexsencelistsubscriptionstatus" class="rbn-failure"></span></td>
+                        <td><span id="presencelistsubscriptionstatus" class="symbol-failure"></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -78,6 +78,10 @@
         <div class="mui-panel">
             <p class="mui--text-title">Preferences &amp; Controls</p>
             <form>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" id="baseurl" value="nvs-cpaas-oauth.kandy.io">
+                    <label>Base URL</label>
+                </div>
                 <div class="mui-checkbox">
                     <label>
                         <input type="checkbox" id="smscheckbox" value="sms">
@@ -106,7 +110,8 @@
         </div>
     </footer>
     <script src="lib/mui/mui.min.js"></script>
-    <script src="lib/babel/babel.min.js"></script>
+    <!-- <script src="lib/babel/babel.min.js"></script> -->
+    <script type="text/javascript" src="js/utility.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 
