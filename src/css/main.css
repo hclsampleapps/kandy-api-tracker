@@ -4,6 +4,7 @@
 html,
 body {
     height: 100%;
+    background-color: ghostwhite;
 }
 
 
@@ -46,7 +47,7 @@ header .applogo {
 header .apptitle {
     vertical-align: middle;
     line-height: 15px;
-    font-family: century gothic;
+    font-family: 'century gothic';
 }
 
 header .appbox {
@@ -60,9 +61,14 @@ header .appbox {
 footer {
     box-sizing: border-box;
     height: 100px;
-    background-color: #eee;
-    border-top: 1px solid #e0e0e0;
+    background-color: lightslategray;
+    border-top: 1px solid slategrey;
     padding-top: 35px;
+    color: white;
+}
+
+footer a {
+    color: deepskyblue;
 }
 
 
