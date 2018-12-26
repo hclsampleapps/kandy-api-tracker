@@ -1,0 +1,52 @@
+<html>
+
+<head>
+      <script type="text/javascript" src="./JS/App.js"></script>
+</head>
+
+<body>
+      <h2 style="text-align:center; color: midnightblue">AT&T - API HEALTH CHECKUP</h2>
+      <button id="login" type="submit" style="display : none" onclick="userToken()">Login</button></br>
+
+
+      SMS: <input type="checkbox" id="smscheckbox"></br>
+      Chat: <input type="checkbox" id="chatcheckbox"></br>
+      Presence: <input type="checkbox" id="presencecheckbox"> </br>
+
+      <button id="startapi" type="submit" onclick="refreshAPI()">Start Monitoring API</button>
+      <button id="stopapi" type="submit" style="display : none" onclick="stopAPI()">Stop Monitoring API</button></br>
+
+
+      Token API Status: <span id="tokenstatus"></span></br>
+      Channel API Status: <span id="channelstatus"></span></br>
+      WebSocket Connection Status: <span id="websocketstatus"></span></br>
+      </br>
+      <button id="start" type="submit" style="display : none" onclick="refreshFunction()">Start SMS Monitoring API</button>
+      <button id="stop" type="submit" style="display : none" onclick="stopMonitoring()">Stop SMS Monitoring API</button></br>
+      OutBound SMS: <span id="outboundsms"></span></br>
+      </br>
+
+      <button id="startchat" type="submit" style="display : none" onclick="startMonitoringchat()">Start Chat Monitoring API</button></br>
+
+      <button id="stopchat" type="submit" style="display : none" onclick="stopMonitoringchat()">Stop Chat Monitoring API</button></br>
+      Subscription Status: <span id="subscriptionstatus"></span></br>
+      Chat Status: <span id="chatstatus"></span></br>
+      </br>
+
+
+
+
+      <button id="startpresence" type="submit" style="display : none" onclick="refreshFunctionPresence()">Start Presence Monitoring API</button>
+      <button id="stoppresence" type="submit" style="display : none" onclick="stopMonitoringpresence()">Stop Presence Monitoring API</button></br>
+      Presence Lists Status: <span id="presenceliststatus"></span></br>
+      presenceListSubscriptions Status: <span id="prexsencelistsubscriptionstatus"></span></br>
+      </br>
+
+
+
+
+
+
+</body>
+
+</html>
