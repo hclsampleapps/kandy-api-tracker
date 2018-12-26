@@ -1,41 +1,107 @@
-<html>
+<!doctype html>
+<html class="no-js" lang="en-US">
 
 <head>
-      <script type="text/javascript" src="./js/app.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>AT&amp;T - API Tracker</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="stylesheet" href="lib/mui/mui.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-      <h2 style="text-align:center; color: midnightblue">AT&T - API HEALTH CHECKUP</h2>
-      <button id="login" type="submit" style="display : none" onclick="userToken()">Login</button></br>
-
-
-      SMS: <input type="checkbox" id="smscheckbox"></br>
-      Chat: <input type="checkbox" id="chatcheckbox"></br>
-      Presence: <input type="checkbox" id="presencecheckbox"> </br>
-
-      <button id="startapi" type="submit" onclick="refreshAPI()">Start Monitoring API</button>
-      <button id="stopapi" type="submit" style="display : none" onclick="stopAPI()">Stop Monitoring API</button></br>
-
-
-      Token API Status: <span id="tokenstatus"></span></br>
-      Channel API Status: <span id="channelstatus"></span></br>
-      WebSocket Connection Status: <span id="websocketstatus"></span></br>
-      </br>
-      OutBound SMS: <span id="outboundsms"></span></br>
-      </br>
-
-      Subscription Status: <span id="subscriptionstatus"></span></br>
-      Chat Status: <span id="chatstatus"></span></br>
-      </br>
-      Presence Lists Status: <span id="presenceliststatus"></span></br>
-      presenceListSubscriptions Status: <span id="prexsencelistsubscriptionstatus"></span></br>
-      </br>
-
-
-
-
-
-
+    <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+    <!-- Add your site or application content here -->
+    <div class="mui-appbar mui-btn--raised">
+        <table width="100%">
+            <tr style="vertical-align:middle;">
+                <td class="mui--appbar-height mui--text-subhead">AT&amp;T - API Tracker</td>
+                <td class="mui--appbar-height" align="right"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="mui-container">
+        <br />
+        <div class="mui-panel">
+            <p class="mui--text-title">API's Health Checkup Report</p>
+            <table class="mui-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Token API</td>
+                        <td><span id="tokenstatus" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Channel API</td>
+                        <td><span id="channelstatus" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>WebSocket Connection</td>
+                        <td><span id="websocketstatus" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>OutBound SMS</td>
+                        <td><span id="outboundsms" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Subscription</td>
+                        <td><span id="subscriptionstatus" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Chat</td>
+                        <td><span id="chatstatus" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Presence Lists</td>
+                        <td><span id="presenceliststatus" class="rbn-failure"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Presence List Subscriptions</td>
+                        <td><span id="prexsencelistsubscriptionstatus" class="rbn-failure"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mui-panel">
+            <p class="mui--text-title">Preferences &amp; Controls</p>
+            <form>
+                <div class="mui-checkbox">
+                    <label>
+                        <input type="checkbox" id="smscheckbox" value="sms">
+                        SMS
+                    </label>
+                </div>
+                <div class="mui-checkbox">
+                    <label>
+                        <input type="checkbox" id="chatcheckbox" value="chat">
+                        Chat
+                    </label>
+                </div>
+                <div class="mui-checkbox">
+                    <label>
+                        <input type="checkbox" id="presencecheckbox" value="presence">
+                        Presence
+                    </label>
+                </div>
+                <button type="button" id="startapi" class="mui-btn mui-btn--raised mui-btn--primary" onclick="refreshAPI()">Start Monitoring</button>
+            </form>
+        </div>
+    </div>
+    <script src="lib/mui/mui.min.js"></script>
+    <script src="lib/babel/babel.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 
 </html>

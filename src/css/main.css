@@ -1,0 +1,21 @@
+.mui-appbar td {
+	padding: 0 10px;
+}
+
+.rbn-success {
+	color: green;
+}
+.rbn-success:after {
+	content: " ✓ "
+}
+
+.rbn-failure {
+	color: firebrick;
+}
+.rbn-failure:after {
+	content: " ✗ "
+}
+
+.mui-table td {
+	border-bottom: 1px solid #eee;
+}
