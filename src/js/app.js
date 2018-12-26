@@ -31,35 +31,30 @@ function parseJwt(token) {
   return JSON.parse(window.atob(base64));
 };
 
-var timeinterval = 20000;
+var timeintervalSMS = 11000;
+var timeintervalChat = 17000;
+var timeintervalPresence = 19000;
 function refreshAPI() {
   userToken();
   myFunctionhide("startapi");
   myFunctionshow("stopapi");
-  document.getElementById('smscheckbox').onclick = function () {
-    // access properties using this keyword
-    if (this.checked) {
-      api_timer = setInterval(function () {
+   if (document.getElementById('smscheckbox').checked) {
+   api_timer = setInterval(function () {
         OutBoundSms(tokenobj);
-      }, timeinterval);
-    }
-  };
-  document.getElementById('chatcheckbox').onclick = function () {
-    // access properties using this keyword
-    if (this.checked) {
-      api_timerchat = setInterval(function () {
-        callSubscription(tokenobj, responsechannelglobal);
-      }, timeinterval);
-    }
-  };
-  document.getElementById('presencecheckbox').onclick = function () {
-    // access properties using this keyword
-    if (this.checked) {
-      api_timerpresence = setInterval(function () {
-        callPresence(tokenobj, responsechannelglobal);
-      }, timeinterval);
-    }
-  };
+      }, timeintervalSMS);
+  } 
+  if (document.getElementById('chatcheckbox').checked) {
+   api_timer = setInterval(function () {
+         callSubscription(tokenobj, responsechannelglobal);
+      }, timeintervalSMS);
+  } 
+  if (document.getElementById('presencecheckbox').checked) {
+   api_timer = setInterval(function () {
+          callPresence(tokenobj, responsechannelglobal);
+      }, timeintervalSMS);
+  } 
+
+
 }
 
 function stopAPI() {
