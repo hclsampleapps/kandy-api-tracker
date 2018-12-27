@@ -116,3 +116,9 @@ footer a {
 .hide {
     display: none;
 }
+
+.xhrlog {
+    padding: 10px;
+    background: darkslategrey;
+    color: white;
+}

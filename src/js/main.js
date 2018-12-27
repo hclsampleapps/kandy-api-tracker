@@ -19,6 +19,27 @@ class Status {
     }
 }
 
+class XHRLog {
+	constructor(elmRef) {
+		this.container = elmRef;
+	}
+	createBox(msg) {
+		this.container.insertAdjacentHTML('afterend', '<tr class="xhrlog hide"><td colspan="2">' + msg + '</td></tr>');
+	}
+	openLog(evt) {
+		if (this.toggle) {
+			this.toggle = false;
+			Style.removeClass(this.container.nextElementSibling, 'hide');
+		} else {
+			this.toggle = true;
+			Style.addClass(this.container.nextElementSibling, 'hide');
+		}
+	}
+	initialize() {
+		this.container.addEventListener('click', (evt) => this.openLog(evt));
+	}
+}
+
 class Extract {
     static username(token) {
         var base64Url = token.split('.')[1];
@@ -43,6 +64,7 @@ class UserToken {
     onSuccess(data) {
         this.status.success();
         this.token = data;
+        this.xhrLog.createBox(JSON.stringify(data));
         this.proceed(data);
     }
     onFailure() {
@@ -67,7 +89,10 @@ class UserToken {
     }
     initialize() {
         console.log('UserToken, initialize');
-        this.status = new Status(document.getElementById("tokenstatus"));
+        this.container = document.querySelector("#token");
+        this.xhrLog = new XHRLog(this.container);
+        this.xhrLog.initialize();
+        this.status = new Status(this.container.querySelector(".status"));
         let cargo = {
             client_id: encodeURIComponent(this.project.trim()),
             username: this.username,
@@ -86,8 +111,13 @@ class UserChannel {
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    get channelData() {
+        return this.channel;
+    }
     onSuccess(data) {
         this.status.success();
+        this.channel = data;
+        this.xhrLog.createBox(JSON.stringify(data));
         this.proceed(data);
     }
     onFailure() {
@@ -113,7 +143,10 @@ class UserChannel {
     }
     initialize(idToken, accessToken) {
         console.log('UserChannel, initialize');
-        this.status = new Status(document.getElementById("channelstatus"));
+        this.container = document.querySelector("#channel");
+        this.xhrLog = new XHRLog(this.container);
+        this.xhrLog.initialize();
+        this.status = new Status(this.container.querySelector(".status"));
         let username = Extract.username(idToken);
         let url = this.cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
         let cargo = {
