@@ -20,24 +20,21 @@ class Status {
 }
 
 class XHRLog {
-	constructor(elmRef) {
-		this.container = elmRef;
-	}
-	createBox(msg) {
-		this.container.insertAdjacentHTML('afterend', '<tr class="xhrlog hide"><td colspan="2">' + msg + '</td></tr>');
-	}
-	openLog(evt) {
-		if (this.toggle) {
-			this.toggle = false;
-			Style.removeClass(this.container.nextElementSibling, 'hide');
-		} else {
-			this.toggle = true;
-			Style.addClass(this.container.nextElementSibling, 'hide');
-		}
-	}
-	initialize() {
-		this.container.addEventListener('click', (evt) => this.openLog(evt));
-	}
+    constructor(elmRef) {
+        this.container = elmRef;
+    }
+    createBox(msg) {
+        this.modal = document.createElement('div');
+        this.modal.setAttribute("class", "xhrlog");
+        this.modal.innerHTML = '<div class="mui--text-title modal-title">Output</div><pre>' + msg + '</pre>';
+    }
+    openLog(evt) {
+        mui.overlay('on', this.modal);
+    }
+    initialize() {
+        this.container.addEventListener('click', (evt) => this.openLog(evt));
+        Style.addClass(this.container, 'clickable');
+    }
 }
 
 class Extract {
@@ -64,7 +61,7 @@ class UserToken {
     onSuccess(data) {
         this.status.success();
         this.token = data;
-        this.xhrLog.createBox(JSON.stringify(data));
+        this.xhrLog.createBox(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
@@ -106,7 +103,7 @@ class UserToken {
 
 class UserChannel {
     constructor(cpaasUrl) {
-    	this.cpaasUrl = cpaasUrl;
+        this.cpaasUrl = cpaasUrl;
     }
     set proceedTo(fn) {
         this.proceed = fn;
@@ -117,7 +114,7 @@ class UserChannel {
     onSuccess(data) {
         this.status.success();
         this.channel = data;
-        this.xhrLog.createBox(JSON.stringify(data));
+        this.xhrLog.createBox(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {

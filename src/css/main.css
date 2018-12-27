@@ -118,7 +118,25 @@ footer a {
 }
 
 .xhrlog {
-    padding: 10px;
     background: darkslategrey;
     color: white;
+    width: 75%;
+    height: 75%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: scroll;
+}
+
+.xhrlog .modal-title {
+    padding: 10px 10px 0 10px;
+}
+
+.xhrlog pre {
+    padding: 10px;
+}
+
+.clickable {
+    cursor: pointer;
 }
