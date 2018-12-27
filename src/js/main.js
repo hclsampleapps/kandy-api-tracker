@@ -135,11 +135,11 @@ whenReady(function() {
     var cpaasUrl = 'https://' + baseUrl + '/cpaas/';
 
     var userToken = new UserToken(cpaasUrl, "PUB-My Sms Project 2", "d3smc2e0j3srxx0g", "3E7pCDsFqY1fn4p4");
-    var userChannel = new UserChannel();
+    var userChannel = new UserChannel(cpaasUrl);
 
     userToken.proceed = function(data) {
         console.log('UserToken:', data);
-        userChannel.initialize(data.access_token);
+        userChannel.initialize(data.id_token, data.access_token);
     }
     userToken.initialize();
 });
