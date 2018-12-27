@@ -106,7 +106,7 @@ class UserChannel {
             else
                 self.onFailure();
         };
-        xhr.onerror = this.onError;
+        xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
