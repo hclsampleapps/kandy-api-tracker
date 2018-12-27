@@ -1,20 +1,22 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Kandy API Tracker 
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+It tracks, monitor & report the API health status of kandy.io
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+### Install as Chrome App
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+1. Open Chrome browser
+2. Go to URL, [chrome://extensions/](chrome://extensions/)
+3. Switch ON, *Developer mode*
+4. Click on *Load unpacked* button
+5. Select **kandy-api-tracker/src** directory
+6. Search *Kandy API Tracker* in Chrome Apps section on this page, verify it's presence
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Run this Chrome App
+
+1. Open Chrome browser
+2. Go to URL, [chrome://apps/](chrome://apps/)
+3. Search *Kandy API Tracker*, click on it to open
+
+### Run it as standalone page
+
+1. Double clcik on the **kandy-api-tracker/src/index.html** file to open it in your system's default browser
