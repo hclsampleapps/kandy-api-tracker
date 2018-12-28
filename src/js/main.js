@@ -34,19 +34,25 @@ class XHRLog {
         this.modal.setAttribute("class", "xhrlog");
         this.modal.innerHTML = '<div class="mui--text-title modal-title">Output</div><pre>' + msg + '</pre>';
     }
-    openLog(evt) {
+    openLog() {
         mui.overlay('on', this.modal);
     }
-    initialize() {
-        this.container.addEventListener('click', (evt) => this.openLog(evt));
+    destroy() {
+    	this.container.removeEventListener('click', this._openLog);
+        Style.removeClass(this.container, 'clickable');
+    }
+    initialize(msg) {
+    	this.createBox(msg);
+    	this._openLog = this.openLog.bind(this);
+        this.container.addEventListener('click', this._openLog);
         Style.addClass(this.container, 'clickable');
     }
 }
 
 class Extract {
     static username(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace('-', '+').replace('_', '/');
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse(window.atob(base64));
     }
 }
@@ -55,27 +61,36 @@ class AppBar {
 	constructor() {}
 	openHome(evt) {
 		evt.preventDefault();
-        console.log('openHome');
+        Style.removeClass(this.menuSetting, 'hide');
+        Style.addClass(this.menuHome, 'hide');
+        Style.removeClass(this.viewHome, 'hide');
+        Style.addClass(this.viewSetting, 'hide');
 	}
 	openSetting(evt) {
 		evt.preventDefault();
-        console.log('openSetting');
+        Style.addClass(this.menuSetting, 'hide');
+        Style.removeClass(this.menuHome, 'hide');
+        Style.removeClass(this.viewSetting, 'hide');
+        Style.addClass(this.viewHome, 'hide');
 	}
-	openAbout(evt) {
-		evt.preventDefault();
-        console.log('openAbout');
+	set execute(fn) {
+		this.startMonitor = fn;
 	}
     initialize() {
-    	this.container = document.querySelector('header.mui-appbar');
+    	this.viewHome = document.getElementById('checkupreport');
+    	this.viewSetting = document.getElementById('preferencecontrols');
         
-        this.menuHome = this.container.querySelector('#menuhome');
+        this.menuHome = document.getElementById('menuhome');
         this.menuHome.addEventListener('click', (evt) => this.openHome(evt));
         
-        this.menuSetting = this.container.querySelector('#menusetting');
+        this.menuSetting = document.getElementById('menusetting');
         this.menuSetting.addEventListener('click', (evt) => this.openSetting(evt));
-        
-        this.menuAbout = this.container.querySelector('#menuabout');
-        this.menuAbout.addEventListener('click', (evt) => this.openAbout(evt));
+
+        this.menuRun = document.getElementById('menurun');
+        this.menuRun.addEventListener('click', (evt) => this.startMonitor(evt));
+
+        Style.removeClass(this.menuSetting, 'hide');
+        Style.addClass(this.menuHome, 'hide');
     }
 }
 
@@ -105,6 +120,10 @@ class UserToken {
         this.project = project;
         this.username = username;
         this.password = password;
+
+        this.container = document.querySelector("#token");
+        this.xhrLog = new XHRLog(this.container);
+        this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
@@ -115,7 +134,7 @@ class UserToken {
     onSuccess(data) {
         this.status.success();
         this.token = data;
-        this.xhrLog.createBox(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
@@ -126,7 +145,7 @@ class UserToken {
     }
     request(url, cargo) {
         var self = this;
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
@@ -138,12 +157,12 @@ class UserToken {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(Convert.jsonToUri(cargo));
     }
+    destroy() {
+    	this.status.failure();
+    	this.xhrLog.destroy();
+    }
     initialize() {
         console.log('UserToken, initialize');
-        this.container = document.querySelector("#token");
-        this.xhrLog = new XHRLog(this.container);
-        this.xhrLog.initialize();
-        this.status = new Status(this.container.querySelector(".status"));
         let cargo = {
             client_id: encodeURIComponent(this.project.trim()),
             username: this.username,
@@ -158,6 +177,10 @@ class UserToken {
 class UserChannel {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
+
+        this.container = document.querySelector("#channel");
+        this.xhrLog = new XHRLog(this.container);
+        this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
@@ -168,7 +191,7 @@ class UserChannel {
     onSuccess(data) {
         this.status.success();
         this.channel = data;
-        this.xhrLog.createBox(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
@@ -179,7 +202,7 @@ class UserChannel {
     }
     request(url, accessToken, cargo) {
         var self = this;
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
@@ -192,12 +215,12 @@ class UserChannel {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
+    destroy() {
+    	this.status.failure();
+    	this.xhrLog.destroy();
+    }
     initialize(idToken, accessToken) {
         console.log('UserChannel, initialize');
-        this.container = document.querySelector("#channel");
-        this.xhrLog = new XHRLog(this.container);
-        this.xhrLog.initialize();
-        this.status = new Status(this.container.querySelector(".status"));
         let username = Extract.username(idToken);
         let url = this.cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
         let cargo = {
@@ -221,18 +244,24 @@ whenReady(function() {
     var userToken = new UserToken(cpaasUrl, "PUB-My Sms Project 2", "d3smc2e0j3srxx0g", "3E7pCDsFqY1fn4p4");
     var userChannel = new UserChannel(cpaasUrl);
 
-    userChannel.proceedTo = function(data) {
-        console.log('UserChannel:', data);
-    }
-    userToken.proceedTo = function(data) {
-        console.log('UserToken:', data);
-        userChannel.initialize(data.id_token, data.access_token);
-    }
-    // userToken.initialize();
-
-    var appBar = new AppBar();
-    appBar.initialize();
-
     var controls = new Controls();
     controls.initialize();
+
+    var appBar = new AppBar();
+    appBar.execute = function(evt) {
+    	evt.preventDefault();
+
+    	userToken.destroy();
+    	userChannel.destroy();
+    	
+	    userChannel.proceedTo = function(data) {
+	        console.log('UserChannel:', data);
+	    }
+	    userToken.proceedTo = function(data) {
+	        console.log('UserToken:', data);
+	        userChannel.initialize(data.id_token, data.access_token);
+	    }
+	    userToken.initialize();
+    }
+    appBar.initialize();
 });
