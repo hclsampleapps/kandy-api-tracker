@@ -1,4 +1,3 @@
-
 var Preferences = {
     enableSMS: false,
     enableChat: false,
@@ -52,6 +51,34 @@ class Extract {
     }
 }
 
+class AppBar {
+	constructor() {}
+	openHome(evt) {
+		evt.preventDefault();
+        console.log('openHome');
+	}
+	openSetting(evt) {
+		evt.preventDefault();
+        console.log('openSetting');
+	}
+	openAbout(evt) {
+		evt.preventDefault();
+        console.log('openAbout');
+	}
+    initialize() {
+    	this.container = document.querySelector('header.mui-appbar');
+        
+        this.menuHome = this.container.querySelector('#menuhome');
+        this.menuHome.addEventListener('click', (evt) => this.openHome(evt));
+        
+        this.menuSetting = this.container.querySelector('#menusetting');
+        this.menuSetting.addEventListener('click', (evt) => this.openSetting(evt));
+        
+        this.menuAbout = this.container.querySelector('#menuabout');
+        this.menuAbout.addEventListener('click', (evt) => this.openAbout(evt));
+    }
+}
+
 class Controls {
     constructor() {}
     save(evt) {
@@ -66,7 +93,7 @@ class Controls {
         this.enableSMS = document.getElementById("enablesms");
         this.enableChat = document.getElementById("enablechat");
         this.enablePresence = document.getElementById("enablepresence");
-        
+
         this.savePreference = document.getElementById("savepreference");
         this.attachEvents();
     }
@@ -201,7 +228,10 @@ whenReady(function() {
         console.log('UserToken:', data);
         userChannel.initialize(data.id_token, data.access_token);
     }
-    userToken.initialize();
+    // userToken.initialize();
+
+    var appBar = new AppBar();
+    appBar.initialize();
 
     var controls = new Controls();
     controls.initialize();

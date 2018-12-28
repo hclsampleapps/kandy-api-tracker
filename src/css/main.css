@@ -7,6 +7,7 @@ body {
     background-color: ghostwhite;
     overflow-x: visible;
     overflow-y: visible;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
 }
 
 /**
@@ -52,8 +53,8 @@ header .apptitle {
 }
 
 header .appbox {
-   display: flex;
-   align-items:center;
+    display: flex;
+    align-items: center;
 }
 
 /**
@@ -141,3 +142,4 @@ footer a {
 .clickable {
     cursor: pointer;
 }
+

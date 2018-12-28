@@ -9,8 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.ico">
-    <link rel="stylesheet" href="lib/mui/mui.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/material-icons.css">
+    <link rel="stylesheet" type="text/css" href="lib/mui/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/mdl/mdl-button.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body>
@@ -23,7 +25,18 @@
             <tr>
                 <td class="mui--appbar-height mui--text-subhead appbox">
                     <img src="img/att-icon.svg" class="applogo">&nbsp;<span class="apptitle">API<br>Tracker</span></td>
-                <td class="mui--appbar-height" align="right"></td>
+                <td class="mui--appbar-height" align="right">
+                    <div class="mui-dropdown">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-mui-toggle="dropdown">
+                            <i class="material-icons">more_vert</i>
+                        </button>
+                        <ul class="mui-dropdown__menu mui-dropdown__menu--right">
+                            <li><a href="#" id="menuhome">Home</a></li>
+                            <li><a href="#" id="menusetting">Settings</a></li>
+                            <li><a href="#" id="menuabout">About</a></li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
         </table>
     </header>
