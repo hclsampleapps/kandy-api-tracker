@@ -1,3 +1,10 @@
+
+var Preferences = {
+    enableSMS: false,
+    enableChat: false,
+    enablePresence: false
+};
+
 class Status {
     constructor(elmRef) {
         this.container = elmRef;
@@ -42,6 +49,26 @@ class Extract {
         var base64Url = token.split('.')[1];
         var base64 = base64Url.replace('-', '+').replace('_', '/');
         return JSON.parse(window.atob(base64));
+    }
+}
+
+class Controls {
+    constructor() {}
+    save(evt) {
+        Preferences.enableSMS = !!this.enableSMS.checked;
+        Preferences.enableChat = !!this.enableChat.checked;
+        Preferences.enablePresence = !!this.enablePresence.checked;
+    }
+    attachEvents() {
+        this.savePreference.addEventListener("click", (evt) => this.save(evt));
+    }
+    initialize() {
+        this.enableSMS = document.getElementById("enablesms");
+        this.enableChat = document.getElementById("enablechat");
+        this.enablePresence = document.getElementById("enablepresence");
+        
+        this.savePreference = document.getElementById("savepreference");
+        this.attachEvents();
     }
 }
 
@@ -175,4 +202,7 @@ whenReady(function() {
         userChannel.initialize(data.id_token, data.access_token);
     }
     userToken.initialize();
+
+    var controls = new Controls();
+    controls.initialize();
 });
