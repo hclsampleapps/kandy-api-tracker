@@ -26,8 +26,11 @@
                 <td class="mui--appbar-height mui--text-subhead appbox">
                     <img src="img/att-icon.svg" class="applogo">&nbsp;<span class="apptitle">API<br>Tracker</span></td>
                 <td class="mui--appbar-height" align="right">
-                    <button id="menurun" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Run">
-                        <i class="material-icons">play_circle_outline</i>
+                    <button id="menuplay" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Start Monitor">
+                        <i class="material-icons">play_circle_filled</i>
+                    </button>
+                    <button id="menupause" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Stop Monitor">
+                        <i class="material-icons">pause_circle_filled</i>
                     </button>
                     <button id="menuhome" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Home">
                         <i class="material-icons">home</i>
@@ -86,12 +89,24 @@
                 </tbody>
             </table>
         </div>
-        <div id="preferencecontrols" class="mui-panel hide">
+        <div id="preferencecontrols" class="mui-panel">
             <p class="mui--text-title">Preferences &amp; Controls</p>
             <form>
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="text" id="baseurl" value="nvs-cpaas-oauth.kandy.io">
+                <div class="mui-textfield">
+                    <input type="text" id="baseurl">
                     <label>Base URL</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="projectname">
+                    <label>Project name</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="username">
+                    <label>Username</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="password" id="password">
+                    <label>Password</label>
                 </div>
                 <div class="mui-checkbox">
                     <label>

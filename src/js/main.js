@@ -1,7 +1,12 @@
 var Preferences = {
+    toMonitor: false,
     enableSMS: false,
     enableChat: false,
-    enablePresence: false
+    enablePresence: false,
+    baseUrl: "nvs-cpaas-oauth.kandy.io",
+    projectName: "PUB-My Sms Project 2",
+    username: "d3smc2e0j3srxx0g",
+    password: "3E7pCDsFqY1fn4p4"
 };
 
 class Status {
@@ -38,12 +43,12 @@ class XHRLog {
         mui.overlay('on', this.modal);
     }
     destroy() {
-    	this.container.removeEventListener('click', this._openLog);
+        this.container.removeEventListener('click', this._openLog);
         Style.removeClass(this.container, 'clickable');
     }
     initialize(msg) {
-    	this.createBox(msg);
-    	this._openLog = this.openLog.bind(this);
+        this.createBox(msg);
+        this._openLog = this.openLog.bind(this);
         this.container.addEventListener('click', this._openLog);
         Style.addClass(this.container, 'clickable');
     }
@@ -58,39 +63,63 @@ class Extract {
 }
 
 class AppBar {
-	constructor() {}
-	openHome(evt) {
-		evt.preventDefault();
-        Style.removeClass(this.menuSetting, 'hide');
-        Style.addClass(this.menuHome, 'hide');
-        Style.removeClass(this.viewHome, 'hide');
-        Style.addClass(this.viewSetting, 'hide');
-	}
-	openSetting(evt) {
-		evt.preventDefault();
-        Style.addClass(this.menuSetting, 'hide');
-        Style.removeClass(this.menuHome, 'hide');
-        Style.removeClass(this.viewSetting, 'hide');
-        Style.addClass(this.viewHome, 'hide');
-	}
-	set execute(fn) {
-		this.startMonitor = fn;
-	}
+    constructor() {}
+    openHome(evt) {
+        evt.preventDefault();
+        this.defaultState();
+    }
+    openSetting(evt) {
+        evt.preventDefault();
+        Effect.hide(this.menuSetting);
+        Effect.show(this.menuHome);
+        Effect.show(this.viewSetting);
+        Effect.hide(this.viewHome);
+    }
+    set execute(fn) {
+        this.runMonitor = fn;
+    }
+    startMonitor(evt) {
+        evt.preventDefault();
+        this.defaultState();
+        Preferences.toMonitor = true;
+        this.runMonitor();
+        Effect.hide(this.menuPlay);
+        Effect.show(this.menuPause);
+    }
+    stopMonitor(evt) {
+        evt.preventDefault();
+        Preferences.toMonitor = false;
+    }
+    finishMonitor() {
+        Effect.show(this.menuPlay);
+        Effect.hide(this.menuPause);
+        Preferences.toMonitor = false;
+    }
+    defaultState() {
+        Effect.show(this.menuSetting);
+        Effect.hide(this.menuHome);
+        Effect.hide(this.viewSetting);
+        Effect.show(this.viewHome);
+        Effect.show(this.menuPlay);
+        Effect.hide(this.menuPause);
+    }
     initialize() {
-    	this.viewHome = document.getElementById('checkupreport');
-    	this.viewSetting = document.getElementById('preferencecontrols');
-        
+        this.viewHome = document.getElementById('checkupreport');
+        this.viewSetting = document.getElementById('preferencecontrols');
+
         this.menuHome = document.getElementById('menuhome');
         this.menuHome.addEventListener('click', (evt) => this.openHome(evt));
-        
+
         this.menuSetting = document.getElementById('menusetting');
         this.menuSetting.addEventListener('click', (evt) => this.openSetting(evt));
 
-        this.menuRun = document.getElementById('menurun');
-        this.menuRun.addEventListener('click', (evt) => this.startMonitor(evt));
+        this.menuPlay = document.getElementById('menuplay');
+        this.menuPlay.addEventListener('click', (evt) => this.startMonitor(evt));
 
-        Style.removeClass(this.menuSetting, 'hide');
-        Style.addClass(this.menuHome, 'hide');
+        this.menuPause = document.getElementById('menupause');
+        this.menuPause.addEventListener('click', (evt) => this.stopMonitor(evt));
+
+        this.defaultState();
     }
 }
 
@@ -100,6 +129,21 @@ class Controls {
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
         Preferences.enablePresence = !!this.enablePresence.checked;
+
+        Preferences.baseUrl = this.baseUrl.value;
+        Preferences.projectName = this.projectName.value;
+        Preferences.username = this.username.value;
+        Preferences.password = this.password.value;
+    }
+    defaultState() {
+        this.enableSMS.checked = Preferences.enableSMS;
+        this.enableChat.checked = Preferences.enableChat;
+        this.enablePresence.checked = Preferences.enablePresence;
+
+        this.baseUrl.value = Preferences.baseUrl;
+        this.projectName.value = Preferences.projectName;
+        this.username.value = Preferences.username;
+        this.password.value = Preferences.password;
     }
     attachEvents() {
         this.savePreference.addEventListener("click", (evt) => this.save(evt));
@@ -109,8 +153,15 @@ class Controls {
         this.enableChat = document.getElementById("enablechat");
         this.enablePresence = document.getElementById("enablepresence");
 
+        this.baseUrl = document.getElementById("baseurl");
+        this.projectName = document.getElementById("projectname");
+        this.username = document.getElementById("username");
+        this.password = document.getElementById("password");
+
         this.savePreference = document.getElementById("savepreference");
         this.attachEvents();
+
+        this.defaultState();
     }
 }
 
@@ -158,8 +209,8 @@ class UserToken {
         xhr.send(Convert.jsonToUri(cargo));
     }
     destroy() {
-    	this.status.failure();
-    	this.xhrLog.destroy();
+        this.status.failure();
+        this.xhrLog.destroy();
     }
     initialize() {
         console.log('UserToken, initialize');
@@ -216,8 +267,8 @@ class UserChannel {
         xhr.send(JSON.stringify(cargo));
     }
     destroy() {
-    	this.status.failure();
-    	this.xhrLog.destroy();
+        this.status.failure();
+        this.xhrLog.destroy();
     }
     initialize(idToken, accessToken) {
         console.log('UserChannel, initialize');
@@ -238,30 +289,28 @@ class UserChannel {
 whenReady(function() {
     console.log('begin');
 
-    var baseUrl = document.getElementById("baseurl").value;
-    var cpaasUrl = 'https://' + baseUrl + '/cpaas/';
+    var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
 
-    var userToken = new UserToken(cpaasUrl, "PUB-My Sms Project 2", "d3smc2e0j3srxx0g", "3E7pCDsFqY1fn4p4");
+    var userToken = new UserToken(cpaasUrl, Preferences.projectName, Preferences.username, Preferences.password);
     var userChannel = new UserChannel(cpaasUrl);
 
     var controls = new Controls();
     controls.initialize();
 
     var appBar = new AppBar();
-    appBar.execute = function(evt) {
-    	evt.preventDefault();
+    appBar.execute = function() {
+        userToken.destroy();
+        userChannel.destroy();
 
-    	userToken.destroy();
-    	userChannel.destroy();
-    	
-	    userChannel.proceedTo = function(data) {
-	        console.log('UserChannel:', data);
-	    }
-	    userToken.proceedTo = function(data) {
-	        console.log('UserToken:', data);
-	        userChannel.initialize(data.id_token, data.access_token);
-	    }
-	    userToken.initialize();
+        userChannel.proceedTo = function(data) {
+            console.log('UserChannel:', data);
+            appBar.finishMonitor();
+        };
+        userToken.proceedTo = function(data) {
+            console.log('UserToken:', data);
+            (Preferences.toMonitor) ? userChannel.initialize(data.id_token, data.access_token) : appBar.finishMonitor();
+        };
+        (Preferences.toMonitor) ? userToken.initialize() : appBar.finishMonitor();
     }
     appBar.initialize();
 });
