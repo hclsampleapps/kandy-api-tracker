@@ -1,5 +1,4 @@
-// Utility.js
-
+// @file utility.js
 function whenReady(fn) {
     if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
         fn();

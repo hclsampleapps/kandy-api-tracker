@@ -1,0 +1,30 @@
+{
+	"source": "src/",
+	"destination": "bin/",
+	"package": [
+		"index.html",
+		"manifest.json",
+		"background.js",
+		"favicon.ico",
+		"css/",
+		"font/",
+		"img/",
+		"lib/"
+	],
+	"code": {
+		"directory": "js/",
+		"files": [
+			"utility.js",
+			"preferences.js",
+			"status.js",
+			"xhrlog.js",
+			"extract.js",
+			"controls.js",
+			"appbar.js",
+			"usertoken.js",
+			"userchannel.js",
+			"main.js"
+		],
+		"consolidate": "main.js"
+	}
+}
