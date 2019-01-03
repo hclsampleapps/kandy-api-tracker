@@ -2,7 +2,7 @@
 class WatchUserStatus {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-         this.container = document.querySelector("#watchuserstatus");
+        this.container = document.querySelector("#watchuserstatus");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -11,7 +11,7 @@ class WatchUserStatus {
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
@@ -28,7 +28,7 @@ class WatchUserStatus {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else

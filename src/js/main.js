@@ -14,6 +14,7 @@ whenReady(function() {
     var callPresenceListSubscriptions = new CallPresenceListSubscriptions(cpaasUrl);
     var updateOwnStatus = new UpdateOwnStatus(cpaasUrl);
     var watchUserStatus = new WatchUserStatus(cpaasUrl);
+
     var controls = new Controls();
     controls.initialize();
 
@@ -29,19 +30,17 @@ whenReady(function() {
         callPresenceListSubscriptions.destroy();
         updateOwnStatus.destroy();
         watchUserStatus.destroy();
-        
+
         watchUserStatus.proceedTo = function(data) {
             console.log('watchUserStatus:', data);
 
         };
         updateOwnStatus.proceedTo = function(data) {
             console.log('updateOwnStatus:', data);
-            var responsePresenceLists = callPresence.presenceData.presenceListCollection.presenceList[0].resourceURL;
-            responsePresenceLists = responsePresenceLists.substr(responsePresenceLists.lastIndexOf('/') + 1);
             (Preferences.toMonitor) ? watchUserStatus.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
-                responsePresenceLists
+                callPresence.connectorCode
             ): appBar.abortMonitor();
         };
 
@@ -54,13 +53,11 @@ whenReady(function() {
         };
         callPresence.proceedTo = function(data) {
             console.log('callPresence:', data);
-            var responsePresenceLists = data.presenceListCollection.presenceList[0].resourceURL;
-            responsePresenceLists = responsePresenceLists.substr(responsePresenceLists.lastIndexOf('/') + 1);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 userChannel.channel.notificationChannel.callbackURL,
-                responsePresenceLists
+                callPresence.connectorCode
             ): appBar.abortMonitor();
         };
 

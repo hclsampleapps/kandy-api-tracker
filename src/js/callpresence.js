@@ -12,6 +12,9 @@ class CallPresence {
     get presenceData() {
         return this.presence;
     }
+    get connectorCode() {
+        return this.presence.presenceListCollection.presenceList[0].resourceURL.substr(responsePresenceLists.lastIndexOf('/') + 1);
+    }
     onSuccess(data) {
         this.status.success();
          this.xhrLog.initialize(JSON.stringify(data, null, 4));
