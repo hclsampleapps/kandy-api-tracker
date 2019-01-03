@@ -56,7 +56,13 @@ whenReady(function () {
                 (userToken.token.id_token, userToken.token.access_token,
                 userChannel.channel.notificationChannel.callbackURL, responsepresenceLists) : appBar.finishMonitor();
         };
-        sendMessage.proceedTo = function (data) {
+       
+        sendMessage.proceedFailureTo = function () {
+            console.log('sendMessage:', "failure");
+           (Preferences.toMonitor) ? callPresence.initialize(userToken.token.id_token, userToken.token.access_token)
+                : appBar.finishMonitor();
+        };
+         sendMessage.proceedTo = function (data) {
             console.log('sendMessage:', data);
             (Preferences.toMonitor) ? callPresence.initialize(userToken.token.id_token, userToken.token.access_token)
                 : appBar.finishMonitor();
@@ -64,10 +70,20 @@ whenReady(function () {
 
         callSubscription.proceedTo = function (data) {
             console.log('callSubscription:', data);
-            (Preferences.toMonitor) ? sendMessage.initialize() : appBar.finishMonitor();
+            (Preferences.toMonitor) ? sendMessage.initialize(userToken.token.id_token, userToken.token.access_token) : appBar.finishMonitor();
 
         };
+        callSubscription.proceedFailureTo = function () {
+            console.log('callSubscription:', "failure");
+           (Preferences.toMonitor) ? callPresence.initialize(userToken.token.id_token, userToken.token.access_token)
+                : appBar.finishMonitor();
+        };
         outBoundSMS.proceedTo = function (data) {
+            console.log('outBoundSMS:', data);
+            (Preferences.toMonitor) ? callSubscription.initialize(userToken.token.id_token, userToken.token.access_token,
+                userChannel.channel.notificationChannel.callbackURL) : appBar.finishMonitor();
+        };
+         outBoundSMS.proceedFailureTo = function (data) {
             console.log('outBoundSMS:', data);
             (Preferences.toMonitor) ? callSubscription.initialize(userToken.token.id_token, userToken.token.access_token,
                 userChannel.channel.notificationChannel.callbackURL) : appBar.finishMonitor();

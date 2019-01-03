@@ -14,8 +14,12 @@ class CallSubscription {
          this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
+      set proceedFailureTo(fn) {
+        this.proceedInFailure = fn;
+    }
     onFailure() {
         this.status.failure();
+        this.proceedInFailure();
     }
     onError() {
         this.status.error();
