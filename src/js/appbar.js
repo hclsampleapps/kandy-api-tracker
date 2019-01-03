@@ -27,7 +27,7 @@ class AppBar {
         evt.preventDefault();
         Preferences.toMonitor = false;
     }
-    finishMonitor() {
+    abortMonitor() {
         Effect.show(this.menuPlay);
         Effect.hide(this.menuPause);
         Preferences.toMonitor = false;

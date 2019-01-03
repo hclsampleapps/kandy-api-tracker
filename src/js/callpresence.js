@@ -8,6 +8,9 @@ class CallPresence {
     }
     set proceedTo(fn) {
         this.proceed = fn;
+    }    
+    get presenceData() {
+        return this.presence;
     }
     onSuccess(data) {
         this.status.success();

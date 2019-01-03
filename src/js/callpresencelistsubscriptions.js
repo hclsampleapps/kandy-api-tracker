@@ -2,7 +2,7 @@
 class CallPresenceListSubscriptions {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-         this.container = document.querySelector("#callpresencelistsubscriptions");
+        this.container = document.querySelector("#callpresencelistsubscriptions");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -11,7 +11,7 @@ class CallPresenceListSubscriptions {
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
@@ -28,7 +28,7 @@ class CallPresenceListSubscriptions {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -39,11 +39,11 @@ class CallPresenceListSubscriptions {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken,responsepresenceLists,callbackURL) {
+    initialize(idToken, accessToken, responsepresenceLists, callbackURL) {
         console.log('callpresencelistsubscriptions, initialize');
         let username = Extract.username(idToken);
         let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/subscriptions/presenceListSubscriptions/" +
-                                responsepresenceLists;
+            responsepresenceLists;
         var cargo = {
             "presenceListSubscription": {
                 "callbackReference": { "notifyURL": callbackURL },

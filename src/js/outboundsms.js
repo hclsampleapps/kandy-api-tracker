@@ -9,18 +9,18 @@ class OutBoundSMS {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-    
+
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-     set proceedFailureTo(fn) {
-        this.proceedInFailure = fn;
+    set skipTo(fn) {
+        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
-        this.proceedInFailure();
+        this.skip();
     }
     onError() {
         this.status.error();
@@ -33,7 +33,7 @@ class OutBoundSMS {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else

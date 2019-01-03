@@ -2,7 +2,7 @@
 class SendMessage {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-         this.container = document.querySelector("#chat");
+        this.container = document.querySelector("#chat");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -11,15 +11,15 @@ class SendMessage {
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-      set proceedFailureTo(fn) {
-        this.proceedInFailure = fn;
+    set skipTo(fn) {
+        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
-        this.proceedInFailure();
+        this.skip();
     }
     onError() {
         this.status.error();
@@ -32,7 +32,7 @@ class SendMessage {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -45,9 +45,9 @@ class SendMessage {
     }
     initialize(idToken, accessToken) {
         console.log('SendMessage, initialize');
-       let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/outbound/"
-            + Preferences.chatreceiverid + "/adhoc/messages";
+        let username = Extract.username(idToken);
+        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/outbound/" +
+            Preferences.chatreceiverid + "/adhoc/messages";
         var cargo = { "chatMessage": { "text": Preferences.chattext } };
         this.request(url, accessToken, cargo);
     }

@@ -2,7 +2,7 @@
 class CallSubscription {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-         this.container = document.querySelector("#subscription");
+        this.container = document.querySelector("#subscription");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -11,15 +11,15 @@ class CallSubscription {
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-      set proceedFailureTo(fn) {
-        this.proceedInFailure = fn;
+    set skipTo(fn) {
+        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
-        this.proceedInFailure();
+        this.skip();
     }
     onError() {
         this.status.error();
@@ -32,7 +32,7 @@ class CallSubscription {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -45,7 +45,7 @@ class CallSubscription {
     }
     initialize(idToken, accessToken, callbackURL) {
         console.log('CallSubscription, initialize');
-       let username = Extract.username(idToken);
+        let username = Extract.username(idToken);
         let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/subscriptions";
         let cargo = {
             "chatNotificationSubscription": {
@@ -55,5 +55,5 @@ class CallSubscription {
         };
         this.request(url, accessToken, cargo);
     }
-   
+
 }

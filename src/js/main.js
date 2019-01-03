@@ -1,5 +1,5 @@
 // @file main.js
-whenReady(function () {
+whenReady(function() {
     console.log('begin');
 
     var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
@@ -11,98 +11,129 @@ whenReady(function () {
     var callSubscription = new CallSubscription(cpaasUrl);
     var sendMessage = new SendMessage(cpaasUrl);
     var callPresence = new CallPresence(cpaasUrl);
-    var callpresenceListSubscriptions = new CallPresenceListSubscriptions(cpaasUrl);
+    var callPresenceListSubscriptions = new CallPresenceListSubscriptions(cpaasUrl);
     var updateOwnStatus = new UpdateOwnStatus(cpaasUrl);
     var watchUserStatus = new WatchUserStatus(cpaasUrl);
     var controls = new Controls();
     controls.initialize();
 
     var appBar = new AppBar();
-    appBar.execute = function () {
+    appBar.execute = function() {
         userToken.destroy();
         userChannel.destroy();
         webSocketConnection.destroy();
-        outBoundSMS.destroy(); 
+        outBoundSMS.destroy();
         callSubscription.destroy();
         sendMessage.destroy();
         callPresence.destroy();
-        callpresenceListSubscriptions.destroy();
+        callPresenceListSubscriptions.destroy();
         updateOwnStatus.destroy();
         watchUserStatus.destroy();
-        watchUserStatus.proceedTo = function (data) {
+        
+        watchUserStatus.proceedTo = function(data) {
             console.log('watchUserStatus:', data);
 
         };
-        updateOwnStatus.proceedTo = function (data) {
+        updateOwnStatus.proceedTo = function(data) {
             console.log('updateOwnStatus:', data);
-            var responsepresenceLists = callPresence.presence.presenceListCollection.presenceList[0].resourceURL;
-            responsepresenceLists = responsepresenceLists.substr(responsepresenceLists.lastIndexOf('/') + 1);
-
-            (Preferences.toMonitor) ? watchUserStatus.initialize
-                (userToken.token.id_token, userToken.token.access_token, responsepresenceLists) : appBar.finishMonitor();
+            var responsePresenceLists = callPresence.presenceData.presenceListCollection.presenceList[0].resourceURL;
+            responsePresenceLists = responsePresenceLists.substr(responsePresenceLists.lastIndexOf('/') + 1);
+            (Preferences.toMonitor) ? watchUserStatus.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token,
+                responsePresenceLists
+            ): appBar.abortMonitor();
         };
 
-        callpresenceListSubscriptions.proceedTo = function (data) {
-            console.log('callpresenceListSubscriptions:', data);
-
-            (Preferences.toMonitor) ? updateOwnStatus.initialize
-                (userToken.token.id_token, userToken.token.access_token) : appBar.finishMonitor();
+        callPresenceListSubscriptions.proceedTo = function(data) {
+            console.log('callPresenceListSubscriptions:', data);
+            (Preferences.toMonitor) ? updateOwnStatus.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         };
-        callPresence.proceedTo = function (data) {
+        callPresence.proceedTo = function(data) {
             console.log('callPresence:', data);
-            var responsepresenceLists = data.presenceListCollection.presenceList[0].resourceURL;
-            responsepresenceLists = responsepresenceLists.substr(responsepresenceLists.lastIndexOf('/') + 1);
-            (Preferences.toMonitor) ? callpresenceListSubscriptions.initialize
-                (userToken.token.id_token, userToken.token.access_token,
-                userChannel.channel.notificationChannel.callbackURL, responsepresenceLists) : appBar.finishMonitor();
+            var responsePresenceLists = data.presenceListCollection.presenceList[0].resourceURL;
+            responsePresenceLists = responsePresenceLists.substr(responsePresenceLists.lastIndexOf('/') + 1);
+            (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token,
+                userChannel.channel.notificationChannel.callbackURL,
+                responsePresenceLists
+            ): appBar.abortMonitor();
         };
-       
-        sendMessage.proceedFailureTo = function () {
-            console.log('sendMessage:', "failure");
-           (Preferences.toMonitor) ? callPresence.initialize(userToken.token.id_token, userToken.token.access_token)
-                : appBar.finishMonitor();
+
+        sendMessage.skipTo = function() {
+            console.log('sendMessage: skipped');
+            (Preferences.toMonitor) ? callPresence.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         };
-         sendMessage.proceedTo = function (data) {
+        sendMessage.proceedTo = function(data) {
             console.log('sendMessage:', data);
-            (Preferences.toMonitor) ? callPresence.initialize(userToken.token.id_token, userToken.token.access_token)
-                : appBar.finishMonitor();
+            (Preferences.toMonitor) ? callPresence.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         };
 
-        callSubscription.proceedTo = function (data) {
+        callSubscription.proceedTo = function(data) {
             console.log('callSubscription:', data);
-            (Preferences.toMonitor) ? sendMessage.initialize(userToken.token.id_token, userToken.token.access_token) : appBar.finishMonitor();
+            (Preferences.toMonitor) ? sendMessage.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
 
         };
-        callSubscription.proceedFailureTo = function () {
-            console.log('callSubscription:', "failure");
-           (Preferences.toMonitor) ? callPresence.initialize(userToken.token.id_token, userToken.token.access_token)
-                : appBar.finishMonitor();
+        callSubscription.skipTo = function() {
+            console.log('callSubscription: skipped');
+            (Preferences.toMonitor) ? callPresence.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         };
-        outBoundSMS.proceedTo = function (data) {
+        outBoundSMS.proceedTo = function(data) {
             console.log('outBoundSMS:', data);
-            (Preferences.toMonitor) ? callSubscription.initialize(userToken.token.id_token, userToken.token.access_token,
-                userChannel.channel.notificationChannel.callbackURL) : appBar.finishMonitor();
+            (Preferences.toMonitor) ? callSubscription.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token,
+                userChannel.channel.notificationChannel.callbackURL
+            ): appBar.abortMonitor();
         };
-         outBoundSMS.proceedFailureTo = function (data) {
+        outBoundSMS.skipTo = function(data) {
             console.log('outBoundSMS:', data);
-            (Preferences.toMonitor) ? callSubscription.initialize(userToken.token.id_token, userToken.token.access_token,
-                userChannel.channel.notificationChannel.callbackURL) : appBar.finishMonitor();
+            (Preferences.toMonitor) ? callSubscription.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token,
+                userChannel.channel.notificationChannel.callbackURL
+            ): appBar.abortMonitor();
         };
-        webSocketConnection.proceedTo = function (data) {
+        webSocketConnection.proceedTo = function(data) {
             console.log('webSocketConnection:', data);
-            (Preferences.toMonitor) ? outBoundSMS.initialize(userToken.token.id_token, userToken.token.access_token) : appBar.finishMonitor();
+            (Preferences.toMonitor) ? outBoundSMS.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         };
-        userChannel.proceedTo = function (data) {
-            console.log('UserChannel:', data);
-            (Preferences.toMonitor) ? webSocketConnection.initialize(userToken.token.id_token, userToken.token.access_token,
-                data.notificationChannel.callbackURL) : appBar.finishMonitor();
+        userChannel.proceedTo = function(data) {
+            console.log('userChannel:', data);
+            (Preferences.toMonitor) ? webSocketConnection.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token,
+                data.notificationChannel.callbackURL
+            ): appBar.abortMonitor();
 
         };
-        userToken.proceedTo = function (data) {
-            console.log('UserToken:', data);
-            (Preferences.toMonitor) ? userChannel.initialize(data.id_token, data.access_token) : appBar.finishMonitor();
+        userToken.proceedTo = function(data) {
+            console.log('userToken:', data);
+            (Preferences.toMonitor) ? userChannel.initialize(
+                data.id_token,
+                data.access_token
+            ): appBar.abortMonitor();
         };
-        (Preferences.toMonitor) ? userToken.initialize() : appBar.finishMonitor();
+        (Preferences.toMonitor) ? userToken.initialize(): appBar.abortMonitor();
     }
     appBar.initialize();
 });
