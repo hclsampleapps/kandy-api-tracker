@@ -1,8 +1,8 @@
-// @file updateownstatus.js
-class UpdateOwnStatus {
+// @file watchuserstatus.js
+class WatchUserStatus {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-         this.container = document.querySelector("#updateownstatus");
+        this.container = document.querySelector("#watchuserstatus");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -11,7 +11,7 @@ class UpdateOwnStatus {
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
@@ -28,7 +28,7 @@ class UpdateOwnStatus {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -39,19 +39,17 @@ class UpdateOwnStatus {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
-        console.log('callpresencelistsubscriptions, initialize');
+    initialize(idToken, accessToken, connectorCode) {
+        console.log('WatchUserStatus, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceSources";
+        let url = "[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/ashish07@idx4.com".graft(
+            this.cpaasUrl, 
+            username.preferred_username, 
+            connectorCode
+        );
         var cargo = {
-            "presenceSource": {
-                "presence": {
-                    "person": {
-                        "overriding-willingness": { "overridingWillingnessValue": "Open" },
-                        "activities": { "activityValue": Preferences.setstatuspresence }
-                    }
-                },
-                "clientCorrelator": username.preferred_username
+            "presenceContact": {
+                "presentityUserId": Preferences.presentityUserId
             }
         };
         this.request(url, accessToken, cargo);

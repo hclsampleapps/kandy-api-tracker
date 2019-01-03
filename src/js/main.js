@@ -33,7 +33,6 @@ whenReady(function() {
 
         watchUserStatus.proceedTo = function(data) {
             console.log('watchUserStatus:', data);
-
         };
         updateOwnStatus.proceedTo = function(data) {
             console.log('updateOwnStatus:', data);
@@ -51,6 +50,13 @@ whenReady(function() {
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
         };
+        callPresenceListSubscriptions.skipTo = function() {
+            console.log('callPresenceListSubscriptions, skipped');
+            (Preferences.toMonitor) ? updateOwnStatus.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+        };
         callPresence.proceedTo = function(data) {
             console.log('callPresence:', data);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(
@@ -62,7 +68,7 @@ whenReady(function() {
         };
 
         sendMessage.skipTo = function() {
-            console.log('sendMessage: skipped');
+            console.log('sendMessage, skipped');
             (Preferences.toMonitor) ? callPresence.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
@@ -100,7 +106,7 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
         outBoundSMS.skipTo = function(data) {
-            console.log('outBoundSMS:', data);
+            console.log('outBoundSMS, skipped');
             (Preferences.toMonitor) ? callSubscription.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
@@ -121,7 +127,6 @@ whenReady(function() {
                 userToken.tokenData.access_token,
                 data.notificationChannel.callbackURL
             ): appBar.abortMonitor();
-
         };
         userToken.proceedTo = function(data) {
             console.log('userToken:', data);

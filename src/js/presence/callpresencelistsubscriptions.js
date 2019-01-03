@@ -9,6 +9,9 @@ class CallPresenceListSubscriptions {
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
@@ -16,6 +19,7 @@ class CallPresenceListSubscriptions {
     }
     onFailure() {
         this.status.failure();
+        this.skip();
     }
     onError() {
         this.status.error();
@@ -39,14 +43,19 @@ class CallPresenceListSubscriptions {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken, responsepresenceLists, callbackURL) {
-        console.log('callpresencelistsubscriptions, initialize');
+    initialize(idToken, accessToken, connectorCode, callbackURL) {
+        console.log('CallPresenceListSubscriptions, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/subscriptions/presenceListSubscriptions/" +
-            responsepresenceLists;
+        let url = "[0]presence/v1/[1]/subscriptions/presenceListSubscriptions/[2]".graft(
+            this.cpaasUrl, 
+            username.preferred_username, 
+            connectorCode
+        );
         var cargo = {
             "presenceListSubscription": {
-                "callbackReference": { "notifyURL": callbackURL },
+                "callbackReference": { 
+                    "notifyURL": callbackURL 
+                },
                 "clientCorrelator": username.preferred_username,
                 "duration": 86400
             }

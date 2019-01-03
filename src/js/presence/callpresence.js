@@ -13,7 +13,8 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        return this.presence.presenceListCollection.presenceList[0].resourceURL.substr(responsePresenceLists.lastIndexOf('/') + 1);
+        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        return code.substr(code.lastIndexOf('/') + 1);
     }
     onSuccess(data) {
         this.status.success();

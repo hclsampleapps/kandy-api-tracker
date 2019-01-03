@@ -9,13 +9,13 @@ class SendMessage {
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
-    }
-    set skipTo(fn) {
-        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
