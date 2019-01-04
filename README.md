@@ -32,3 +32,10 @@ It tracks, monitor & report the API health status of kandy.io
 1. As of now, after evry changes in js files, `node build.js` command has to be executed to re-build project
 2. Opening the *src/index.html* won't work properly because necessary js files won't get loaded, so always open it via *bin/index.html*
 3. The app would work without any http-server, just by opening *bin/index.html* file in browser
+
+### Branching
+ * master : Our master branch
+ * develop: Our development branch.
+If you are contributing:
+* a feature, please branch off of `develop`.
+When feature is completed raised the Pull request against develop.
