@@ -8,18 +8,21 @@ class CallPresence {
     }
     set proceedTo(fn) {
         this.proceed = fn;
-    }    
+    }
     get presenceData() {
         return this.presence;
     }
     get connectorCode() {
+        
         let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        console.log("resourceURL======"+code);
         return code.substr(code.lastIndexOf('/') + 1);
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.presence = data;
+
         this.proceed(data);
     }
     onFailure() {
@@ -53,7 +56,5 @@ class CallPresence {
         let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
         this.request(url, accessToken);
     }
-      get presenceData() {
-        return this.presence;
-    }
+  
 }

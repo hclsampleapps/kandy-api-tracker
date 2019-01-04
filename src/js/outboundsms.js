@@ -49,7 +49,7 @@ class OutBoundSMS {
         let url = this.cpaasUrl + "smsmessaging/v1/" + username.preferred_username + "/outbound/" + Preferences.sendernumber + "/requests";
         let cargo = {
             "outboundSMSMessageRequest": {
-                "address": Preferences.receivernumber,
+                "address":[Preferences.receivernumber],
                 "clientCorrelator": username.preferred_username,
                 "outboundSMSTextMessage": {
                     "message": Preferences.smstext

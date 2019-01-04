@@ -23,6 +23,7 @@ class SendMessage {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -38,7 +39,7 @@ class SendMessage {
             else
                 self.onFailure();
         };
-        xhr.onerror = self.onError;
+        xhr.onerror = self.onError();
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
@@ -46,7 +47,7 @@ class SendMessage {
     initialize(idToken, accessToken) {
         console.log('SendMessage, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/outbound/" +
+        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/oneToOne/" +
             Preferences.chatreceiverid + "/adhoc/messages";
         var cargo = { "chatMessage": { "text": Preferences.chattext } };
         this.request(url, accessToken, cargo);

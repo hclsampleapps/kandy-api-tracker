@@ -42,7 +42,7 @@ class WatchUserStatus {
     initialize(idToken, accessToken, connectorCode) {
         console.log('WatchUserStatus, initialize');
         let username = Extract.username(idToken);
-        let url = "[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/ashish07@idx4.com".graft(
+        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/"+Preferences.presentityUserId+"").graft(
             this.cpaasUrl, 
             username.preferred_username, 
             connectorCode

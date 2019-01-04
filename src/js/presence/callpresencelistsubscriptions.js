@@ -43,7 +43,7 @@ class CallPresenceListSubscriptions {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken, connectorCode, callbackURL) {
+    initialize(idToken, accessToken, callbackURL,connectorCode) {
         console.log('CallPresenceListSubscriptions, initialize');
         let username = Extract.username(idToken);
         let url = "[0]presence/v1/[1]/subscriptions/presenceListSubscriptions/[2]".graft(
