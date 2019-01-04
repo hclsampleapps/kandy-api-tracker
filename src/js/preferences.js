@@ -15,6 +15,7 @@ var Preferences = {
     chatreceiverid: "ashish07@hcl107.MPb0QLfe.att.com",
     setstatuspresence: "Busy",
     presentityUserId: "ashish07@idx4.com",
+    
     primaryContact: "ashish07@idx4.com",
     firstName: "ashish",
     lastName: "ashish",
