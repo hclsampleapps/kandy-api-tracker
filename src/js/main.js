@@ -14,6 +14,7 @@ whenReady(function() {
     var callPresenceListSubscriptions = new CallPresenceListSubscriptions(cpaasUrl);
     var updateOwnStatus = new UpdateOwnStatus(cpaasUrl);
     var watchUserStatus = new WatchUserStatus(cpaasUrl);
+    var webrtcSubscriptionStatus = new WebrtcSubscription(cpaasUrl);
 
     var controls = new Controls();
     controls.initialize();
@@ -30,9 +31,19 @@ whenReady(function() {
         callPresenceListSubscriptions.destroy();
         updateOwnStatus.destroy();
         watchUserStatus.destroy();
+        webrtcSubscriptionStatus.destroy();
+
+         webrtcSubscriptionStatus.proceedTo = function(data) {
+            console.log('webrtcSubscriptionStatus:', data);
+        };
 
         watchUserStatus.proceedTo = function(data) {
             console.log('watchUserStatus:', data);
+               (Preferences.toMonitor) ? webrtcSubscriptionStatus.initialize(
+                    userToken.tokenData.id_token,
+                    userToken.tokenData.access_token,
+                    userChannel.channel.notificationChannel.callbackURL
+               ): appBar.abortMonitor();
         };
         updateOwnStatus.proceedTo = function(data) {
             console.log('updateOwnStatus:', data);
