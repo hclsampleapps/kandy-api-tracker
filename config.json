@@ -29,6 +29,7 @@
 			"presence/callpresencelistsubscriptions.js",
 			"presence/updateownstatus.js",
 			"presence/watchuserstatus.js",
+			"addressbook/contacts.js",
 			"websocketconnection.js",
 			"userchannel.js",
 			"main.js"

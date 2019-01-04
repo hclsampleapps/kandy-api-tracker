@@ -5,8 +5,8 @@ var Preferences = {
     enableChat: false,
     enablePresence: false,
     baseUrl: "nvs-cpaas-oauth.kandy.io",
-    projectName:"PUB-My First Project",// "PUB-My Sms Project 2",
-    username:"owcnsw3rd95lehsz",// "d3smc2e0j3srxx0g",
+    projectName: "PUB-hcl101.c8ka",//   "PUB-My First Project",// "PUB-My Sms Project 2",
+    username: "owcnsw3rd95lehsz",// "d3smc2e0j3srxx0g",
     password: "XEFu6cZLoR3b128G@",//"3E7pCDsFqY1fn4p4",
     smstext: "hello",
     sendernumber: "+12084877840",
@@ -14,5 +14,13 @@ var Preferences = {
     chattext: "hi",
     chatreceiverid: "ashish07@hcl107.MPb0QLfe.att.com",
     setstatuspresence: "Busy",
-    presentityUserId: "ashish07@idx4.com"
+    presentityUserId: "ashish07@idx4.com",
+    primaryContact: "ashish07@idx4.com",
+    firstName: "ashish",
+    lastName: "ashish",
+    emailAddress: "email",
+    homePhoneNumber: "home",
+    businessPhoneNumber: "business",
+    buddy: "true",
+    contactId: "ashish0090"
 };
