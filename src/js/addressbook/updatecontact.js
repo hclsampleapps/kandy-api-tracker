@@ -1,15 +1,14 @@
-// @file contacts.js
-class Contacts {
+// @file updatecontact.js
+class UpdateContact {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-        this.container = document.querySelector("#contactstatus");
+        this.container = document.querySelector("#updatecontact");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
-    
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
@@ -29,10 +28,10 @@ class Contacts {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken, cargo) {
+    request(url, accessToken,cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
+        xhr.open("PUT", url, true);
         xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
@@ -52,7 +51,7 @@ class Contacts {
     initialize(idToken, accessToken) {
         console.log('CallSubscription, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "addressbook/v1/" + username.preferred_username + "/default/contacts";
+        let url = this.cpaasUrl + "addressbook/v1/" + username.preferred_username + "/default/contacts/" + Preferences.contactId;
         let cargo = {
             "contact": {
                 "attributeList": {
@@ -87,7 +86,7 @@ class Contacts {
                         }
                     ]
                 },
-                "contactId": "ashish0090"+Math.random()
+                "contactId": "ashish0090"
             }
         };
         this.request(url, accessToken, cargo);

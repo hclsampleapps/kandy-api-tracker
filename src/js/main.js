@@ -16,6 +16,7 @@ whenReady(function () {
     var watchUserStatus = new WatchUserStatus(cpaasUrl);
     var contacts = new Contacts(cpaasUrl);
     var searchcontacts = new SearchContact(cpaasUrl);
+    var updatecontact = new UpdateContact(cpaasUrl);
 
     var controls = new Controls();
     controls.initialize();
@@ -34,8 +35,15 @@ whenReady(function () {
         watchUserStatus.destroy();
         contacts.destroy();
         searchcontacts.destroy();
-        searchcontacts.proceedTo = function (data) {
+        updatecontact.destroy();
+        updatecontact.proceedTo = function (data) {
             console.log('searchcontacts:', data);
+        };
+        searchcontacts.proceedTo = function (data) {
+            console.log('contacts:', data);
+            (Preferences.toMonitor) ? updatecontact.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token) : appBar.abortMonitor();
         };
         contacts.proceedTo = function (data) {
             console.log('contacts:', data);
