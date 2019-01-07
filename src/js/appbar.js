@@ -13,13 +13,13 @@ class AppBar {
         Effect.hide(this.viewHome);
     }
     set execute(fn) {
-        this.runMonitor = fn;
+        this.proceed = fn;
     }
     startMonitor(evt) {
         evt.preventDefault();
         this.defaultState();
         Preferences.toMonitor = true;
-        this.runMonitor();
+        this.proceed();
         Effect.hide(this.menuPlay);
         Effect.show(this.menuPause);
     }
