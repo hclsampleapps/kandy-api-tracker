@@ -14,7 +14,7 @@ class CallPresence {
     }
     get connectorCode() {
         
-        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        let code = this.presence.presenceListCollection.resourceURL;
         console.log("resourceURL======"+code);
         return code.substr(code.lastIndexOf('/') + 1);
     }

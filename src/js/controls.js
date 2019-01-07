@@ -1,6 +1,6 @@
 // @file controls.js
 class Controls {
-    constructor() {}
+    constructor() { }
     save(evt) {
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;

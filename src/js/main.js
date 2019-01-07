@@ -15,6 +15,7 @@ whenReady(function () {
     var updateOwnStatus = new UpdateOwnStatus(cpaasUrl);
     var watchUserStatus = new WatchUserStatus(cpaasUrl);
     var contacts = new Contacts(cpaasUrl);
+    var searchcontacts = new SearchContact(cpaasUrl);
 
     var controls = new Controls();
     controls.initialize();
@@ -32,12 +33,19 @@ whenReady(function () {
         updateOwnStatus.destroy();
         watchUserStatus.destroy();
         contacts.destroy();
+        searchcontacts.destroy();
+        searchcontacts.proceedTo = function (data) {
+            console.log('searchcontacts:', data);
+        };
         contacts.proceedTo = function (data) {
             console.log('contacts:', data);
+            (Preferences.toMonitor) ? searchcontacts.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token) : appBar.abortMonitor();
         };
         watchUserStatus.skipTo = function () {
             console.log('watchUserStatus, skipped');
-           (Preferences.toMonitor) ? contacts.initialize(
+            (Preferences.toMonitor) ? contacts.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token) : appBar.abortMonitor();
         };
@@ -48,9 +56,9 @@ whenReady(function () {
                 userToken.tokenData.access_token) : appBar.abortMonitor();
 
         };
-         updateOwnStatus.skipTo = function () {
+        updateOwnStatus.skipTo = function () {
             console.log('updateOwnStatus, skipped');
-           (Preferences.toMonitor) ? contacts.initialize(
+            (Preferences.toMonitor) ? contacts.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token) : appBar.abortMonitor();
         };
@@ -72,7 +80,7 @@ whenReady(function () {
         };
         callPresenceListSubscriptions.skipTo = function () {
             console.log('callPresenceListSubscriptions, skipped');
-           (Preferences.toMonitor) ? contacts.initialize(
+            (Preferences.toMonitor) ? contacts.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token) : appBar.abortMonitor();
         };

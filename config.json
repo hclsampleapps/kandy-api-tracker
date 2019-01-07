@@ -30,6 +30,7 @@
 			"presence/updateownstatus.js",
 			"presence/watchuserstatus.js",
 			"addressbook/contacts.js",
+			"addressbook/searchcontact.js",
 			"websocketconnection.js",
 			"userchannel.js",
 			"main.js"
