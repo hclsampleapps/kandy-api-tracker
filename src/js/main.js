@@ -37,10 +37,10 @@ whenReady(function () {
         searchcontacts.destroy();
         updatecontact.destroy();
         updatecontact.proceedTo = function (data) {
-            console.log('searchcontacts:', data);
+            console.log('updatecontact:', data);
         };
         searchcontacts.proceedTo = function (data) {
-            console.log('contacts:', data);
+            console.log('searchcontacts:', data);
             (Preferences.toMonitor) ? updatecontact.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token) : appBar.abortMonitor();
