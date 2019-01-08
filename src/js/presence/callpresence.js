@@ -14,7 +14,7 @@ class CallPresence {
     }
     get connectorCode() {
         
-        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        let code = this.presence.presenceListCollection.resourceURL;
         console.log("resourceURL======"+code);
         return code.substr(code.lastIndexOf('/') + 1);
     }
@@ -25,8 +25,12 @@ class CallPresence {
 
         this.proceed(data);
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onFailure() {
         this.status.failure();
+        this.skip();
     }
     onError() {
         this.status.error();
@@ -48,6 +52,11 @@ class CallPresence {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.ontimeout = function () {
+            console.log("timeout");
+            self.onFailure();
+        }
         xhr.send();
     }
     initialize(idToken, accessToken) {

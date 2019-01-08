@@ -40,6 +40,11 @@ class UserToken {
         };
         xhr.onerror = this.onError;
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function () {
+            console.log('UserToken, timeout');
+            self.onFailure();
+        }
         xhr.send(Convert.jsonToUri(cargo));
     }
     destroy() {

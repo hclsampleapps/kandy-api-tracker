@@ -9,13 +9,14 @@ class OutBoundSMS {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-    set skipTo(fn) {
-        this.skip = fn;
-    }
+  
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
+    }
+    set skipTo(fn) {
+        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
@@ -41,6 +42,11 @@ class OutBoundSMS {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.ontimeout = function () {
+            console.log("timeout");
+            self.onFailure();
+        }
         xhr.send(JSON.stringify(cargo));
     }
     initialize(idToken, accessToken) {

@@ -23,6 +23,7 @@ class CallPresenceListSubscriptions {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -41,6 +42,11 @@ class CallPresenceListSubscriptions {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.ontimeout = function () {
+            console.log("timeout");
+            self.onFailure();
+        }
         xhr.send(JSON.stringify(cargo));
     }
     initialize(idToken, accessToken, callbackURL,connectorCode) {

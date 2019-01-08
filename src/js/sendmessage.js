@@ -33,23 +33,35 @@ class SendMessage {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
                 self.onFailure();
         };
-        xhr.onerror = self.onError();
+        xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function () {
+            console.log('SendMessage, timeout');
+            self.onFailure();
+        }
         xhr.send(JSON.stringify(cargo));
     }
     initialize(idToken, accessToken) {
         console.log('SendMessage, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/oneToOne/" +
-            Preferences.chatreceiverid + "/adhoc/messages";
-        var cargo = { "chatMessage": { "text": Preferences.chattext } };
+        let url = "[0]chat/v1/[1]/oneToOne/[2]/adhoc/messages".graft(
+            this.cpaasUrl,
+            username.preferred_username, 
+            Preferences.chatreceiverid
+        );
+        var cargo = { 
+            "chatMessage": { 
+                "text": Preferences.chattext 
+            } 
+        };
         this.request(url, accessToken, cargo);
     }
 }

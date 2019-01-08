@@ -14,8 +14,12 @@ class UpdateOwnStatus {
          this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
+   set skipTo(fn) {
+        this.skip = fn;
+    }
     onFailure() {
         this.status.failure();
+        this.skip();
     }
     onError() {
         this.status.error();
@@ -37,6 +41,11 @@ class UpdateOwnStatus {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.ontimeout = function () {
+            console.log("timeout");
+            self.onFailure();
+        }
         xhr.send(JSON.stringify(cargo));
     }
     initialize(idToken, accessToken) {

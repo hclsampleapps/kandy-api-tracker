@@ -38,6 +38,11 @@ class UserChannel {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function () {
+            console.log('UserChannel, timeout');
+            self.onFailure();
+        }
         xhr.send(JSON.stringify(cargo));
     }
     destroy() {
