@@ -11,7 +11,7 @@ class WebSocketConnection {
     }
     onSuccess(data) {
         this.status.success();
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(data);
         this.proceed(data);
     }
     onFailure() {
@@ -24,19 +24,17 @@ class WebSocketConnection {
         this.status.failure();
         this.xhrLog.destroy();
     }
-
     request(url) {
         var self = this;
         if ("WebSocket" in window) {
-            console.log("WebSocket is supported by your Browser!");
+            console.log("WebSocket is supported by your browser!");
             var ws = new WebSocket(url);
             let status = {
                 status: "success"
             };
             ws.onopen = function () {
-
                 // Web Socket is connected, send data using send()
-                //  ws.send("Message to send");
+                // ws.send("Message to send");
                 self.onSuccess(JSON.stringify(status));
             };
             ws.onerror = function () {
@@ -44,15 +42,18 @@ class WebSocketConnection {
             };
         } else {
             self.onFailure();
-            console.log("WebSocket NOT supported by your Browser!");
+            console.log("WebSocket is not supported by your browser!");
         }
     }
     initialize(idToken, accessToken, callbackURL) {
         console.log("webSocket:Connection Initialize");
         let username = Extract.username(idToken);
-        let url = "wss://" + this.baseUrl + "/cpaas/notificationchannel/v1/"
-            + username.preferred_username + "/channels/" + callbackURL + "/websocket?access_token=" + accessToken;
+        let url = "wss://[0]/cpaas/notificationchannel/v1/[1]/channels/[2]/websocket?access_token=[3]".graft(
+            this.baseUrl,
+            username.preferred_username,
+            callbackURL,
+            accessToken
+        );
         this.request(url);
     }
-
 }

@@ -9,14 +9,13 @@ class Contacts {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-    
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
-    }
-    set skipTo(fn) {
-        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
@@ -42,15 +41,15 @@ class Contacts {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function () {
-            console.log("timeout");
+            console.log('Contacts, timeout');
             self.onFailure();
         }
         xhr.send(JSON.stringify(cargo));
     }
     initialize(idToken, accessToken) {
-        console.log('CallSubscription, initialize');
+        console.log('Contacts, initialize');
         let username = Extract.username(idToken);
         let url = this.cpaasUrl + "addressbook/v1/" + username.preferred_username + "/default/contacts";
         let cargo = {
@@ -87,7 +86,7 @@ class Contacts {
                         }
                     ]
                 },
-                "contactId": "ashish0090"+Math.random()
+                "contactId": Preferences.contactId + Math.random()
             }
         };
         this.request(url, accessToken, cargo);

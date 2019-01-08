@@ -38,37 +38,43 @@ whenReady(function () {
         updatecontact.destroy();
         updatecontact.proceedTo = function (data) {
             console.log('updatecontact:', data);
+            appBar.abortMonitor();
         };
         searchcontacts.proceedTo = function (data) {
             console.log('searchcontacts:', data);
             (Preferences.toMonitor) ? updatecontact.initialize(
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token) : appBar.abortMonitor();
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
         };
         contacts.proceedTo = function (data) {
             console.log('contacts:', data);
             (Preferences.toMonitor) ? searchcontacts.initialize(
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token) : appBar.abortMonitor();
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
         };
         watchUserStatus.skipTo = function () {
             console.log('watchUserStatus, skipped');
             (Preferences.toMonitor) ? contacts.initialize(
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token) : appBar.abortMonitor();
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
         };
         watchUserStatus.proceedTo = function (data) {
             console.log('watchUserStatus:', data);
             (Preferences.toMonitor) ? contacts.initialize(
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token) : appBar.abortMonitor();
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
 
         };
         updateOwnStatus.skipTo = function () {
             console.log('updateOwnStatus, skipped');
             (Preferences.toMonitor) ? contacts.initialize(
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token) : appBar.abortMonitor();
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
         };
         updateOwnStatus.proceedTo = function (data) {
             console.log('updateOwnStatus:', data);
