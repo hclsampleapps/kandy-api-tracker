@@ -1,7 +1,6 @@
 // @file callpresencelistsubscriptions.js
 class CallPresenceListSubscriptions {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#callpresencelistsubscriptions");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -49,11 +48,11 @@ class CallPresenceListSubscriptions {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken, callbackURL,connectorCode) {
+    initialize(cpaasUrl,idToken, accessToken, callbackURL,connectorCode) {
         console.log('CallPresenceListSubscriptions, initialize');
         let username = Extract.username(idToken);
         let url = "[0]presence/v1/[1]/subscriptions/presenceListSubscriptions/[2]".graft(
-            this.cpaasUrl, 
+            cpaasUrl, 
             username.preferred_username, 
             connectorCode
         );

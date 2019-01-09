@@ -1,7 +1,6 @@
 // @file contacts.js
 class Contacts {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#contactstatus");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -48,45 +47,46 @@ class Contacts {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken,primaryContact,firstName,lastName,emailAddress,homePhoneNumber,businessPhoneNumber,
+    buddy,contactId) {
         console.log('Contacts, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "addressbook/v1/" + username.preferred_username + "/default/contacts";
+        let url = cpaasUrl + "addressbook/v1/" + username.preferred_username + "/default/contacts";
         let cargo = {
             "contact": {
                 "attributeList": {
                     "attribute": [
                         {
                             "name": "primaryContact",
-                            "value": Preferences.primaryContact
+                            "value": primaryContact
                         },
                         {
                             "name": "firstName",
-                            "value": Preferences.firstName
+                            "value": firstName
                         },
                         {
                             "name": "lastName",
-                            "value": Preferences.lastName
+                            "value": lastName
                         },
                         {
                             "name": "emailAddress",
-                            "value": Preferences.emailAddress
+                            "value": emailAddress
                         },
                         {
                             "name": "homePhoneNumber",
-                            "value": Preferences.homePhoneNumber
+                            "value": homePhoneNumber
                         },
                         {
                             "name": "businessPhoneNumber",
-                            "value": Preferences.businessPhoneNumber
+                            "value": businessPhoneNumber
                         },
                         {
                             "name": "buddy",
-                            "value": Preferences.buddy
+                            "value": buddy
                         }
                     ]
                 },
-                "contactId": Preferences.contactId + Math.random()
+                "contactId": contactId + Math.random()
             }
         };
         this.request(url, accessToken, cargo);

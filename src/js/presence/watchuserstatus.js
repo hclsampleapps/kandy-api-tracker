@@ -1,7 +1,6 @@
 // @file watchuserstatus.js
 class WatchUserStatus {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#watchuserstatus");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -48,17 +47,17 @@ class WatchUserStatus {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken, connectorCode) {
+    initialize(cpaasUrl,idToken, accessToken, connectorCode,presentityUserId) {
         console.log('WatchUserStatus, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/"+Preferences.presentityUserId+"").graft(
-            this.cpaasUrl, 
+        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/"+presentityUserId+"").graft(
+            cpaasUrl, 
             username.preferred_username, 
             connectorCode
         );
         var cargo = {
             "presenceContact": {
-                "presentityUserId": Preferences.presentityUserId
+                "presentityUserId": presentityUserId
             }
         };
         this.request(url, accessToken, cargo);

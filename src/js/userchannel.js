@@ -1,8 +1,6 @@
 // @file userchannel.js
 class UserChannel {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
-
+    constructor() {
         this.container = document.querySelector("#channel");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -49,10 +47,10 @@ class UserChannel {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken) {
         console.log('UserChannel, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
+        let url = cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
         let cargo = {
             notificationChannel: {
                 channelLifetime: 3600,

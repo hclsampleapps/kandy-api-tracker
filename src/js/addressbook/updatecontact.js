@@ -1,7 +1,6 @@
 // @file updatecontact.js
 class UpdateContact {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#updatecontact");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -28,7 +27,7 @@ class UpdateContact {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken,cargo) {
+    request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", url, true);
@@ -48,13 +47,14 @@ class UpdateContact {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken, primaryContact, firstName, lastName, emailAddress, homePhoneNumber, businessPhoneNumber,
+        buddy, contactId  ) {
         console.log('UpdateContact, initialize');
         let username = Extract.username(idToken);
         let url = "[0]addressbook/v1/[1]/default/contacts/[2]".graft(
-            this.cpaasUrl,
+            cpaasUrl,
             username.preferred_username,
-            Preferences.contactId
+            contactId
         );
         let cargo = {
             "contact": {
@@ -62,35 +62,35 @@ class UpdateContact {
                     "attribute": [
                         {
                             "name": "primaryContact",
-                            "value": Preferences.primaryContact
+                            "value": primaryContact
                         },
                         {
                             "name": "firstName",
-                            "value": Preferences.firstName
+                            "value": firstName
                         },
                         {
                             "name": "lastName",
-                            "value": Preferences.lastName
+                            "value": lastName
                         },
                         {
                             "name": "emailAddress",
-                            "value": Preferences.emailAddress
+                            "value": emailAddress
                         },
                         {
                             "name": "homePhoneNumber",
-                            "value": Preferences.homePhoneNumber
+                            "value": homePhoneNumber
                         },
                         {
                             "name": "businessPhoneNumber",
-                            "value": Preferences.businessPhoneNumber
+                            "value": businessPhoneNumber
                         },
                         {
                             "name": "buddy",
-                            "value": Preferences.buddy
+                            "value": buddy
                         }
                     ]
                 },
-                "contactId": "ashish0090"
+                "contactId": contactId
             }
         };
         this.request(url, accessToken, cargo);

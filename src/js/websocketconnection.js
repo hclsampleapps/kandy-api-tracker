@@ -1,7 +1,6 @@
 // @file websocketconnection.js
 class WebSocketConnection {
-    constructor(baseUrl) {
-        this.baseUrl = baseUrl;
+    constructor() {
         this.container = document.querySelector("#websocket");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -45,11 +44,11 @@ class WebSocketConnection {
             console.log("WebSocket is not supported by your browser!");
         }
     }
-    initialize(idToken, accessToken, callbackURL) {
+    initialize(baseUrl,idToken, accessToken, callbackURL) {
         console.log("webSocket:Connection Initialize");
         let username = Extract.username(idToken);
         let url = "wss://[0]/cpaas/notificationchannel/v1/[1]/channels/[2]/websocket?access_token=[3]".graft(
-            this.baseUrl,
+            baseUrl,
             username.preferred_username,
             callbackURL,
             accessToken

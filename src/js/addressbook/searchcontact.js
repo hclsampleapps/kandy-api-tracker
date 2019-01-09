@@ -1,7 +1,6 @@
 // @file searchcontact.js
 class SearchContact {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#searchcontact");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -48,13 +47,13 @@ class SearchContact {
         }
         xhr.send();
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken,searchfirstname) {
         console.log('SearchContact, initialize');
         let username = Extract.username(idToken);
         let url = "[0]directory/v1/[1]/default/search?order=asc&sortBy=name&userName=[2]".graft(
-            this.cpaasUrl,
+            cpaasUrl,
             username.preferred_username,
-            Preferences.searchfirstname
+            searchfirstname
         );
         
         this.request(url, accessToken);

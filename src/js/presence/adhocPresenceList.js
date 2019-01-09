@@ -1,7 +1,6 @@
 // @file adhocPresenceList.js
 class AdhocPresenceList {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#adhocPresenceList");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -48,14 +47,14 @@ class AdhocPresenceList {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken,presentityUserId) {
         console.log('adhocPresenceList, initialize');
         let username = Extract.username(idToken);
         let url = ("[0]presence/v1/[1]/adhocPresenceList").graft(
-            this.cpaasUrl,
+            cpaasUrl,
             username.preferred_username
         );
-        var cargo = { "adhocPresenceList": { "presentityUserId": [Preferences.presentityUserId] } }
+        var cargo = { "adhocPresenceList": { "presentityUserId": [presentityUserId] } }
 
         this.request(url, accessToken, cargo);
     }

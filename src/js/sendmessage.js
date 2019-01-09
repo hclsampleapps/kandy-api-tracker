@@ -1,7 +1,6 @@
 // @file sendmessage.js
 class SendMessage {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#chat");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -49,17 +48,17 @@ class SendMessage {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken,chatreceiverid,chattext) {
         console.log('SendMessage, initialize');
         let username = Extract.username(idToken);
         let url = "[0]chat/v1/[1]/oneToOne/[2]/adhoc/messages".graft(
-            this.cpaasUrl,
+            cpaasUrl,
             username.preferred_username, 
-            Preferences.chatreceiverid
+            chatreceiverid
         );
         var cargo = { 
             "chatMessage": { 
-                "text": Preferences.chattext 
+                "text": chattext 
             } 
         };
         this.request(url, accessToken, cargo);

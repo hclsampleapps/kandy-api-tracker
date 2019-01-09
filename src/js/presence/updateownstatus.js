@@ -1,8 +1,7 @@
 // @file updateownstatus.js
 class UpdateOwnStatus {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
-         this.container = document.querySelector("#updateownstatus");
+    constructor() {
+        this.container = document.querySelector("#updateownstatus");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -48,10 +47,10 @@ class UpdateOwnStatus {
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken,setstatuspresence) {
         console.log('UpdateOwnStatus, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceSources";
+        let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceSources";
         var cargo = {
             "presenceSource": {
                 "presence": {
@@ -60,7 +59,7 @@ class UpdateOwnStatus {
                             "overridingWillingnessValue": "Open" 
                         },
                         "activities": { 
-                            "activityValue": Preferences.setstatuspresence 
+                            "activityValue": setstatuspresence 
                         }
                     }
                 },

@@ -1,7 +1,6 @@
 // @file callpresence.js
 class CallPresence {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#callpresence");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -59,10 +58,10 @@ class CallPresence {
         }
         xhr.send();
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl,idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
+        let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
         this.request(url, accessToken);
     }
   
