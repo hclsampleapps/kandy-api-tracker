@@ -31,7 +31,7 @@ class WatchUserStatus {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
+        xhr.open("PUT", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));

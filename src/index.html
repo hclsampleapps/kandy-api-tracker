@@ -94,7 +94,11 @@
                         <td>Watch User Presence</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                     <tr id="contactstatus">
+                    <tr id="adhocPresenceList">
+                        <td>Adhoc Presence List</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="contactstatus">
                         <td>Contact</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
@@ -128,6 +132,70 @@
                     <input type="password" id="password">
                     <label>Password</label>
                 </div>
+                <div class="mui-textfield">
+                    <input type="text" id="smstext">
+                    <label>SMS Text</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="sendernumber">
+                    <label>Sender Number</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="receivernumber">
+                    <label>Receiver Number</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="chattext">
+                    <label>Chat Text</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="chatreceiverid">
+                    <label>Chat Receiver ID</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="setstatuspresence">
+                    <label>Set Status Presence</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="presentityUserId">
+                    <label>Presentity User Id</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="primaryContact">
+                    <label>Primary Contact</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="firstName">
+                    <label>First Name</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="lastName">
+                    <label>Last Name</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="emailAddress">
+                    <label>emailAddress</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="businessPhoneNumber">
+                    <label>Busniess Phone Number</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="homePhoneNumber">
+                    <label>Home Phone Number</label></div>
+                <div class="mui-textfield">
+                    <input type="text" id="buddy">
+                    <label>Buddy</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="contactId">
+                    <label>Contact ID</label>
+                </div>
+                <div class="mui-textfield">
+                    <input type="text" id="searchfirstname">
+                    <label>Search FirstName</label>
+                </div>
+
                 <div class="mui-checkbox">
                     <label>
                         <input type="checkbox" id="enablesms">
@@ -144,6 +212,12 @@
                     <label>
                         <input type="checkbox" id="enablepresence">
                         Presence
+                    </label>
+                </div>
+                <div class="mui-checkbox">
+                    <label>
+                        <input type="checkbox" id="enableaddressbook">
+                        Address Book
                     </label>
                 </div>
                 <button type="button" id="savepreference" class="mui-btn mui-btn--raised mui-btn--primary">Save</button>

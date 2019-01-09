@@ -1,28 +1,17 @@
-// @file callpresence.js
-class CallPresence {
+// @file adhocPresenceList.js
+class AdhocPresenceList {
     constructor(cpaasUrl) {
         this.cpaasUrl = cpaasUrl;
-        this.container = document.querySelector("#callpresence");
+        this.container = document.querySelector("#adhocPresenceList");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
-    get presenceData() {
-        return this.presence;
-    }
-    get connectorCode() {
-        
-        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-        console.log("resourceURL======"+code);
-        return code.substr(code.lastIndexOf('/') + 1);
-    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.presence = data;
-
         this.proceed(data);
     }
     set skipTo(fn) {
@@ -39,10 +28,10 @@ class CallPresence {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken) {
+    request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
+        xhr.open("POST", url, true);
         xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
@@ -57,13 +46,17 @@ class CallPresence {
             console.log("timeout");
             self.onFailure();
         }
-        xhr.send();
+        xhr.send(JSON.stringify(cargo));
     }
     initialize(idToken, accessToken) {
-        console.log('CallPresence, initialize');
+        console.log('adhocPresenceList, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
-        this.request(url, accessToken);
+        let url = ("[0]presence/v1/[1]/adhocPresenceList").graft(
+            this.cpaasUrl,
+            username.preferred_username
+        );
+        var cargo = { "adhocPresenceList": { "presentityUserId": [Preferences.presentityUserId] } }
+
+        this.request(url, accessToken, cargo);
     }
-  
 }

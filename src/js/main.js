@@ -14,6 +14,7 @@ whenReady(function () {
     var callPresenceListSubscriptions = new CallPresenceListSubscriptions(cpaasUrl);
     var updateOwnStatus = new UpdateOwnStatus(cpaasUrl);
     var watchUserStatus = new WatchUserStatus(cpaasUrl);
+     var adhocPresenceList = new AdhocPresenceList(cpaasUrl);
     var contacts = new Contacts(cpaasUrl);
     var searchcontacts = new SearchContact(cpaasUrl);
     var updatecontact = new UpdateContact(cpaasUrl);
@@ -33,6 +34,7 @@ whenReady(function () {
         callPresenceListSubscriptions.destroy();
         updateOwnStatus.destroy();
         watchUserStatus.destroy();
+         adhocPresenceList.destroy();
         contacts.destroy();
         searchcontacts.destroy();
         updatecontact.destroy();
@@ -54,6 +56,21 @@ whenReady(function () {
                 userToken.tokenData.access_token
             ) : appBar.abortMonitor();
         };
+        adhocPresenceList.skipTo = function () {
+            console.log('adhocPresenceList, skipped');
+            (Preferences.toMonitor) ? contacts.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
+        };
+        adhocPresenceList.proceedTo = function (data) {
+            console.log('adhocPresenceList:', data);
+            (Preferences.toMonitor) ? contacts.initialize(
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ) : appBar.abortMonitor();
+
+        };
         watchUserStatus.skipTo = function () {
             console.log('watchUserStatus, skipped');
             (Preferences.toMonitor) ? contacts.initialize(
@@ -63,7 +80,7 @@ whenReady(function () {
         };
         watchUserStatus.proceedTo = function (data) {
             console.log('watchUserStatus:', data);
-            (Preferences.toMonitor) ? contacts.initialize(
+            (Preferences.toMonitor) ? adhocPresenceList.initialize(
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ) : appBar.abortMonitor();
