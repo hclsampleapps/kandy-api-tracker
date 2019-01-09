@@ -148,15 +148,15 @@ whenReady(function () {
         };
         outBoundSMS.proceedTo = function (data) {
             console.log('outBoundSMS:', data);
-            initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts,userChannel);
+            initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
         outBoundSMS.skipTo = function (data) {
             console.log('outBoundSMS, skipped');
-            initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts,userChannel);
+            initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
         webSocketConnection.proceedTo = function (data) {
             console.log('webSocketConnection:', data);
-            initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts,userChannel);
+            initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel);
         };
         userChannel.proceedTo = function (data) {
             console.log('userChannel:', data);
@@ -177,33 +177,28 @@ whenReady(function () {
     }
     appBar.initialize();
 });
-function initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts,userChannel) {
+function initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel) {
     if (Preferences.enableSMS) {
         (Preferences.toMonitor) ? outBoundSMS.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token,
             Preferences.smstext, Preferences.receivernumber, Preferences.sendernumber
         ) : appBar.abortMonitor();
-    } else if (Preferences.enableChat) {
-        initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts,userChannel);
-    } else if (Preferences.enablePresence) {
-        initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
-    } else if (Preferences.enableAddressBook) {
-        initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
-    } else { appBar.abortMonitor(); }
+    } else {
+        initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
+    }
+
 }
-function initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts,userChannel) {
+function initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel) {
     if (Preferences.enableChat) {
         (Preferences.toMonitor) ? callSubscription.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token,
             userChannel.channel.notificationChannel.callbackURL
         ) : appBar.abortMonitor();
-    } else if (Preferences.enablePresence) {
+    } else {
         initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
-    } else if (Preferences.enableAddressBook) {
-        initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
-    } else { appBar.abortMonitor(); }
+    }
 }
 function initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts) {
     if (Preferences.enablePresence) {
@@ -211,9 +206,9 @@ function initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts) {
             userToken.tokenData.id_token,
             userToken.tokenData.access_token
         ) : appBar.abortMonitor();
-    } else if (Preferences.enableAddressBook) {
+    } else {
         initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
-    } else { appBar.abortMonitor(); }
+    }
 }
 function initiateAddressBook(contacts, cpaasUrl, userToken, appBar) {
     if (Preferences.enableAddressBook) {
