@@ -22,6 +22,7 @@ class SearchContact {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -43,11 +44,11 @@ class SearchContact {
         xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function () {
             console.log('SearchContact, timeout');
-            self.onFailure();
+            self.onError();
         }
         xhr.send();
     }
-    initialize(cpaasUrl,idToken, accessToken,searchfirstname) {
+    initialize(cpaasUrl, idToken, accessToken, searchfirstname) {
         console.log('SearchContact, initialize');
         let username = Extract.username(idToken);
         let url = "[0]directory/v1/[1]/default/search?order=asc&sortBy=name&userName=[2]".graft(
@@ -55,7 +56,7 @@ class SearchContact {
             username.preferred_username,
             searchfirstname
         );
-        
+
         this.request(url, accessToken);
     }
 }

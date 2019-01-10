@@ -38,7 +38,7 @@ class UserToken {
         xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function () {
             console.log('UserToken, timeout');
-            self.onFailure();
+            self.onError();
         }
         xhr.send(Convert.jsonToUri(cargo));
     }

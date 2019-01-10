@@ -37,10 +37,10 @@ class WebSocketConnection {
                 self.onSuccess(JSON.stringify(status));
             };
             ws.onerror = function () {
-                self.onFailure();
+                self.onError();
             };
         } else {
-            self.onFailure();
+            self.onError();
             console.log("WebSocket is not supported by your browser!");
         }
     }

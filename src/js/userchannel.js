@@ -39,7 +39,7 @@ class UserChannel {
         xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function () {
             console.log('UserChannel, timeout');
-            self.onFailure();
+            self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }

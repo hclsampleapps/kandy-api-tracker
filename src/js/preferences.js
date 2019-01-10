@@ -1,10 +1,10 @@
 // @file preferences.js
 var Preferences = {
     toMonitor: false,
-    enableSMS: false,
-    enableChat: false,
-    enablePresence: false,
-    enableAddressBook: false,
+    enableSMS: true,
+    enableChat: true,
+    enablePresence: true,
+    enableAddressBook: true,
     baseUrl: "nvs-cpaas-oauth.kandy.io",
     projectName: "PUB-hcl107.MPb0QLfe",//   "PUB-My First Project",// "PUB-My Sms Project 2",
     username: "ashish07@idx4.com",// "d3smc2e0j3srxx0g",

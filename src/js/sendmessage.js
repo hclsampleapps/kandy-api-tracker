@@ -44,7 +44,7 @@ class SendMessage {
         xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function () {
             console.log('SendMessage, timeout');
-            self.onFailure();
+            self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }

@@ -22,6 +22,7 @@ class Contacts {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -43,7 +44,7 @@ class Contacts {
         xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function () {
             console.log('Contacts, timeout');
-            self.onFailure();
+            self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
