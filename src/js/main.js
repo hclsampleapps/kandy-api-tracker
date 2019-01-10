@@ -1,5 +1,5 @@
 // @file main.js
-whenReady(function () {
+whenReady(function() {
     console.log('begin');
 
     var userToken = new UserToken();
@@ -21,7 +21,7 @@ whenReady(function () {
     controls.initialize();
 
     var appBar = new AppBar();
-    appBar.execute = function () {
+    appBar.execute = function() {
         var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
         userToken.destroy();
         userChannel.destroy();
@@ -37,11 +37,11 @@ whenReady(function () {
         contacts.destroy();
         searchcontacts.destroy();
         updatecontact.destroy();
-        updatecontact.proceedTo = function (data) {
+        updatecontact.proceedTo = function(data) {
             console.log('updatecontact:', data);
             appBar.abortMonitor();
         };
-        searchcontacts.proceedTo = function (data) {
+        searchcontacts.proceedTo = function(data) {
             console.log('searchcontacts:', data);
             (Preferences.toMonitor) ? updatecontact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -54,159 +54,162 @@ whenReady(function () {
                 Preferences.businessPhoneNumber,
                 Preferences.buddy,
                 Preferences.contactId
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
-        contacts.proceedTo = function (data) {
+        contacts.proceedTo = function(data) {
             console.log('contacts:', data);
             (Preferences.toMonitor) ? searchcontacts.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.searchfirstname
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
-        adhocPresenceList.skipTo = function () {
+        adhocPresenceList.skipTo = function() {
             console.log('adhocPresenceList, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        adhocPresenceList.proceedTo = function (data) {
+        adhocPresenceList.proceedTo = function(data) {
             console.log('adhocPresenceList:', data);
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
 
         };
-        watchUserStatus.skipTo = function () {
+        watchUserStatus.skipTo = function() {
             console.log('watchUserStatus, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        watchUserStatus.proceedTo = function (data) {
+        watchUserStatus.proceedTo = function(data) {
             console.log('watchUserStatus:', data);
             (Preferences.toMonitor) ? adhocPresenceList.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.presentityUserId
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
 
         };
-        updateOwnStatus.skipTo = function () {
+        updateOwnStatus.skipTo = function() {
             console.log('updateOwnStatus, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        updateOwnStatus.proceedTo = function (data) {
+        updateOwnStatus.proceedTo = function(data) {
             console.log('updateOwnStatus:', data);
             (Preferences.toMonitor) ? watchUserStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 callPresence.connectorCode, Preferences.presentityUserId
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
 
-        callPresenceListSubscriptions.proceedTo = function (data) {
+        callPresenceListSubscriptions.proceedTo = function(data) {
             console.log('callPresenceListSubscriptions:', data);
             (Preferences.toMonitor) ? updateOwnStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.setstatuspresence
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
-        callPresenceListSubscriptions.skipTo = function () {
+        callPresenceListSubscriptions.skipTo = function() {
             console.log('callPresenceListSubscriptions, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar)
         };
-        callPresence.skipTo = function (data) {
+        callPresence.skipTo = function(data) {
             console.log('callPresence:', "skipped");
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar)
         };
-        callPresence.proceedTo = function (data) {
+        callPresence.proceedTo = function(data) {
             console.log('callPresence:', data);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 userChannel.channel.notificationChannel.callbackURL,
                 callPresence.connectorCode
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
 
-        sendMessage.skipTo = function () {
+        sendMessage.skipTo = function() {
             console.log('sendMessage, skipped');
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
-        sendMessage.proceedTo = function (data) {
+        sendMessage.proceedTo = function(data) {
             console.log('sendMessage:', data);
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
 
-        callSubscription.proceedTo = function (data) {
+        callSubscription.proceedTo = function(data) {
             console.log('callSubscription:', data);
             (Preferences.toMonitor) ? sendMessage.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.chatreceiverid, Preferences.chattext
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
 
         };
-        callSubscription.skipTo = function () {
+        callSubscription.skipTo = function() {
             console.log('callSubscription: skipped');
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
-        outBoundSMS.proceedTo = function (data) {
+        outBoundSMS.proceedTo = function(data) {
             console.log('outBoundSMS:', data);
             initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
-        outBoundSMS.skipTo = function (data) {
+        outBoundSMS.skipTo = function(data) {
             console.log('outBoundSMS, skipped');
             initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
-        webSocketConnection.proceedTo = function (data) {
+        webSocketConnection.proceedTo = function(data) {
             console.log('webSocketConnection:', data);
             initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel);
         };
-        userChannel.proceedTo = function (data) {
+        userChannel.proceedTo = function(data) {
             console.log('userChannel:', data);
             (Preferences.toMonitor) ? webSocketConnection.initialize(Preferences.baseUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 data.notificationChannel.callbackURL
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
-        userToken.proceedTo = function (data) {
+        userToken.proceedTo = function(data) {
             console.log('userToken:', data);
             (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
                 data.id_token,
                 data.access_token
-            ) : appBar.abortMonitor();
+            ): appBar.abortMonitor();
         };
-        (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, Preferences.projectName, Preferences.username, Preferences.password) : appBar.abortMonitor();
+        (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, Preferences.projectName, Preferences.username, Preferences.password): appBar.abortMonitor();
     }
     appBar.initialize();
 });
+
 function initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel) {
     if (Preferences.enableSMS) {
         (Preferences.toMonitor) ? outBoundSMS.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token,
             Preferences.smstext, Preferences.receivernumber, Preferences.sendernumber
-        ) : appBar.abortMonitor();
+        ): appBar.abortMonitor();
     } else {
         initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
     }
-
 }
+
 function initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel) {
     if (Preferences.enableChat) {
         (Preferences.toMonitor) ? callSubscription.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token,
             userChannel.channel.notificationChannel.callbackURL
-        ) : appBar.abortMonitor();
+        ): appBar.abortMonitor();
     } else {
         initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
     }
 }
+
 function initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts) {
     if (Preferences.enablePresence) {
         (Preferences.toMonitor) ? callPresence.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token
-        ) : appBar.abortMonitor();
+        ): appBar.abortMonitor();
     } else {
         initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
     }
 }
+
 function initiateAddressBook(contacts, cpaasUrl, userToken, appBar) {
     if (Preferences.enableAddressBook) {
         (Preferences.toMonitor) ? contacts.initialize(cpaasUrl,
@@ -220,7 +223,8 @@ function initiateAddressBook(contacts, cpaasUrl, userToken, appBar) {
             Preferences.businessPhoneNumber,
             Preferences.buddy,
             Preferences.contactId
-        ) : appBar.abortMonitor();
-
-    } else { appBar.abortMonitor(); }
+        ): appBar.abortMonitor();
+    } else { 
+        appBar.abortMonitor(); 
+    }
 }

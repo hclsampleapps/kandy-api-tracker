@@ -42,24 +42,24 @@ class CallPresenceListSubscriptions {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log("timeout");
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, callbackURL,connectorCode) {
+    initialize(cpaasUrl, idToken, accessToken, callbackURL, connectorCode) {
         console.log('CallPresenceListSubscriptions, initialize');
         let username = Extract.username(idToken);
         let url = "[0]presence/v1/[1]/subscriptions/presenceListSubscriptions/[2]".graft(
-            cpaasUrl, 
-            username.preferred_username, 
+            cpaasUrl,
+            username.preferred_username,
             connectorCode
         );
         var cargo = {
             "presenceListSubscription": {
-                "callbackReference": { 
-                    "notifyURL": callbackURL 
+                "callbackReference": {
+                    "notifyURL": callbackURL
                 },
                 "clientCorrelator": username.preferred_username,
                 "duration": 86400

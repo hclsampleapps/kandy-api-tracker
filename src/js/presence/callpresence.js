@@ -12,9 +12,8 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        
         let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-        console.log("resourceURL======"+code);
+        console.log("CallPresence, connectorCode, resourceURL:", code);
         return code.substr(code.lastIndexOf('/') + 1);
     }
     onSuccess(data) {
@@ -43,7 +42,7 @@ class CallPresence {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -53,17 +52,17 @@ class CallPresence {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log("timeout");
             self.onError();
         }
         xhr.send();
     }
-    initialize(cpaasUrl,idToken, accessToken) {
+    initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
         this.request(url, accessToken);
     }
-  
+
 }

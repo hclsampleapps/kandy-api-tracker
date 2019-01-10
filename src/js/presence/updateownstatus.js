@@ -10,10 +10,10 @@ class UpdateOwnStatus {
     }
     onSuccess(data) {
         this.status.success();
-         this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-   set skipTo(fn) {
+    set skipTo(fn) {
         this.skip = fn;
     }
     onFailure() {
@@ -32,7 +32,7 @@ class UpdateOwnStatus {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -42,13 +42,13 @@ class UpdateOwnStatus {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log("timeout");
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken,setstatuspresence) {
+    initialize(cpaasUrl, idToken, accessToken, setstatuspresence) {
         console.log('UpdateOwnStatus, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceSources";
@@ -56,11 +56,11 @@ class UpdateOwnStatus {
             "presenceSource": {
                 "presence": {
                     "person": {
-                        "overriding-willingness": { 
-                            "overridingWillingnessValue": "Open" 
+                        "overriding-willingness": {
+                            "overridingWillingnessValue": "Open"
                         },
-                        "activities": { 
-                            "activityValue": setstatuspresence 
+                        "activities": {
+                            "activityValue": setstatuspresence
                         }
                     }
                 },

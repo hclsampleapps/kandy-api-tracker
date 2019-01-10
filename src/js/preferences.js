@@ -6,9 +6,9 @@ var Preferences = {
     enablePresence: true,
     enableAddressBook: true,
     baseUrl: "nvs-cpaas-oauth.kandy.io",
-    projectName: "PUB-hcl107.MPb0QLfe",//   "PUB-My First Project",// "PUB-My Sms Project 2",
-    username: "ashish07@idx4.com",// "d3smc2e0j3srxx0g",
-    password: "test123",//"3E7pCDsFqY1fn4p4",
+    projectName: "PUB-hcl107.MPb0QLfe", //   "PUB-My First Project",// "PUB-My Sms Project 2",
+    username: "ashish07@idx4.com", // "d3smc2e0j3srxx0g",
+    password: "test123", //"3E7pCDsFqY1fn4p4",
     smstext: "hello",
     sendernumber: "+12074666511",
     receivernumber: "+17433333068",
@@ -24,5 +24,5 @@ var Preferences = {
     businessPhoneNumber: "business",
     buddy: "true",
     contactId: "ashish0090",
-    searchfirstname:"ashish"
+    searchfirstname: "ashish"
 };

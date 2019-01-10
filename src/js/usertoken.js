@@ -36,7 +36,7 @@ class UserToken {
         xhr.onerror = this.onError;
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.timeout = 15000; // in milliseconds
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log('UserToken, timeout');
             self.onError();
         }
@@ -46,7 +46,7 @@ class UserToken {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl,projectName,username,password) {
+    initialize(cpaasUrl, projectName, username, password) {
         console.log('UserToken, initialize');
         let cargo = {
             client_id: encodeURIComponent(projectName),

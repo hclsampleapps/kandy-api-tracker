@@ -7,24 +7,24 @@ function whenReady(fn) {
     }
 }
 
-var parseHTML = function (str) {
+var parseHTML = function(str) {
     var tmp = document.implementation.createHTMLDocument();
     tmp.body.innerHTML = str;
     return tmp.body.children;
 };
 
 var Effect = {
-    hide: function (el) {
+    hide: function(el) {
         el.style.display = 'none';
     },
-    show: function (el) {
+    show: function(el) {
         el.style.display = '';
     },
-    fadeIn: function (el) {
+    fadeIn: function(el) {
         el.style.opacity = 0;
 
         var last = +new Date();
-        var tick = function () {
+        var tick = function() {
             el.style.opacity = +el.style.opacity + (new Date() - last) / 400;
             last = +new Date();
 
@@ -38,25 +38,25 @@ var Effect = {
 };
 
 var Style = {
-    addClass: function (el, className) {
+    addClass: function(el, className) {
         if (el.classList)
             el.classList.add(className);
         else
             el.className += ' ' + className;
     },
-    removeClass: function (el, className) {
+    removeClass: function(el, className) {
         if (el.classList)
             el.classList.remove(className);
         else
             el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
     },
-    hasClass: function (el, className) {
+    hasClass: function(el, className) {
         if (el.classList)
             el.classList.contains(className);
         else
             new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
     },
-    toggleClass: function (className) {
+    toggleClass: function(className) {
         if (el.classList) {
             el.classList.toggle(className);
         } else {
@@ -74,7 +74,7 @@ var Style = {
 };
 
 var Trigger = {
-    _: function (eventName, cargoObj) {
+    _: function(eventName, cargoObj) {
         if (window.CustomEvent) {
             var event = new CustomEvent(eventName, { detail: cargoObj });
         } else {
@@ -84,7 +84,7 @@ var Trigger = {
 
         el.dispatchEvent(event);
     },
-    custom: function (eventName) {
+    custom: function(eventName) {
         var event = document.createEvent('HTMLEvents');
         event.initEvent(eventName, true, false);
         el.dispatchEvent(event);
@@ -92,7 +92,7 @@ var Trigger = {
 };
 
 var Extend = {
-    _: function (out) {
+    _: function(out) {
         out = out || {};
 
         for (var i = 1; i < arguments.length; i++) {
@@ -107,7 +107,7 @@ var Extend = {
 
         return out;
     },
-    deep: function (out) {
+    deep: function(out) {
         out = out || {};
 
         for (var i = 1; i < arguments.length; i++) {
@@ -131,7 +131,7 @@ var Extend = {
 };
 
 var Convert = {
-    jsonToUri: function (data) {
+    jsonToUri: function(data) {
         let list = [];
         for (let i in data) {
             list.push(i + '=' + data[i]);
@@ -140,7 +140,7 @@ var Convert = {
     }
 };
 
-String.prototype.autofit = function () {
+String.prototype.autofit = function() {
     var formatted = this,
         list = arguments[0];
     for (var prop in list) {
@@ -149,7 +149,7 @@ String.prototype.autofit = function () {
     return formatted;
 };
 
-String.prototype.graft = function () {
+String.prototype.graft = function() {
     var formatted = this;
     for (var arg in arguments) {
         formatted = formatted.replace("[" + arg + "]", arguments[arg]);

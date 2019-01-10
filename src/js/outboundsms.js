@@ -8,14 +8,13 @@ class OutBoundSMS {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-  
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
-    }
-    set skipTo(fn) {
-        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
@@ -43,19 +42,19 @@ class OutBoundSMS {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log("timeout");
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken,smstext,receivernumber,sendernumber) {
+    initialize(cpaasUrl, idToken, accessToken, smstext, receivernumber, sendernumber) {
         console.log('OutBoundSMS, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "smsmessaging/v1/" + username.preferred_username + "/outbound/" + sendernumber + "/requests";
         let cargo = {
             "outboundSMSMessageRequest": {
-                "address":[receivernumber],
+                "address": [receivernumber],
                 "clientCorrelator": username.preferred_username,
                 "outboundSMSTextMessage": {
                     "message": smstext

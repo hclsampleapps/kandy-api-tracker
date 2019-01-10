@@ -42,18 +42,18 @@ class WatchUserStatus {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log("timeout");
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, connectorCode,presentityUserId) {
+    initialize(cpaasUrl, idToken, accessToken, connectorCode, presentityUserId) {
         console.log('WatchUserStatus, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/"+presentityUserId+"").graft(
-            cpaasUrl, 
-            username.preferred_username, 
+        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/" + presentityUserId + "").graft(
+            cpaasUrl,
+            username.preferred_username,
             connectorCode
         );
         var cargo = {

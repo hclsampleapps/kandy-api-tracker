@@ -32,7 +32,7 @@ class SendMessage {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -42,24 +42,24 @@ class SendMessage {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // in milliseconds
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log('SendMessage, timeout');
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken,chatreceiverid,chattext) {
+    initialize(cpaasUrl, idToken, accessToken, chatreceiverid, chattext) {
         console.log('SendMessage, initialize');
         let username = Extract.username(idToken);
         let url = "[0]chat/v1/[1]/oneToOne/[2]/adhoc/messages".graft(
             cpaasUrl,
-            username.preferred_username, 
+            username.preferred_username,
             chatreceiverid
         );
-        var cargo = { 
-            "chatMessage": { 
-                "text": chattext 
-            } 
+        var cargo = {
+            "chatMessage": {
+                "text": chattext
+            }
         };
         this.request(url, accessToken, cargo);
     }

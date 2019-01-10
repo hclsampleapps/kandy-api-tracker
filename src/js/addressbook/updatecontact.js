@@ -32,7 +32,7 @@ class UpdateContact {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -42,14 +42,14 @@ class UpdateContact {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // in milliseconds
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log('UpdateContact, timeout');
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, primaryContact, firstName, lastName, emailAddress, homePhoneNumber, businessPhoneNumber,
-        buddy, contactId  ) {
+    initialize(cpaasUrl, idToken, accessToken, primaryContact, firstName, lastName, emailAddress, homePhoneNumber, businessPhoneNumber,
+        buddy, contactId) {
         console.log('UpdateContact, initialize');
         let username = Extract.username(idToken);
         let url = "[0]addressbook/v1/[1]/default/contacts/[2]".graft(
@@ -60,8 +60,7 @@ class UpdateContact {
         let cargo = {
             "contact": {
                 "attributeList": {
-                    "attribute": [
-                        {
+                    "attribute": [{
                             "name": "primaryContact",
                             "value": primaryContact
                         },

@@ -4,6 +4,26 @@ class Controls {
     next(evt) {
         this.controlsTab.activateNext();
     }
+    render() {
+        Effect.show(this.tr.token);
+        Effect.show(this.tr.channel);
+        Effect.show(this.tr.websocket);
+        
+        Preferences.enableSMS ? Effect.show(this.tr.outboundsms) : Effect.hide(this.tr.outboundsms);
+        
+        Preferences.enableChat ? Effect.show(this.tr.subscription) : Effect.hide(this.tr.subscription);
+        Preferences.enableChat ? Effect.show(this.tr.chat) : Effect.hide(this.tr.chat);
+
+        Preferences.enablePresence ? Effect.show(this.tr.callpresence) : Effect.hide(this.tr.callpresence);
+        Preferences.enablePresence ? Effect.show(this.tr.callpresencelistsubscriptions) : Effect.hide(this.tr.callpresencelistsubscriptions);
+        Preferences.enablePresence ? Effect.show(this.tr.updateownstatus) : Effect.hide(this.tr.updateownstatus);
+        Preferences.enablePresence ? Effect.show(this.tr.watchuserstatus) : Effect.hide(this.tr.watchuserstatus);
+        Preferences.enablePresence ? Effect.show(this.tr.adhocPresenceList) : Effect.hide(this.tr.adhocPresenceList);
+
+        Preferences.enableAddressBook ? Effect.show(this.tr.contactstatus) : Effect.hide(this.tr.contactstatus);
+        Preferences.enableAddressBook ? Effect.show(this.tr.searchcontact) : Effect.hide(this.tr.searchcontact);
+        Preferences.enableAddressBook ? Effect.show(this.tr.updatecontact) : Effect.hide(this.tr.updatecontact);
+    }
     save(evt) {
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
@@ -30,13 +50,14 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
+
+        this.render();
     }
     defaultState() {
         this.enableSMS.checked = Preferences.enableSMS;
         this.enableChat.checked = Preferences.enableChat;
         this.enablePresence.checked = Preferences.enablePresence;
         this.enableAddressBook.checked = Preferences.enableAddressBook;
-
 
         this.baseUrl.value = Preferences.baseUrl;
         this.projectName.value = Preferences.projectName;
@@ -58,8 +79,9 @@ class Controls {
         this.buddy.value = Preferences.buddy;
         this.contactId.value = Preferences.contactId;
         this.searchfirstname.value = Preferences.searchfirstname;
-    }
 
+        this.render();
+    }
     attachEvents() {
         this.activateNext.addEventListener('click', (evt) => this.next(evt));
         this.savePreference.addEventListener('click', (evt) => this.save(evt));
@@ -67,6 +89,22 @@ class Controls {
     initialize() {
         this.controlsTab = new ControlsTab('pc-tabs');
         this.controlsMenu = new ControlsMenu('pc-menu');
+
+        this.tr = {};
+        this.tr.token = document.getElementById('token');
+        this.tr.channel = document.getElementById('channel');
+        this.tr.websocket = document.getElementById('websocket');
+        this.tr.outboundsms = document.getElementById('outboundsms');
+        this.tr.subscription = document.getElementById('subscription');
+        this.tr.chat = document.getElementById('chat');
+        this.tr.callpresence = document.getElementById('callpresence');
+        this.tr.callpresencelistsubscriptions = document.getElementById('callpresencelistsubscriptions');
+        this.tr.updateownstatus = document.getElementById('updateownstatus');
+        this.tr.watchuserstatus = document.getElementById('watchuserstatus');
+        this.tr.adhocPresenceList = document.getElementById('adhocPresenceList');
+        this.tr.contactstatus = document.getElementById('contactstatus');
+        this.tr.searchcontact = document.getElementById('searchcontact');
+        this.tr.updatecontact = document.getElementById('updatecontact');
 
         this.enableSMS = document.getElementById('enablesms');
         this.enableChat = document.getElementById('enablechat');
@@ -99,61 +137,5 @@ class Controls {
         this.attachEvents();
 
         this.defaultState();
-    }
-}
-
-class ControlsTab {
-    constructor(id) {
-        this.currPos = 0;
-        this.container = document.getElementById(id);
-        this.tabElements = this.container.querySelectorAll('li a[data-mui-toggle="tab"]');
-        this.prepareIdList();
-        this.attachEvents();
-    }
-    prepareIdList() {
-        this.tabList = [];
-        for(let i=0; i<this.tabElements.length; i++) {
-            let tabId = this.tabElements[i].getAttribute('data-mui-controls');
-            this.tabList.push(tabId);
-        }
-    }
-    onClick(evt) {
-        let currId = evt.target.getAttribute('data-mui-controls');
-        this.currPos = this.tabList.indexOf(currId);
-    }
-    attachEvents() {
-        for(let i=0; i<this.tabElements.length; i++) {
-            this.tabElements[i].addEventListener('click', (evt) => this.onClick(evt));
-        }
-    }
-    activateNext() {
-        this.currPos = (this.currPos + 1) % this.tabElements.length;
-        let nextPosId = this.tabList[this.currPos];
-        mui.tabs.activate(nextPosId);
-    }
-}
-
-class ControlsMenu {
-    constructor(id) {
-        this.container = document.getElementById(id);
-        this.menuElements = this.container.querySelectorAll('li a[data-toggle="tab"]');
-        this.prepareIdList();
-        this.attachEvents();
-    }
-    prepareIdList() {
-        this.menuList = [];
-        for(let i=0; i<this.menuElements.length; i++) {
-            let tabId = this.menuElements[i].getAttribute('data-controls');
-            this.menuList.push(tabId);
-        }
-    }
-    onClick(evt) {
-        let currId = evt.target.getAttribute('data-controls');
-        mui.tabs.activate(currId);
-    }
-    attachEvents() {
-        for(let i=0; i<this.menuElements.length; i++) {
-            this.menuElements[i].addEventListener('click', (evt) => this.onClick(evt));
-        }
     }
 }

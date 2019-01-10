@@ -32,7 +32,7 @@ class CallSubscription {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -42,7 +42,7 @@ class CallSubscription {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // in milliseconds
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log('CallSubscription, timeout');
             self.onError();
         }
@@ -60,5 +60,4 @@ class CallSubscription {
         };
         this.request(url, accessToken, cargo);
     }
-
 }

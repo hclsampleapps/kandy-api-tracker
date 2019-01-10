@@ -32,7 +32,7 @@ class AdhocPresenceList {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -42,13 +42,13 @@ class AdhocPresenceList {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log("timeout");
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken,presentityUserId) {
+    initialize(cpaasUrl, idToken, accessToken, presentityUserId) {
         console.log('adhocPresenceList, initialize');
         let username = Extract.username(idToken);
         let url = ("[0]presence/v1/[1]/adhocPresenceList").graft(

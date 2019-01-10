@@ -31,12 +31,12 @@ class WebSocketConnection {
             let status = {
                 status: "success"
             };
-            ws.onopen = function () {
+            ws.onopen = function() {
                 // Web Socket is connected, send data using send()
                 // ws.send("Message to send");
                 self.onSuccess(JSON.stringify(status));
             };
-            ws.onerror = function () {
+            ws.onerror = function() {
                 self.onError();
             };
         } else {
@@ -44,8 +44,8 @@ class WebSocketConnection {
             console.log("WebSocket is not supported by your browser!");
         }
     }
-    initialize(baseUrl,idToken, accessToken, callbackURL) {
-        console.log("webSocket:Connection Initialize");
+    initialize(baseUrl, idToken, accessToken, callbackURL) {
+        console.log("WebSocketConnection, initialize");
         let username = Extract.username(idToken);
         let url = "wss://[0]/cpaas/notificationchannel/v1/[1]/channels/[2]/websocket?access_token=[3]".graft(
             baseUrl,

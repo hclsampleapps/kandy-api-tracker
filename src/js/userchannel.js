@@ -37,7 +37,7 @@ class UserChannel {
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // in milliseconds
-        xhr.ontimeout = function () {
+        xhr.ontimeout = function() {
             console.log('UserChannel, timeout');
             self.onError();
         }
@@ -47,7 +47,7 @@ class UserChannel {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl,idToken, accessToken) {
+    initialize(cpaasUrl, idToken, accessToken) {
         console.log('UserChannel, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
