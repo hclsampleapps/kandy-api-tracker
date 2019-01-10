@@ -70,7 +70,6 @@
                         <td>OutBound SMS</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-
                     <tr id="subscription">
                         <td>Chat Subscription</td>
                         <td><span class="status symbol-failure"></span></td>
@@ -79,7 +78,6 @@
                         <td>Chat</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-
                     <tr id="callpresence">
                         <td>Presence Lists</td>
                         <td><span class="status symbol-failure"></span></td>
@@ -100,7 +98,6 @@
                         <td>Adhoc Presence List</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-
                     <tr id="contactstatus">
                         <td>Contact</td>
                         <td><span class="status symbol-failure"></span></td>
@@ -117,124 +114,147 @@
             </table>
         </div>
         <div id="preferencecontrols" class="mui-panel">
+            <div class="mui-dropdown more-menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-mui-toggle="dropdown">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul id="pc-menu" class="mui-dropdown__menu">
+                    <li><a data-toggle="tab" data-controls="pc-pane-1">Account</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-2">SMS</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-3">Chat</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-4">Presence</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-5">Address-book</a></li>
+                </ul>
+            </div>
             <p class="mui--text-title">Preferences &amp; Controls</p>
+            <ul id="pc-tabs" class="mui-tabs__bar mui-tabs__bar--justified">
+                <li class="mui--is-active"><a data-mui-toggle="tab" data-mui-controls="pc-pane-1">Account</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-2">SMS</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-3">Chat</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-4">Presence</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-5">Address-book</a></li>
+            </ul>
             <form>
-                <div class="mui-textfield">
-                    <input type="text" id="baseurl">
-                    <label>Base URL</label>
+                <div class="mui-tabs__pane mui--is-active" id="pc-pane-1">
+                    <div class="mui--text-subhead tab-pane-head">Account</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="baseurl">
+                        <label>Base URL</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="projectname">
+                        <label>Project name</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="username">
+                        <label>Username</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="password" id="password">
+                        <label>Password</label>
+                    </div>
                 </div>
-                <div class="mui-textfield">
-                    <input type="text" id="projectname">
-                    <label>Project name</label>
+                <div class="mui-tabs__pane" id="pc-pane-2">
+                    <div class="mui--text-subhead tab-pane-head">SMS</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="smstext">
+                        <label>SMS text</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="sendernumber">
+                        <label>Sender number</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="receivernumber">
+                        <label>Receiver number</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablesms">
+                            Enable SMS
+                        </label>
+                    </div>
                 </div>
-                <div class="mui-textfield">
-                    <input type="text" id="username">
-                    <label>Username</label>
+                <div class="mui-tabs__pane" id="pc-pane-3">
+                    <div class="mui--text-subhead tab-pane-head">Chat</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="chattext">
+                        <label>Chat text</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="chatreceiverid">
+                        <label>Chat receiver ID</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablechat">
+                            Enable Chat
+                        </label>
+                    </div>
                 </div>
-                <div class="mui-textfield">
-                    <input type="password" id="password">
-                    <label>Password</label>
+                <div class="mui-tabs__pane" id="pc-pane-4">
+                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="setstatuspresence">
+                        <label>Set status presence</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="presentityUserId">
+                        <label>Presentity user ID</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablepresence">
+                            Enable Presence
+                        </label>
+                    </div>
                 </div>
-                <div>
-                    <p class="mui--text-title">SMS</p>
+                <div class="mui-tabs__pane" id="pc-pane-5">
+                    <div class="mui--text-subhead tab-pane-head">Address Book</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="primaryContact">
+                        <label>Primary contact</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="firstName">
+                        <label>First name</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="lastName">
+                        <label>Last name</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="emailAddress">
+                        <label>Email address</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="businessPhoneNumber">
+                        <label>Business phone number</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="homePhoneNumber">
+                        <label>Home phone number</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="buddy">
+                        <label>Buddy</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="contactId">
+                        <label>Contact ID</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="searchfirstname">
+                        <label>Search first name</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enableaddressbook">
+                            Enable Address-book
+                        </label>
+                    </div>
                 </div>
-                <div class="mui-textfield">
-                    <input type="text" id="smstext">
-                    <label>SMS Text</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="sendernumber">
-                    <label>Sender Number</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="receivernumber">
-                    <label>Receiver Number</label>
-                </div>
-                <div>
-                    <p class="mui--text-title">Chat</p>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="chattext">
-                    <label>Chat Text</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="chatreceiverid">
-                    <label>Chat Receiver ID</label>
-                </div>
-                <div>
-                    <p class="mui--text-title">Presence</p>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="setstatuspresence">
-                    <label>Set Status Presence</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="presentityUserId">
-                    <label>Presentity User Id</label>
-                </div>
-                <div>
-                    <p class="mui--text-title">Address Book</p>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="primaryContact">
-                    <label>Primary Contact</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="firstName">
-                    <label>First Name</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="lastName">
-                    <label>Last Name</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="emailAddress">
-                    <label>emailAddress</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="businessPhoneNumber">
-                    <label>Busniess Phone Number</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="homePhoneNumber">
-                    <label>Home Phone Number</label></div>
-                <div class="mui-textfield">
-                    <input type="text" id="buddy">
-                    <label>Buddy</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="contactId">
-                    <label>Contact ID</label>
-                </div>
-                <div class="mui-textfield">
-                    <input type="text" id="searchfirstname">
-                    <label>Search FirstName</label>
-                </div>
-
-                <div class="mui-checkbox">
-                    <label>
-                        <input type="checkbox" id="enablesms">
-                        SMS
-                    </label>
-                </div>
-                <div class="mui-checkbox">
-                    <label>
-                        <input type="checkbox" id="enablechat">
-                        Chat
-                    </label>
-                </div>
-                <div class="mui-checkbox">
-                    <label>
-                        <input type="checkbox" id="enablepresence">
-                        Presence
-                    </label>
-                </div>
-                <div class="mui-checkbox">
-                    <label>
-                        <input type="checkbox" id="enableaddressbook">
-                        Address Book
-                    </label>
-                </div>
+                <button type="button" id="activatenext" class="mui-btn mui-btn--primary">Next</button>
                 <button type="button" id="savepreference" class="mui-btn mui-btn--raised mui-btn--primary">Save</button>
             </form>
         </div>

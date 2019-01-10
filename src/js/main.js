@@ -1,9 +1,6 @@
 // @file main.js
-
-
 whenReady(function () {
     console.log('begin');
-
 
     var userToken = new UserToken();
     var userChannel = new UserChannel();

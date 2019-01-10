@@ -1,6 +1,9 @@
 // @file controls.js
 class Controls {
-    constructor() { }
+    constructor() {}
+    next(evt) {
+        this.controlsTab.activateNext();
+    }
     save(evt) {
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
@@ -58,39 +61,99 @@ class Controls {
     }
 
     attachEvents() {
-        this.savePreference.addEventListener("click", (evt) => this.save(evt));
+        this.activateNext.addEventListener('click', (evt) => this.next(evt));
+        this.savePreference.addEventListener('click', (evt) => this.save(evt));
     }
     initialize() {
-        this.enableSMS = document.getElementById("enablesms");
-        this.enableChat = document.getElementById("enablechat");
-        this.enablePresence = document.getElementById("enablepresence");
-        this.enableAddressBook = document.getElementById("enableaddressbook");
+        this.controlsTab = new ControlsTab('pc-tabs');
+        this.controlsMenu = new ControlsMenu('pc-menu');
 
-        this.baseUrl = document.getElementById("baseurl");
-        this.projectName = document.getElementById("projectname");
-        this.username = document.getElementById("username");
-        this.password = document.getElementById("password");
-        this.smstext = document.getElementById("smstext");
-        this.sendernumber = document.getElementById("sendernumber");
-        this.receivernumber = document.getElementById("receivernumber");
-        this.chattext = document.getElementById("chattext");
-        this.chatreceiverid = document.getElementById("chatreceiverid");
-        this.setstatuspresence = document.getElementById("setstatuspresence");
-        this.presentityUserId=document.getElementById("presentityUserId");
-        this.primaryContact=document.getElementById("primaryContact");
-        this.firstName=document.getElementById("firstName");
-        this.lastName=document.getElementById("lastName");
-        this.emailAddress=document.getElementById("emailAddress");
-        this.homePhoneNumber=document.getElementById("homePhoneNumber");
-        this.businessPhoneNumber=document.getElementById("businessPhoneNumber");
-        this.buddy=document.getElementById("buddy");
-        this.contactId=document.getElementById("contactId");
-        this.searchfirstname=document.getElementById("searchfirstname");
+        this.enableSMS = document.getElementById('enablesms');
+        this.enableChat = document.getElementById('enablechat');
+        this.enablePresence = document.getElementById('enablepresence');
+        this.enableAddressBook = document.getElementById('enableaddressbook');
 
+        this.baseUrl = document.getElementById('baseurl');
+        this.projectName = document.getElementById('projectname');
+        this.username = document.getElementById('username');
+        this.password = document.getElementById('password');
+        this.smstext = document.getElementById('smstext');
+        this.sendernumber = document.getElementById('sendernumber');
+        this.receivernumber = document.getElementById('receivernumber');
+        this.chattext = document.getElementById('chattext');
+        this.chatreceiverid = document.getElementById('chatreceiverid');
+        this.setstatuspresence = document.getElementById('setstatuspresence');
+        this.presentityUserId = document.getElementById('presentityUserId');
+        this.primaryContact = document.getElementById('primaryContact');
+        this.firstName = document.getElementById('firstName');
+        this.lastName = document.getElementById('lastName');
+        this.emailAddress = document.getElementById('emailAddress');
+        this.homePhoneNumber = document.getElementById('homePhoneNumber');
+        this.businessPhoneNumber = document.getElementById('businessPhoneNumber');
+        this.buddy = document.getElementById('buddy');
+        this.contactId = document.getElementById('contactId');
+        this.searchfirstname = document.getElementById('searchfirstname');
 
-        this.savePreference = document.getElementById("savepreference");
+        this.activateNext = document.getElementById('activatenext');
+        this.savePreference = document.getElementById('savepreference');
         this.attachEvents();
 
         this.defaultState();
+    }
+}
+
+class ControlsTab {
+    constructor(id) {
+        this.currPos = 0;
+        this.container = document.getElementById(id);
+        this.tabElements = this.container.querySelectorAll('li a[data-mui-toggle="tab"]');
+        this.prepareIdList();
+        this.attachEvents();
+    }
+    prepareIdList() {
+        this.tabList = [];
+        for(let i=0; i<this.tabElements.length; i++) {
+            let tabId = this.tabElements[i].getAttribute('data-mui-controls');
+            this.tabList.push(tabId);
+        }
+    }
+    onClick(evt) {
+        let currId = evt.target.getAttribute('data-mui-controls');
+        this.currPos = this.tabList.indexOf(currId);
+    }
+    attachEvents() {
+        for(let i=0; i<this.tabElements.length; i++) {
+            this.tabElements[i].addEventListener('click', (evt) => this.onClick(evt));
+        }
+    }
+    activateNext() {
+        this.currPos = (this.currPos + 1) % this.tabElements.length;
+        let nextPosId = this.tabList[this.currPos];
+        mui.tabs.activate(nextPosId);
+    }
+}
+
+class ControlsMenu {
+    constructor(id) {
+        this.container = document.getElementById(id);
+        this.menuElements = this.container.querySelectorAll('li a[data-toggle="tab"]');
+        this.prepareIdList();
+        this.attachEvents();
+    }
+    prepareIdList() {
+        this.menuList = [];
+        for(let i=0; i<this.menuElements.length; i++) {
+            let tabId = this.menuElements[i].getAttribute('data-controls');
+            this.menuList.push(tabId);
+        }
+    }
+    onClick(evt) {
+        let currId = evt.target.getAttribute('data-controls');
+        mui.tabs.activate(currId);
+    }
+    attachEvents() {
+        for(let i=0; i<this.menuElements.length; i++) {
+            this.menuElements[i].addEventListener('click', (evt) => this.onClick(evt));
+        }
     }
 }

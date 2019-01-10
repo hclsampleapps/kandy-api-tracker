@@ -143,3 +143,37 @@ footer a {
     cursor: pointer;
 }
 
+.more-menu {
+    display: none;
+}
+
+.tab-pane-head {
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    .mui-tabs__bar {
+        display: none;
+    }
+
+    .mui-tabs__bar.mui-tabs__bar--justified {
+        display: none;
+        table-layout: unset;
+    }
+
+    .more-menu {
+        display: block;
+        position: relative;
+        float: right;
+    }
+
+    .mui-dropdown__menu {
+        right: 0;
+        left: auto;
+    }
+
+    .tab-pane-head {
+        visibility: visible;
+        margin: 15px 0 10px 0;
+    }
+}
