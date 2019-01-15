@@ -1,6 +1,8 @@
 // @file controls.js
 class Controls {
-    constructor() { }
+    constructor() { 
+        this.storageId = 'KandyAPITrackerPreferences';
+    }
     next(evt) {
         this.controlsTab.activateNext();
     }
@@ -51,19 +53,19 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
-        if (typeof (Storage) !== "undefined") {
-            localStorage.setItem("alldata", JSON.stringify(Preferences));
+        if (!!window.localStorage) {
+            window.localStorage.setItem(this.storageId, JSON.stringify(Preferences));
         } else {
-            console.log("Sorry, your browser does not support Web Storage...");
+            console.log("Web Storage is not supported on this browser.");
         }
         this.render();
     }
     defaultState() {
-        if (typeof (Storage) !== "undefined") {
-            if (localStorage.getItem("alldata") !== "undefined")
-                Preferences = JSON.parse(localStorage.getItem("alldata"));
+        if (!!window.localStorage) {
+            if (!!window.localStorage.getItem(this.storageId))
+                Preferences = JSON.parse(window.localStorage.getItem(this.storageId));
         } else {
-            console.log("Sorry, your browser does not support Web Storage...");
+            console.log("Web Storage is not supported on this browser.");
         }
         this.enableSMS.checked = Preferences.enableSMS;
         this.enableChat.checked = Preferences.enableChat;
