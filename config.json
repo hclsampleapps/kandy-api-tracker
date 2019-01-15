@@ -16,11 +16,13 @@
 		"files": [
 			"utility.js",
 			"preferences.js",
+			"toast.js",
 			"status.js",
 			"xhrlog.js",
 			"extract.js",
 			"controls/controlstab.js",
 			"controls/controlsmenu.js",
+			"controls/controlsdepot.js",
 			"controls/controls.js",
 			"appbar.js",
 			"usertoken.js",

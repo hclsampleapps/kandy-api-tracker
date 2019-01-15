@@ -1,7 +1,7 @@
 // @file controls.js
 class Controls {
-    constructor() { 
-        this.storageId = 'KandyAPITrackerPreferences';
+    constructor() {
+        this.controlsDepot = new ControlsDepot('KandyAPITrackerPreferences');
     }
     next(evt) {
         this.controlsTab.activateNext();
@@ -27,7 +27,6 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.updatecontact) : Effect.hide(this.tr.updatecontact);
     }
     save(evt) {
-
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
         Preferences.enablePresence = !!this.enablePresence.checked;
@@ -53,20 +52,11 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
-        if (!!window.localStorage) {
-            window.localStorage.setItem(this.storageId, JSON.stringify(Preferences));
-        } else {
-            console.log("Web Storage is not supported on this browser.");
-        }
+        
+        this.controlsDepot.save();
         this.render();
     }
-    defaultState() {
-        if (!!window.localStorage) {
-            if (!!window.localStorage.getItem(this.storageId))
-                Preferences = JSON.parse(window.localStorage.getItem(this.storageId));
-        } else {
-            console.log("Web Storage is not supported on this browser.");
-        }
+    onDefaultState() {
         this.enableSMS.checked = Preferences.enableSMS;
         this.enableChat.checked = Preferences.enableChat;
         this.enablePresence.checked = Preferences.enablePresence;
@@ -94,6 +84,10 @@ class Controls {
         this.searchfirstname.value = Preferences.searchfirstname;
 
         this.render();
+    }
+    defaultState() {
+        this.controlsDepot.onLoad = this.onDefaultState.bind(this);
+        this.controlsDepot.load();
     }
     attachEvents() {
         this.activateNext.addEventListener('click', (evt) => this.next(evt));
