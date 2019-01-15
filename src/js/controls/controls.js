@@ -1,6 +1,6 @@
 // @file controls.js
 class Controls {
-    constructor() {}
+    constructor() { }
     next(evt) {
         this.controlsTab.activateNext();
     }
@@ -8,9 +8,9 @@ class Controls {
         Effect.show(this.tr.token);
         Effect.show(this.tr.channel);
         Effect.show(this.tr.websocket);
-        
+
         Preferences.enableSMS ? Effect.show(this.tr.outboundsms) : Effect.hide(this.tr.outboundsms);
-        
+
         Preferences.enableChat ? Effect.show(this.tr.subscription) : Effect.hide(this.tr.subscription);
         Preferences.enableChat ? Effect.show(this.tr.chat) : Effect.hide(this.tr.chat);
 
@@ -25,6 +25,7 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.updatecontact) : Effect.hide(this.tr.updatecontact);
     }
     save(evt) {
+
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
         Preferences.enablePresence = !!this.enablePresence.checked;
@@ -50,10 +51,20 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
-
+        if (typeof (Storage) !== "undefined") {
+            localStorage.setItem("alldata", JSON.stringify(Preferences));
+        } else {
+            console.log("Sorry, your browser does not support Web Storage...");
+        }
         this.render();
     }
     defaultState() {
+        if (typeof (Storage) !== "undefined") {
+            if (localStorage.getItem("alldata") !== "undefined")
+                Preferences = JSON.parse(localStorage.getItem("alldata"));
+        } else {
+            console.log("Sorry, your browser does not support Web Storage...");
+        }
         this.enableSMS.checked = Preferences.enableSMS;
         this.enableChat.checked = Preferences.enableChat;
         this.enablePresence.checked = Preferences.enablePresence;
