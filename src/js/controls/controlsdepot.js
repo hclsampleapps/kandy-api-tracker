@@ -8,36 +8,48 @@ class ControlsDepot {
         this.proceed = fn;
     }
     onLoadInChrome(result) {
-        if (!!result && this.storageId in result) {
-            Preferences = JSON.parse(result[this.storageId]); 
+        if (!!result) {
+            if (this.storageId in result) {
+                Preferences = JSON.parse(result[this.storageId]);
+                this.proceed();
+            } else {
+                this.toast.show("Preferences are not saved yet in chrome storage");
+                this.proceed();
+            }
+        } else {
+            this.toast.show("Failed to load Preferences from chrome storage!");
             this.proceed();
         }
     }
     load() {
-        if (window.chrome && chrome.app && chrome.app.runtime) {
-            chrome.storage.local.get([this.storageId], this.onLoadInChrome.bind(this));
-        } else if (!!window.localStorage) {
+        if (!!window.localStorage) {
             if (this.storageId in window.localStorage) {
-                Preferences = JSON.parse(window.localStorage.getItem(this.storageId)); 
+                Preferences = JSON.parse(window.localStorage.getItem(this.storageId));
+                this.proceed();
+            } else {
+                this.toast.show("Preferences are not saved yet in browser storage");
                 this.proceed();
             }
+        } else if (!!window.chrome && !!window.chrome.storage) {
+            chrome.storage.local.get([this.storageId], this.onLoadInChrome.bind(this));
         } else {
-            this.toast.show("Error: Can't be saved!");
+            this.toast.show("Failed to load Preferences from browser storage!");
+            this.proceed();
         }
     }
     onSaveInChrome() {
-        this.toast.show('Preferences saved!');
+        this.toast.show('Preferences saved in chrome storage');
     }
     save() {
-        if (window.chrome && chrome.app && chrome.app.runtime) {
+        if (!!window.localStorage) {
+            window.localStorage.setItem(this.storageId, JSON.stringify(Preferences));
+            this.toast.show('Preferences saved in browser storage');
+        } else if (!!window.chrome && !!window.chrome.storage) {
             let cargo = {};
             cargo[this.storageId] = JSON.stringify(Preferences);
             chrome.storage.local.set(cargo, this.onSaveInChrome.bind(this));
-        } else if (!!window.localStorage) {
-            window.localStorage.setItem(this.storageId, JSON.stringify(Preferences));
-            this.toast.show('Preferences saved!');
         } else {
-            this.toast.show("Error: Can't be saved!");
+            this.toast.show("Failed to save in browser storage!");
         }
     }
 }
