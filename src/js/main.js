@@ -16,7 +16,7 @@ whenReady(function() {
     var contacts = new Contacts();
     var searchcontacts = new SearchContact();
     var updatecontact = new UpdateContact();
-    var webrtcSubscriptionStatus = new WebrtcSubscription(cpaasUrl);
+    var webrtcSubscriptionStatus = new WebrtcSubscription();
 
     var controls = new Controls();
     controls.initialize();
