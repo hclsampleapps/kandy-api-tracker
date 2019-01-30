@@ -1,6 +1,8 @@
 // @file appbar.js
 class AppBar {
-    constructor() {}
+    constructor() {        
+        this.toast = new Toast();
+    }
     openHome(evt) {
         evt.preventDefault();
         this.defaultState();
@@ -13,24 +15,27 @@ class AppBar {
         Effect.hide(this.viewHome);
     }
     set execute(fn) {
-        this.runMonitor = fn;
+        this.proceed = fn;
     }
     startMonitor(evt) {
         evt.preventDefault();
         this.defaultState();
         Preferences.toMonitor = true;
-        this.runMonitor();
+        this.proceed();
         Effect.hide(this.menuPlay);
         Effect.show(this.menuPause);
+        this.toast.show('Monitoring started');
     }
     stopMonitor(evt) {
         evt.preventDefault();
         Preferences.toMonitor = false;
+        this.toast.show('Monitoring stopped');
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
         Effect.hide(this.menuPause);
         Preferences.toMonitor = false;
+        this.toast.show('Monitoring over');
     }
     defaultState() {
         Effect.show(this.menuSetting);

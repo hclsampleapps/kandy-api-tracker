@@ -1,19 +1,19 @@
 {
     "name": "Kandy API Tracker",
+    "version": "1.0",
     "description": "It tracks, monitor & report the API health status of kandy.io",
-    "version": "0.1",
-    "manifest_version": 2,
+    "permissions": ["storage", "unlimitedStorage"],
     "app": {
         "background": {
-            "scripts": ["background.js"]
+            "scripts": ["background.js"],
+            "persistent": false
         }
     },
     "icons": {
         "16": "img/icon-16.png",
+        "32": "img/icon-32.png",
+        "48": "img/icon-48.png",
         "128": "img/icon-120.png"
     },
-    "permissions": [
-        "storage",
-        "unlimitedStorage"
-    ]
+    "manifest_version": 2
 }

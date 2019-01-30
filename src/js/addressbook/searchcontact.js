@@ -1,32 +1,37 @@
-// @file userchannel.js
-class UserChannel {
+// @file searchcontact.js
+class SearchContact {
     constructor() {
-        this.container = document.querySelector("#channel");
+        this.container = document.querySelector("#searchcontact");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
-    get channelData() {
-        return this.channel;
+    set skipTo(fn) {
+        this.skip = fn;
     }
     onSuccess(data) {
         this.status.success();
-        this.channel = data;
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
     onFailure() {
         this.status.failure();
+        this.skip();
     }
     onError() {
         this.status.error();
+        this.skip();
     }
-    request(url, accessToken, cargo) {
+    destroy() {
+        this.status.failure();
+        this.xhrLog.destroy();
+    }
+    request(url, accessToken) {
         var self = this;
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
@@ -38,27 +43,20 @@ class UserChannel {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.timeout = 15000; // in milliseconds
         xhr.ontimeout = function() {
-            console.log('UserChannel, timeout');
+            console.log('SearchContact, timeout');
             self.onError();
         }
-        xhr.send(JSON.stringify(cargo));
+        xhr.send();
     }
-    destroy() {
-        this.status.failure();
-        this.xhrLog.destroy();
-    }
-    initialize(cpaasUrl, idToken, accessToken) {
-        console.log('UserChannel, initialize');
+    initialize(cpaasUrl, idToken, accessToken, searchfirstname) {
+        console.log('SearchContact, initialize');
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
-        let cargo = {
-            notificationChannel: {
-                channelLifetime: 3600,
-                channelType: "Websockets",
-                clientCorrelator: "sampleCorrelator",
-                'x-connCheckRole': "client"
-            }
-        };
-        this.request(url, accessToken, cargo);
+        let url = "[0]directory/v1/[1]/default/search?order=asc&sortBy=name&userName=[2]".graft(
+            cpaasUrl,
+            username.preferred_username,
+            searchfirstname
+        );
+
+        this.request(url, accessToken);
     }
 }

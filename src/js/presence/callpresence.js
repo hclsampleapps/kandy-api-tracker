@@ -1,7 +1,6 @@
 // @file callpresence.js
 class CallPresence {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#callpresence");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -13,9 +12,8 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        
         let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-        console.log("resourceURL======"+code);
+        console.log("CallPresence, connectorCode, resourceURL:", code);
         return code.substr(code.lastIndexOf('/') + 1);
     }
     onSuccess(data) {
@@ -25,11 +23,16 @@ class CallPresence {
 
         this.proceed(data);
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onFailure() {
         this.status.failure();
+        this.skip();
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -39,7 +42,7 @@ class CallPresence {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -48,13 +51,18 @@ class CallPresence {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.ontimeout = function() {
+            console.log("timeout");
+            self.onError();
+        }
         xhr.send();
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
+        let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
         this.request(url, accessToken);
     }
-  
+
 }

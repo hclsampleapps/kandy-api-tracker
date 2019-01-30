@@ -143,7 +143,7 @@ var Convert = {
 String.prototype.autofit = function() {
     var formatted = this,
         list = arguments[0];
-    for( var prop in list ) {
+    for (var prop in list) {
         formatted = formatted.replace(new RegExp('\\[' + prop + '\\]', 'g'), list[prop]);
     }
     return formatted;
@@ -151,7 +151,7 @@ String.prototype.autofit = function() {
 
 String.prototype.graft = function() {
     var formatted = this;
-    for( var arg in arguments ) {
+    for (var arg in arguments) {
         formatted = formatted.replace("[" + arg + "]", arguments[arg]);
     }
     return formatted;

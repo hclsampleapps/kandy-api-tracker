@@ -1,7 +1,6 @@
 // @file sendmessage.js
 class SendMessage {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#chat");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -39,17 +38,29 @@ class SendMessage {
             else
                 self.onFailure();
         };
-        xhr.onerror = self.onError();
+        xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function() {
+            console.log('SendMessage, timeout');
+            self.onError();
+        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl, idToken, accessToken, chatreceiverid, chattext) {
         console.log('SendMessage, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/oneToOne/" +
-            Preferences.chatreceiverid + "/adhoc/messages";
-        var cargo = { "chatMessage": { "text": Preferences.chattext } };
+        let url = "[0]chat/v1/[1]/oneToOne/[2]/adhoc/messages".graft(
+            cpaasUrl,
+            username.preferred_username,
+            chatreceiverid
+        );
+        var cargo = {
+            "chatMessage": {
+                "text": chattext
+            }
+        };
         this.request(url, accessToken, cargo);
     }
 }

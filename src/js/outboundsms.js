@@ -1,7 +1,6 @@
 // @file outboundsms.js
 class OutBoundSMS {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#outboundsms");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -23,6 +22,7 @@ class OutBoundSMS {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -41,18 +41,23 @@ class OutBoundSMS {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
+        xhr.ontimeout = function() {
+            console.log("timeout");
+            self.onError();
+        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken) {
+    initialize(cpaasUrl, idToken, accessToken, smstext, receivernumber, sendernumber) {
         console.log('OutBoundSMS, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "smsmessaging/v1/" + username.preferred_username + "/outbound/" + Preferences.sendernumber + "/requests";
+        let url = cpaasUrl + "smsmessaging/v1/" + username.preferred_username + "/outbound/" + sendernumber + "/requests";
         let cargo = {
             "outboundSMSMessageRequest": {
-                "address":[Preferences.receivernumber],
+                "address": [receivernumber],
                 "clientCorrelator": username.preferred_username,
                 "outboundSMSTextMessage": {
-                    "message": Preferences.smstext
+                    "message": smstext
                 }
             }
         }

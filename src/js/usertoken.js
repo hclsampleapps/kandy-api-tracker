@@ -1,11 +1,6 @@
 // @file usertoken.js
 class UserToken {
-    constructor(cpaasUrl, project, username, password) {
-        this.cpaasUrl = cpaasUrl;
-        this.project = project;
-        this.username = username;
-        this.password = password;
-
+    constructor() {
         this.container = document.querySelector("#token");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -40,21 +35,26 @@ class UserToken {
         };
         xhr.onerror = this.onError;
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function() {
+            console.log('UserToken, timeout');
+            self.onError();
+        }
         xhr.send(Convert.jsonToUri(cargo));
     }
     destroy() {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize() {
+    initialize(cpaasUrl, projectName, username, password) {
         console.log('UserToken, initialize');
         let cargo = {
-            client_id: encodeURIComponent(this.project.trim()),
-            username: this.username,
-            password: this.password,
+            client_id: encodeURIComponent(projectName),
+            username: username,
+            password: password,
             grant_type: 'password',
             scope: 'openid'
         };
-        this.request(this.cpaasUrl + "auth/v1/token", cargo);
+        this.request(cpaasUrl + "auth/v1/token", cargo);
     }
 }

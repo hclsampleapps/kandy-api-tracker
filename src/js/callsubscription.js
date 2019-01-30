@@ -1,7 +1,6 @@
 // @file callsubsciption.js
 class CallSubscription {
-    constructor(cpaasUrl) {
-        this.cpaasUrl = cpaasUrl;
+    constructor() {
         this.container = document.querySelector("#subscription");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
@@ -23,6 +22,7 @@ class CallSubscription {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -41,12 +41,17 @@ class CallSubscription {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function() {
+            console.log('CallSubscription, timeout');
+            self.onError();
+        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(idToken, accessToken, callbackURL) {
+    initialize(cpaasUrl, idToken, accessToken, callbackURL) {
         console.log('CallSubscription, initialize');
         let username = Extract.username(idToken);
-        let url = this.cpaasUrl + "chat/v1/" + username.preferred_username + "/subscriptions";
+        let url = cpaasUrl + "chat/v1/" + username.preferred_username + "/subscriptions";
         let cargo = {
             "chatNotificationSubscription": {
                 "callbackReference": { "notifyURL": callbackURL },
@@ -55,5 +60,4 @@ class CallSubscription {
         };
         this.request(url, accessToken, cargo);
     }
-
 }
