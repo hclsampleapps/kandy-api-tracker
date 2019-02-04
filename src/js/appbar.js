@@ -29,7 +29,9 @@ class AppBar {
     stopMonitor(evt) {
         evt.preventDefault();
         Preferences.toMonitor = false;
-        this.toast.show('Monitoring stopped');
+        Effect.hide(this.menuPause);
+        Effect.show(this.menuPlay);
+        this.toast.show('Monitoring stopped');  
     }
     abortMonitor() {
         Effect.show(this.menuPlay);

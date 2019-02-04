@@ -128,6 +128,7 @@
                     <li><a data-toggle="tab" data-controls="pc-pane-3">Chat</a></li>
                     <li><a data-toggle="tab" data-controls="pc-pane-4">Presence</a></li>
                     <li><a data-toggle="tab" data-controls="pc-pane-5">Address-book</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-6">Voice</a></li>
                 </ul>
             </div>
             <p class="mui--text-title">Preferences &amp; Controls</p>
@@ -137,6 +138,7 @@
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-3">Chat</a></li>
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-4">Presence</a></li>
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-5">Address-book</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-6">Voice</a></li>
             </ul>
             <form>
                 <div class="mui-tabs__pane mui--is-active" id="pc-pane-1">
@@ -255,6 +257,23 @@
                         <label>
                             <input type="checkbox" id="enableaddressbook">
                             Enable Address-book
+                        </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-6">
+                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="setstatuspresence">
+                        <label>Set status presence</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="presentityUserId">
+                        <label>Presentity user ID</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablepresence">
+                            Enable Presence
                         </label>
                     </div>
                 </div>
