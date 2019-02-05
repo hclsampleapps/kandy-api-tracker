@@ -40,6 +40,8 @@
 			"websocketconnection.js",
 			"userchannel.js",
 			"webrtc/webrtcsubscription.js",
+			"calls/sdpgenerate.js",
+			"calls/voicecall.js",
 			"main.js"
 		],
 		"consolidate": "main.js"

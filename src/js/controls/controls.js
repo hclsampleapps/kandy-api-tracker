@@ -25,12 +25,16 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.contactstatus) : Effect.hide(this.tr.contactstatus);
         Preferences.enableAddressBook ? Effect.show(this.tr.searchcontact) : Effect.hide(this.tr.searchcontact);
         Preferences.enableAddressBook ? Effect.show(this.tr.updatecontact) : Effect.hide(this.tr.updatecontact);
+
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcSubscription) : Effect.hide(this.tr.webrtcSubscription);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcVoiceCall) : Effect.hide(this.tr.webrtcVoiceCall);
     }
     save(evt) {
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
         Preferences.enablePresence = !!this.enablePresence.checked;
         Preferences.enableAddressBook = !!this.enableAddressBook.checked;
+        Preferences.enableVoice = !!this.enableVoice.checked;
 
         Preferences.baseUrl = this.baseUrl.value;
         Preferences.projectName = this.projectName.value;
@@ -61,6 +65,7 @@ class Controls {
         this.enableChat.checked = Preferences.enableChat;
         this.enablePresence.checked = Preferences.enablePresence;
         this.enableAddressBook.checked = Preferences.enableAddressBook;
+        this.enableVoice.checked = Preferences.enableVoice;
 
         this.baseUrl.value = Preferences.baseUrl;
         this.projectName.value = Preferences.projectName;
@@ -112,11 +117,14 @@ class Controls {
         this.tr.contactstatus = document.getElementById('contactstatus');
         this.tr.searchcontact = document.getElementById('searchcontact');
         this.tr.updatecontact = document.getElementById('updatecontact');
+        this.tr.webrtcSubscription = document.getElementById('webrtcSubscription');
+        this.tr.webrtcVoiceCall = document.getElementById('webrtcVoiceCall');
 
         this.enableSMS = document.getElementById('enablesms');
         this.enableChat = document.getElementById('enablechat');
         this.enablePresence = document.getElementById('enablepresence');
         this.enableAddressBook = document.getElementById('enableaddressbook');
+        this.enableVoice = document.getElementById('enablevoice');
 
         this.baseUrl = document.getElementById('baseurl');
         this.projectName = document.getElementById('projectname');

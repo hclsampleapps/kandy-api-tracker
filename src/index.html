@@ -110,8 +110,12 @@
                         <td>Update Contact</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="webrtcSubscriptionStatus">
+                    <tr id="webrtcSubscription">
                         <td>Webrtc Subscription</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="webrtcVoiceCall">
+                        <td>Voice Call</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
                 </tbody>
@@ -261,19 +265,15 @@
                     </div>
                 </div>
                 <div class="mui-tabs__pane" id="pc-pane-6">
-                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui--text-subhead tab-pane-head">Voice</div>
                     <div class="mui-textfield">
-                        <input type="text" id="setstatuspresence">
-                        <label>Set status presence</label>
-                    </div>
-                    <div class="mui-textfield">
-                        <input type="text" id="presentityUserId">
-                        <label>Presentity user ID</label>
+                        <input type="text">
+                        <label>Label</label>
                     </div>
                     <div class="mui-checkbox">
                         <label>
-                            <input type="checkbox" id="enablepresence">
-                            Enable Presence
+                            <input type="checkbox" id="enablevoice">
+                            Enable Voice
                         </label>
                     </div>
                 </div>

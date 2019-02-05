@@ -1,6 +1,7 @@
-class WebrtcSubscription {
+// @file voicecall.js
+class VoiceCall {
     constructor() {
-        this.container = document.querySelector("#webrtcSubscription");
+        this.container = document.querySelector("#webrtcVoiceCall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -41,16 +42,16 @@ class WebrtcSubscription {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, callbackURL) {
-        console.log('CallSubscription, initialize');
-        console.log("idToken",idToken);
+    initialize(cpaasUrl,idToken, accessToken, callbackURL, sdp) {
+        console.log('Voice Call, initialize');
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/subscriptions";
+        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/sessions";
         let cargo = {
-           "wrtcsNotificationSubscription": {
-             "callbackReference": {
-              "notifyURL": callbackURL
-             },
+           "wrtcsSession": {
+            "tParticipantAddress": "sip:ashish07@idx4.com",   
+            "offer": {
+                "sdp": sdp
+            },
              "clientCorrelator": username.preferred_username
            }
         };
