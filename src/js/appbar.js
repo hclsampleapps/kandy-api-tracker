@@ -17,10 +17,20 @@ class AppBar {
     set execute(fn) {
         this.proceed = fn;
     }
+
+    set stopStream(fn){
+        this.stopCall = fn;
+    }
+
+    set startStream(fn){
+        this.startCall = fn;
+    }
+
     startMonitor(evt) {
         evt.preventDefault();
         this.defaultState();
         Preferences.toMonitor = true;
+        this.startCall();
         this.proceed();
         Effect.hide(this.menuPlay);
         Effect.show(this.menuPause);
@@ -32,12 +42,15 @@ class AppBar {
         Effect.hide(this.menuPause);
         Effect.show(this.menuPlay);
         this.toast.show('Monitoring stopped');  
+        this.stopCall();
+        
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
         Effect.hide(this.menuPause);
         Preferences.toMonitor = false;
         this.toast.show('Monitoring over');
+        this.stopCall();
     }
     defaultState() {
         Effect.show(this.menuSetting);

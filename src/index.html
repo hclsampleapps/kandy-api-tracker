@@ -118,6 +118,11 @@
                         <td>Voice Call</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
+                    <tr id="webrtcEndCall">
+                        <td>End Call</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -267,8 +272,8 @@
                 <div class="mui-tabs__pane" id="pc-pane-6">
                     <div class="mui--text-subhead tab-pane-head">Voice</div>
                     <div class="mui-textfield">
-                        <input type="text">
-                        <label>Label</label>
+                        <input type="text" id="callToUser">
+                        <label>Call To User</label>
                     </div>
                     <div class="mui-checkbox">
                         <label>

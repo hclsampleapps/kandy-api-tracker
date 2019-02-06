@@ -25,5 +25,6 @@ var Preferences = {
     businessPhoneNumber: "business",
     buddy: "true",
     contactId: "ashish0090",
-    searchfirstname: "ashish"
+    searchfirstname: "ashish",
+    callToUser: "ashish08@idx4.com"
 };

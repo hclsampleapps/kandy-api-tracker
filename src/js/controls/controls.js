@@ -56,7 +56,8 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
-        
+        Preferences.callToUser = this.callToUser.value;
+
         this.controlsDepot.save();
         this.render();
     }
@@ -87,6 +88,7 @@ class Controls {
         this.buddy.value = Preferences.buddy;
         this.contactId.value = Preferences.contactId;
         this.searchfirstname.value = Preferences.searchfirstname;
+        this.callToUser.value = Preferences.callToUser;
 
         this.render();
     }
@@ -146,6 +148,7 @@ class Controls {
         this.buddy = document.getElementById('buddy');
         this.contactId = document.getElementById('contactId');
         this.searchfirstname = document.getElementById('searchfirstname');
+        this.callToUser = document.getElementById('callToUser');
 
         this.activateNext = document.getElementById('activatenext');
         this.savePreference = document.getElementById('savepreference');

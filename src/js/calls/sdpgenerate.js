@@ -9,8 +9,9 @@ class SdpGenerate {
             }]
         };
         this.pc = "";
+        this.streamReference = null;
     }
-    askPermission() {
+    startStream() {
         navigator.getUserMedia({
                 audio: true,
                 video: true
@@ -19,8 +20,22 @@ class SdpGenerate {
             (err) => this.errorCallback(err)
         );
     }
+
+    stopStream() {
+        console.log("Stop Stream");
+        if (!this.streamReference) return;
+        this.streamReference.getAudioTracks().forEach(function (track) {
+            track.stop();
+        });
+        this.streamReference.getVideoTracks().forEach(function (track) {
+            track.stop();
+        });
+        this.streamReference = null;
+    }
+
     dumpOffer(stream) {
         console.log("Stream ", stream);
+        this.streamReference = stream;
         this.pc.addStream(stream);
         this.pc.createOffer((offer) => this.rtpOffer(offer), (err) => this.errorCallback(err));
     };
