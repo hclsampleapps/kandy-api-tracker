@@ -1,7 +1,7 @@
-// @file voicecall.js
-class VoiceCall {
+// @file answercall.js
+class AnswerCall {
     constructor() {
-        this.container = document.querySelector("#webrtcVoiceCall");
+        this.container = document.querySelector("#webrtcAnswerCall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -13,26 +13,13 @@ class VoiceCall {
         this.skip = fn;
     }
 
-    get getCallResponse(){
-        return this.makeCallResponse;
-    }
-
     onSuccess(data) {
         this.makeCallResponse = data;
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-    onCallEndSuccess(data) {
-        this.status.success();
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceedEnd(data);
-    }
-    onSuccessAnswerCall(data) {
-        this.status.success();
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceedAnswer(data);
-    }
+   
     onFailure() {
         this.status.failure();
         this.skip();
@@ -47,9 +34,9 @@ class VoiceCall {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
+        xhr.open("PUT", url, true);
         xhr.onload = function () {
-            if (this.status >= 200 && this.status < 400)
+            if (this.status >= 200 && this.status < 401)
                 self.onSuccess(JSON.parse(this.responseText));
             else
                 self.onFailure();
@@ -60,20 +47,19 @@ class VoiceCall {
         xhr.send(JSON.stringify(cargo));
     }
 
-    initialize(cpaasUrl,idToken, accessToken, callbackURL, sdp) {
-        console.log('Voice Call, initialize');
+    
+    initialize(cpaasUrl,idToken, accessToken,resourceUrl,sdp){
+        console.log('Answer Call, initialize');
+       
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/sessions";
+        let url = cpaasUrl + resourceUrl + "/answer";
         let cargo = {
-           "wrtcsSession": {
-            //"tParticipantAddress": "sip:ashish08@idx4.com",   Preferences.callToUser
-            "tParticipantAddress": Preferences.callToUser,   
-            "offer": {
-                "sdp": sdp
-            },
-             "clientCorrelator": username.preferred_username
-           }
-        };
+            "wrtcsAnswer": {
+              "sdp": sdp,
+              "clientCorrelator": username.preferred_username
+            }
+         };
+
         this.request(url, accessToken, cargo);
     }
 }

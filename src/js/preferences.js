@@ -26,5 +26,5 @@ var Preferences = {
     buddy: "true",
     contactId: "ashish0090",
     searchfirstname: "ashish",
-    callToUser: "ashish08@idx4.com"
+    callToUser: "ashish07@hcl107.mpb0qlfe.att.com"
 };

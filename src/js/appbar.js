@@ -1,6 +1,6 @@
 // @file appbar.js
 class AppBar {
-    constructor() {        
+    constructor() {
         this.toast = new Toast();
     }
     openHome(evt) {
@@ -18,11 +18,11 @@ class AppBar {
         this.proceed = fn;
     }
 
-    set stopStream(fn){
+    set stopStream(fn) {
         this.stopCall = fn;
     }
 
-    set startStream(fn){
+    set startStream(fn) {
         this.startCall = fn;
     }
 
@@ -30,7 +30,9 @@ class AppBar {
         evt.preventDefault();
         this.defaultState();
         Preferences.toMonitor = true;
-        this.startCall();
+        if (Preferences.enableVoice) {
+            this.startCall();
+        }
         this.proceed();
         Effect.hide(this.menuPlay);
         Effect.show(this.menuPause);
@@ -41,9 +43,9 @@ class AppBar {
         Preferences.toMonitor = false;
         Effect.hide(this.menuPause);
         Effect.show(this.menuPlay);
-        this.toast.show('Monitoring stopped');  
+        this.toast.show('Monitoring stopped');
         this.stopCall();
-        
+
     }
     abortMonitor() {
         Effect.show(this.menuPlay);

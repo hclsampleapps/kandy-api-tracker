@@ -42,6 +42,8 @@
 			"webrtc/webrtcsubscription.js",
 			"calls/sdpgenerate.js",
 			"calls/voicecall.js",
+			"calls/answercall.js",
+			"calls/endcall.js",
 			"main.js"
 		],
 		"consolidate": "main.js"

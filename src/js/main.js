@@ -22,6 +22,8 @@ whenReady(function () {
     //sdpGenerate.startStream();
 
     var voiceCall = new VoiceCall();
+    var endCall = new EndCall();
+    var answerCall = new AnswerCall();
 
     var controls = new Controls();
     controls.initialize();
@@ -50,9 +52,33 @@ whenReady(function () {
         searchContact.destroy();
         updateContact.destroy();
         webrtcSubscription.destroy();
+        voiceCall.destroy();
+        endCall.destroy();
+        answerCall.destroy();
 
-        voiceCall.proceedToEndCall = function (data) {
-            console.log('Voice End Call Status:' + JSON.stringify(data));
+        answerCall.proceedTo = function (data) {
+            console.log('Answer Call Status:' + JSON.stringify(data));
+            appBar.abortMonitor();
+        }
+
+        answerCall.skipTo = function(){
+            console.log('Answer Call skipped');
+            appBar.abortMonitor();
+        }
+
+        endCall.proceedTo = function (data) {
+            console.log('End Call Status:' + JSON.stringify(data));
+            let resourceUrl = voiceCall.getCallResponse.wrtcsSession.resourceURL;
+            let sdp = voiceCall.getCallResponse.wrtcsSession.offer.sdp;
+            let url = 'https://' + Preferences.baseUrl;
+            (Preferences.toMonitor) ? answerCall.initialize(url,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token, resourceUrl,sdp
+            ): appBar.abortMonitor();
+        }
+
+        endCall.skipTo = function(){
+            console.log('End Call skipped');
             appBar.abortMonitor();
         }
 
@@ -60,7 +86,7 @@ whenReady(function () {
             console.log('VoiceCallStatus:',data);
             let resourceUrl = data.wrtcsSession.resourceURL;
             let url = 'https://' + Preferences.baseUrl;
-            (Preferences.toMonitor) ? voiceCall.endCall(url,
+            (Preferences.toMonitor) ? endCall.initialize(url,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, resourceUrl
             ): appBar.abortMonitor();
@@ -72,7 +98,7 @@ whenReady(function () {
 
         webrtcSubscription.proceedTo = function (data) {
             console.log('webrtcSubscription:', data);
-            (Preferences.toMonitor) ? voiceCall.initialize(cpaasUrl,
+            (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 userChannel.channel.notificationChannel.callbackURL,
@@ -81,7 +107,7 @@ whenReady(function () {
         };
         webrtcSubscription.skipTo = function () {
             console.log('webrtcSubscription: skipped');
-            (Preferences.toMonitor) ? voiceCall.initialize(cpaasUrl,
+            (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 userChannel.channel.notificationChannel.callbackURL,
