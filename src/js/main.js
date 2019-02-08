@@ -24,6 +24,7 @@ whenReady(function () {
     var voiceCall = new VoiceCall();
     var endCall = new EndCall();
     var answerCall = new AnswerCall();
+    var holdCall = new HoldCall();
 
     var controls = new Controls();
     controls.initialize();
@@ -56,9 +57,25 @@ whenReady(function () {
         endCall.destroy();
         answerCall.destroy();
 
-        answerCall.proceedTo = function (data) {
-            console.log('Answer Call Status:' + JSON.stringify(data));
+        holdCall.proceedTo = function (data) {
+            console.log('Hold Call Status:' + JSON.stringify(data));
+            appBar.abortMonitor(); 
+        }
+
+        holdCall.skipTo = function(){
+            console.log('Hold Call skipped');
             appBar.abortMonitor();
+        }
+
+        answerCall.proceedTo = function (data) {
+            console.log('End Call Status:' + JSON.stringify(data));
+            let resourceUrl = voiceCall.getCallResponse.wrtcsSession.resourceURL;
+            let sdp = sdpGenerate.sdpData;
+            let url = 'https://' + Preferences.baseUrl;
+            (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token, resourceUrl,sdp
+            ): appBar.abortMonitor();
         }
 
         answerCall.skipTo = function(){
@@ -71,7 +88,7 @@ whenReady(function () {
             let resourceUrl = voiceCall.getCallResponse.wrtcsSession.resourceURL;
             let sdp = voiceCall.getCallResponse.wrtcsSession.offer.sdp;
             let url = 'https://' + Preferences.baseUrl;
-            (Preferences.toMonitor) ? answerCall.initialize(url,
+            (Preferences.toMonitor && Preferences.enableVoice) ? answerCall.initialize(url,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, resourceUrl,sdp
             ): appBar.abortMonitor();
@@ -86,7 +103,7 @@ whenReady(function () {
             console.log('VoiceCallStatus:',data);
             let resourceUrl = data.wrtcsSession.resourceURL;
             let url = 'https://' + Preferences.baseUrl;
-            (Preferences.toMonitor) ? endCall.initialize(url,
+            (Preferences.toMonitor && Preferences.enableVoice) ? endCall.initialize(url,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, resourceUrl
             ): appBar.abortMonitor();
@@ -150,6 +167,14 @@ whenReady(function () {
 
         contacts.proceedTo = function (data) {
             console.log('contacts:', data);
+            (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token, Preferences.searchfirstname
+            ): appBar.abortMonitor();
+        };
+
+        contacts.skipTo = function () {
+            console.log('contacts: skipped');
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.searchfirstname
@@ -317,5 +342,36 @@ function initiateAddressBook(contacts, cpaasUrl, userToken, appBar) {
         ): appBar.abortMonitor();
     } else {
         appBar.abortMonitor();
+    }
+
+    function openWebsocket(access_token) {
+        console.log("Websocket options",options);
+        let webSocketUrl = "wss://"+Preferences.baseUrl+"/cpaas/notificationchannel/v1/"+access_token;
+      // Create the websocket.
+      let ws = new WebSocket(`wss://${options.server}:${options.port}${options.url}` + (0, _utils.toQueryString)(options.params));
+    console.log("Websocket initilization",ws);
+      // Use a promise to wait for the first message from the websocket.
+      // This indicates whether the WS opened successfully or not.
+      let validateWS = new _promise2.default((resolve, reject) => {
+        const onOpen = function () {
+          ws.onopen = null;
+          ws.onerror = null;
+          resolve(ws);
+        };
+        const onError = function () {
+          ws.onopen = null;
+          ws.onerror = null;
+    
+          // TODO: Fix this?
+          /* eslint-disable-next-line prefer-promise-reject-errors */
+          reject({
+            error: true,
+            message: 'Could not connect to websocket. Received error on open.'
+          });
+        };
+        ws.onopen = onOpen;
+        ws.onerror = onError;
+      });
+      return validateWS;
     }
 }

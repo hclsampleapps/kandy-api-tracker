@@ -1,7 +1,7 @@
-// @file endcall.js
-class EndCall {
+// @file holdcall.js
+class HoldCall {
     constructor() {
-        this.container = document.querySelector("#webrtcEndCall");
+        this.container = document.querySelector("#webrtcHoldCall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -34,27 +34,32 @@ class EndCall {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", url, true);
+        xhr.open("PUT", url, true);
         xhr.onload = function () {
-            if (this.status >= 200 && this.status < 400)
-                self.onSuccess("NA");
-                //self.onSuccess(JSON.parse(this.responseText));
+            if (this.status >= 200 && this.status < 401)
+                self.onSuccess(JSON.parse(this.responseText));
             else
                 self.onFailure();
         };
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-        xhr.send();
+        xhr.send(JSON.stringify(cargo));
     }
 
     
-    initialize(cpaasUrl,idToken, accessToken,resourceUrl){
-        console.log('End Call, initialize');
-
-        let username = Extract.username(idToken);
-        let url = cpaasUrl + resourceUrl;
+    initialize(cpaasUrl,idToken, accessToken,resourceUrl,sdp){
+        console.log('Hold Call, initialize');
        
-        this.request(url, accessToken, null);
+        let username = Extract.username(idToken);
+        let url = cpaasUrl + resourceUrl + "/update";
+        let cargo = {
+            "wrtcsOffer": {
+              "sdp": sdp,
+              "clientCorrelator": username.preferred_username
+            }
+         };
+
+        this.request(url, accessToken, cargo);
     }
 }

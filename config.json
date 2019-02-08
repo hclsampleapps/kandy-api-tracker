@@ -44,6 +44,7 @@
 			"calls/voicecall.js",
 			"calls/answercall.js",
 			"calls/endcall.js",
+			"calls/holdcall.js",
 			"main.js"
 		],
 		"consolidate": "main.js"

@@ -30,6 +30,7 @@ class Controls {
         Preferences.enableVoice ? Effect.show(this.tr.webrtcVoiceCall) : Effect.hide(this.tr.webrtcVoiceCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcEndCall) : Effect.hide(this.tr.webrtcEndCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcAnswerCall) : Effect.hide(this.tr.webrtcAnswerCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcHoldCall) : Effect.hide(this.tr.webrtcHoldCall);
     }
     save(evt) {
         Preferences.enableSMS = !!this.enableSMS.checked;
@@ -125,6 +126,7 @@ class Controls {
         this.tr.webrtcVoiceCall = document.getElementById('webrtcVoiceCall');
         this.tr.webrtcEndCall = document.getElementById('webrtcEndCall');
         this.tr.webrtcAnswerCall = document.getElementById('webrtcAnswerCall');
+        this.tr.webrtcHoldCall = document.getElementById('webrtcHoldCall');
 
         this.enableSMS = document.getElementById('enablesms');
         this.enableChat = document.getElementById('enablechat');
