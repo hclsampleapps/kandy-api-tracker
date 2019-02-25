@@ -1,6 +1,7 @@
 // @file preferences.js
 var Preferences = {
     toMonitor: false,
+    prassordGrantBool:true,
     enableSMS: true,
     enableChat: true,
     enablePresence: true,
@@ -9,6 +10,8 @@ var Preferences = {
     projectName: "PUB-hcl107.MPb0QLfe", //   "PUB-My First Project",// "PUB-My Sms Project 2",
     username: "ashish07@idx4.com", // "d3smc2e0j3srxx0g",
     password: "test123", //"3E7pCDsFqY1fn4p4",
+    privatekey:  "PRIV-sample1",
+    privatesecret: "b013f26f-329a-4156-a01c-38263505f965",
     smstext: "hello",
     sendernumber: "+12074666511",
     receivernumber: "+17433333068",

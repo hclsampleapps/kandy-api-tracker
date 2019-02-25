@@ -1,6 +1,6 @@
 // @file appbar.js
 class AppBar {
-    constructor() {        
+    constructor() {
         this.toast = new Toast();
     }
     openHome(evt) {
@@ -31,13 +31,23 @@ class AppBar {
         Preferences.toMonitor = false;
         Effect.hide(this.menuPause);
         Effect.show(this.menuPlay);
-        this.toast.show('Monitoring stopped');  
+        this.toast.show('Monitoring stopped');
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
         Effect.hide(this.menuPause);
         Preferences.toMonitor = false;
         this.toast.show('Monitoring over');
+    }
+    showPasswordGrant() {
+        Preferences.prassordGrantBool = true;
+        Effect.hide(this.accountClientCredentials);
+        Effect.show(this.accountPasswordGrant);
+    }
+    showClientCredentials() {
+        Preferences.prassordGrantBool = false;
+        Effect.show(this.accountClientCredentials);
+        Effect.hide(this.accountPasswordGrant);
     }
     defaultState() {
         Effect.show(this.menuSetting);
@@ -62,6 +72,15 @@ class AppBar {
 
         this.menuPause = document.getElementById('menupause');
         this.menuPause.addEventListener('click', (evt) => this.stopMonitor(evt));
+
+        this.accountPasswordGrant = document.getElementById('accountpasswordgrant');
+        this.accountClientCredentials = document.getElementById('accountclientcredentials');
+
+        this.accountPasswordGrantradio = document.getElementById('accountpasswordgrantradio');
+        this.accountPasswordGrantradio.addEventListener('click', (evt) => this.showPasswordGrant(evt));
+
+        this.accountClientCredentialsradio = document.getElementById('accountclientcredentialsradio');
+        this.accountClientCredentialsradio.addEventListener('click', (evt) => this.showClientCredentials(evt));
 
         this.defaultState();
     }

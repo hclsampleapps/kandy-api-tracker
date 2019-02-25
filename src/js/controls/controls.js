@@ -1,5 +1,6 @@
 // @file controls.js
 class Controls {
+
     constructor() {
         this.controlsDepot = new ControlsDepot('KandyAPITrackerPreferences');
     }
@@ -33,9 +34,14 @@ class Controls {
         Preferences.enableAddressBook = !!this.enableAddressBook.checked;
 
         Preferences.baseUrl = this.baseUrl.value;
+
+        Preferences.privatekey = this.privatekey.value;
+        Preferences.privatesecret = this.privatesecret.value;
+
         Preferences.projectName = this.projectName.value;
         Preferences.username = this.username.value;
         Preferences.password = this.password.value;
+
         Preferences.smstext = this.smstext.value;
         Preferences.sendernumber = this.sendernumber.value;
         Preferences.receivernumber = this.receivernumber.value;
@@ -52,7 +58,7 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
-        
+
         this.controlsDepot.save();
         this.render();
     }
@@ -63,9 +69,14 @@ class Controls {
         this.enableAddressBook.checked = Preferences.enableAddressBook;
 
         this.baseUrl.value = Preferences.baseUrl;
+
         this.projectName.value = Preferences.projectName;
         this.username.value = Preferences.username;
         this.password.value = Preferences.password;
+
+        this.privatesecret.value = Preferences.privatesecret;
+        this.privatekey.value = Preferences.privatekey;
+
         this.smstext.value = Preferences.smstext;
         this.sendernumber.value = Preferences.sendernumber;
         this.receivernumber.value = Preferences.receivernumber;
@@ -119,9 +130,14 @@ class Controls {
         this.enableAddressBook = document.getElementById('enableaddressbook');
 
         this.baseUrl = document.getElementById('baseurl');
+
+        this.privatekey = document.getElementById('privatekey');
+        this.privatesecret = document.getElementById('privatesecret');
+
         this.projectName = document.getElementById('projectname');
         this.username = document.getElementById('username');
         this.password = document.getElementById('password');
+
         this.smstext = document.getElementById('smstext');
         this.sendernumber = document.getElementById('sendernumber');
         this.receivernumber = document.getElementById('receivernumber');
@@ -145,4 +161,5 @@ class Controls {
 
         this.defaultState();
     }
+
 }
