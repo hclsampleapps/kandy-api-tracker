@@ -52,6 +52,8 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchfirstname = this.searchfirstname.value;
+        Preferences.smsVerificationNumber = this.smsVerificationNumber.value;
+        Preferences.emailVerificationId = this.emailVerificationId.value;
         
         this.controlsDepot.save();
         this.render();
@@ -82,6 +84,8 @@ class Controls {
         this.buddy.value = Preferences.buddy;
         this.contactId.value = Preferences.contactId;
         this.searchfirstname.value = Preferences.searchfirstname;
+        this.smsVerificationNumber.value = Preferences.smsVerificationNumber;
+        this.emailVerificationId.value = Preferences.emailVerificationId;
 
         this.render();
     }
@@ -138,6 +142,8 @@ class Controls {
         this.buddy = document.getElementById('buddy');
         this.contactId = document.getElementById('contactId');
         this.searchfirstname = document.getElementById('searchfirstname');
+        this.smsVerificationNumber = document.getElementById('smsVerificationNumber');
+        this.emailVerificationId = document.getElementById('emailVerificationId');
 
         this.activateNext = document.getElementById('activatenext');
         this.savePreference = document.getElementById('savepreference');

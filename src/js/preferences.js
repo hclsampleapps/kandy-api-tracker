@@ -24,5 +24,7 @@ var Preferences = {
     businessPhoneNumber: "business",
     buddy: "true",
     contactId: "ashish0090",
-    searchfirstname: "ashish"
+    searchfirstname: "ashish",
+    smsVerificationNumber:'+19549510743',
+    emailVerificationId:'ashish07@idx4.com'
 };
