@@ -13,8 +13,9 @@ class CallPresence {
     }
     get connectorCode() {
         console.log("Call Presense response "+JSON.stringify(this.presence));
-        //let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-        let code = this.presence.presenceListCollection.resourceURL;
+        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+       // let code = this.presence.presenceListCollection.resourceURL;
+        //let code = this.presence.presenceSourceList.resourceURL;
         console.log("CallPresence, connectorCode, resourceURL:", code);
         return code.substr(code.lastIndexOf('/') + 1);
     }
@@ -40,7 +41,7 @@ class CallPresence {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken) {
+    request(url, accessToken,cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -58,13 +59,27 @@ class CallPresence {
             console.log("timeout");
             self.onError();
         }
-        xhr.send();
+        xhr.send(JSON.stringify(cargo));
     }
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
-        this.request(url, accessToken);
+
+        let cargo = {
+            "presenceList": {
+                "x-listName": "myList",
+                "presenceContact": [{
+                        "presentityUserId": "bob@myapp.com"
+                    },
+                    {
+                        "presentityUserId": "alice@myapp.com"
+                    }
+                ]
+            }
+        }
+
+        this.request(url, accessToken,cargo);
     }
 
 }

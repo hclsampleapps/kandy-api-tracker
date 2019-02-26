@@ -1,7 +1,7 @@
 // @file holdcall.js
 class HoldCall {
     constructor() {
-        this.container = document.querySelector("#webrtcHoldCall");
+        this.container = document.querySelector("#webrtcholdcall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

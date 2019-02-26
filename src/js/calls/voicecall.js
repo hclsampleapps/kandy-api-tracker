@@ -1,7 +1,7 @@
 // @file voicecall.js
 class VoiceCall {
     constructor() {
-        this.container = document.querySelector("#webrtcVoiceCall");
+        this.container = document.querySelector("#webrtcvoicecall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

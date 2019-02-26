@@ -1,6 +1,7 @@
-class WebrtcSubscription {
+// @file smssend.js
+class SmsSend {
     constructor() {
-        this.container = document.querySelector("#webrtcsubscription");
+        this.container = document.querySelector("#sendsms");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -21,6 +22,7 @@ class WebrtcSubscription {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -39,20 +41,30 @@ class WebrtcSubscription {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function () {
+            console.log('Send SMS, timeout');
+            self.onError();
+        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, callbackURL) {
-        console.log('CallSubscription, initialize');
-        console.log("idToken",idToken);
+
+    initialize(cpaasUrl, idToken, accessToken) {
+        console.log('SMS Send, initialize');
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/subscriptions";
+        let url = cpaasUrl + 'auth/v1/' + username.preferred_username + '/codes';
+        console.log('via SMS URL: ' + cpaasUrl);
         let cargo = {
-           "wrtcsNotificationSubscription": {
-             "callbackReference": {
-              "notifyURL": callbackURL
-             },
-             "clientCorrelator": username.preferred_username
-           }
+            "code": {
+                "address": [Preferences.smsVerificationNumber],
+                "method": "sms",
+                "format": {
+                    "length": 6,
+                    "type": "numeric"
+                },
+                "expiry": 120,
+                "message": "Your code is {code}"
+            }
         };
         this.request(url, accessToken, cargo);
     }

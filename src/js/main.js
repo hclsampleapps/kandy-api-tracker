@@ -1,6 +1,7 @@
 // @file main.js
 whenReady(function () {
     console.log('begin');
+    
     var userToken = new UserToken();
     var userChannel = new UserChannel();
     var webSocketConnection = new WebSocketConnection();
@@ -16,15 +17,18 @@ whenReady(function () {
     var searchContact = new SearchContact();
     var updateContact = new UpdateContact();
     var webrtcSubscription = new WebrtcSubscription();
-
-    var sdpGenerate = new SdpGenerate();
-    sdpGenerate.initialize();
-    //sdpGenerate.startStream();
-
     var voiceCall = new VoiceCall();
     var endCall = new EndCall();
     var answerCall = new AnswerCall();
     var holdCall = new HoldCall();
+    var smsSend = new SmsSend();
+    var smsVerify = new SmsVerify();
+    var emailSend = new EmailSend();
+    var emailVerify = new EmailVerify();
+
+    var sdpGenerate = new SdpGenerate();
+    sdpGenerate.initialize();
+    //sdpGenerate.startStream();
 
     var controls = new Controls();
     controls.initialize();
@@ -38,6 +42,7 @@ whenReady(function () {
     };
     appBar.execute = function () {
         var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
+        
         userToken.destroy();
         userChannel.destroy();
         webSocketConnection.destroy();
@@ -49,22 +54,82 @@ whenReady(function () {
         updateOwnStatus.destroy();
         watchUserStatus.destroy();
         adhocPresenceList.destroy();
-        contacts.destroy();
-        searchContact.destroy();
+        contacts.destroy();;
         updateContact.destroy();
         webrtcSubscription.destroy();
         voiceCall.destroy();
         endCall.destroy();
         answerCall.destroy();
+        smsSend.destroy();
+        smsVerify.destroy();
+        emailSend.destroy();
+        emailVerify.destroy();
+
+        emailVerify.proceedTo = function (data) {
+            console.log('email verify Status:' + JSON.stringify(data));
+            appBar.abortMonitor();
+        }
+
+        emailVerify.skipTo = function(){
+            console.log('email verify skipped');
+            appBar.abortMonitor();
+        }
+
+        emailSend.proceedTo = function (data) {
+            console.log('email send Status:' + JSON.stringify(data));
+            let url = 'https://' + Preferences.baseUrl + data.code.resourceURL;
+            (Preferences.toMonitor) ? emailVerify.initialize(url,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+        }
+
+        emailSend.skipTo = function(){
+            console.log('email send skipped');
+            appBar.abortMonitor();
+        }
+
+        smsVerify.proceedTo = function (data) {
+            console.log('Sms verify Status:' + JSON.stringify(data));
+            (Preferences.toMonitor) ? emailSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+        }
+
+        smsVerify.skipTo = function(){
+            console.log('Sms verify skipped');
+            appBar.abortMonitor();
+        }
+
+        smsSend.proceedTo = function (data) {
+            console.log('Sms send Status:' + JSON.stringify(data));
+            let url = 'https://' + Preferences.baseUrl+data.code.resourceURL;
+            (Preferences.toMonitor) ? smsVerify.initialize(url,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+        }
+
+        smsSend.skipTo = function(){
+            console.log('Sms send skipped');
+            appBar.abortMonitor();
+        }
 
         holdCall.proceedTo = function (data) {
             console.log('Hold Call Status:' + JSON.stringify(data));
-            appBar.abortMonitor(); 
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         }
 
         holdCall.skipTo = function(){
-            console.log('Hold Call skipped');
-            appBar.abortMonitor();
+            console.log('Hold Call: skipped');
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         }
 
         answerCall.proceedTo = function (data) {
@@ -79,7 +144,7 @@ whenReady(function () {
         }
 
         answerCall.skipTo = function(){
-            console.log('Answer Call skipped');
+            console.log('Answer Call: skipped');
             appBar.abortMonitor();
         }
 
@@ -95,7 +160,7 @@ whenReady(function () {
         }
 
         endCall.skipTo = function(){
-            console.log('End Call skipped');
+            console.log('End Call: skipped');
             appBar.abortMonitor();
         }
 
@@ -109,7 +174,7 @@ whenReady(function () {
             ): appBar.abortMonitor();
         }
         voiceCall.skipTo = function () {
-            console.log('voiceCall skipped');
+            console.log('voiceCall: skipped');
             appBar.abortMonitor();
         }
 
@@ -139,9 +204,10 @@ whenReady(function () {
                 userToken.tokenData.access_token,
                 userChannel.channel.notificationChannel.callbackURL
             ): appBar.abortMonitor();
+            
         };
-        updateContact.skipTo = function () {
-            console.log('updateContact, skipped');
+        updateContact.skipTo = function() {
+            console.log('updateContact: skipped');
             (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
@@ -165,7 +231,23 @@ whenReady(function () {
             ): appBar.abortMonitor();
         };
 
-        contacts.proceedTo = function (data) {
+        searchContact.skipTo = function() {
+            console.log('searchContact:skipped');
+            (Preferences.toMonitor) ? updateContact.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token,
+                Preferences.primaryContact,
+                Preferences.firstName,
+                Preferences.lastName,
+                Preferences.emailAddress,
+                Preferences.homePhoneNumber,
+                Preferences.businessPhoneNumber,
+                Preferences.buddy,
+                Preferences.contactId
+            ): appBar.abortMonitor();
+        };
+
+        contacts.proceedTo = function(data) {
             console.log('contacts:', data);
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -177,7 +259,14 @@ whenReady(function () {
             console.log('contacts: skipped');
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.searchfirstname
+                userToken.tokenData.access_token, Preferences.searchFirstName
+            ): appBar.abortMonitor();
+        };
+        contacts.skipTo = function() {
+            console.log('contacts skipped');
+            (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token, Preferences.searchFirstName
             ): appBar.abortMonitor();
         };
 
@@ -217,7 +306,7 @@ whenReady(function () {
             console.log('callPresenceListSubscriptions:', data);
             (Preferences.toMonitor) ? updateOwnStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.setstatuspresence
+                userToken.tokenData.access_token, Preferences.setStatusPresence
             ): appBar.abortMonitor();
         };
         callPresenceListSubscriptions.skipTo = function () {
@@ -251,7 +340,7 @@ whenReady(function () {
             console.log('callSubscription:', data);
             (Preferences.toMonitor) ? sendMessage.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.chatreceiverid, Preferences.chattext
+                userToken.tokenData.access_token, Preferences.chatReceiverId, Preferences.chatText
             ): appBar.abortMonitor();
 
         };
@@ -286,7 +375,19 @@ whenReady(function () {
                 data.access_token
             ): appBar.abortMonitor();
         };
-        (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, Preferences.projectName, Preferences.username, Preferences.password): appBar.abortMonitor();
+
+        if (Preferences.passwordGrant) {
+            (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, 
+                Preferences.projectName, 
+                Preferences.username, 
+                Preferences.password
+            ): appBar.abortMonitor();
+        } else {
+            (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl, 
+                Preferences.privateKey, 
+                Preferences.privateSecret
+            ): appBar.abortMonitor();
+        }
     }
     appBar.initialize();
 });
@@ -296,7 +397,7 @@ function initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription,
         (Preferences.toMonitor) ? outBoundSMS.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token,
-            Preferences.smstext, Preferences.receivernumber, Preferences.sendernumber
+            Preferences.smsText, Preferences.receiverNumber, Preferences.senderNumber
         ): appBar.abortMonitor();
     } else {
         initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);

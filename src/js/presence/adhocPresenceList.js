@@ -1,7 +1,7 @@
 // @file adhocPresenceList.js
 class AdhocPresenceList {
     constructor() {
-        this.container = document.querySelector("#adhocPresenceList");
+        this.container = document.querySelector("#adhocpresencelist");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

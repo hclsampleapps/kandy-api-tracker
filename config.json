@@ -33,7 +33,7 @@
 			"presence/callpresencelistsubscriptions.js",
 			"presence/updateownstatus.js",
 			"presence/watchuserstatus.js",
-			"presence/adhocPresenceList.js",
+			"presence/adhocpresencelist.js",
 			"addressbook/contacts.js",
 			"addressbook/searchcontact.js",
 			"addressbook/updatecontact.js",
@@ -45,6 +45,10 @@
 			"calls/answercall.js",
 			"calls/endcall.js",
 			"calls/holdcall.js",
+			"2fa/smssend.js",
+			"2fa/smsverify.js",
+			"2fa/emailsend.js",
+			"2fa/emailverify.js",
 			"main.js"
 		],
 		"consolidate": "main.js"

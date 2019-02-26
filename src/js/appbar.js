@@ -45,7 +45,6 @@ class AppBar {
         Effect.show(this.menuPlay);
         this.toast.show('Monitoring stopped');
         this.stopCall();
-
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
@@ -53,6 +52,16 @@ class AppBar {
         Preferences.toMonitor = false;
         this.toast.show('Monitoring over');
         this.stopCall();
+    }
+    showPasswordGrant() {
+        Preferences.passwordGrant = true;
+        Effect.hide(this.accountClientCredentials);
+        Effect.show(this.accountPasswordGrant);
+    }
+    showClientCredentials() {
+        Preferences.passwordGrant = false;
+        Effect.show(this.accountClientCredentials);
+        Effect.hide(this.accountPasswordGrant);
     }
     defaultState() {
         Effect.show(this.menuSetting);

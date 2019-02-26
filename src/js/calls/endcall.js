@@ -1,7 +1,7 @@
 // @file endcall.js
 class EndCall {
     constructor() {
-        this.container = document.querySelector("#webrtcEndCall");
+        this.container = document.querySelector("#webrtcendcall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
