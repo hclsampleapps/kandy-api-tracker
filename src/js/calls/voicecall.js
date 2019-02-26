@@ -8,15 +8,12 @@ class VoiceCall {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-
     set skipTo(fn) {
         this.skip = fn;
     }
-
-    get getCallResponse(){
+    get callResponse() {
         return this.makeCallResponse;
     }
-
     onSuccess(data) {
         this.makeCallResponse = data;
         this.status.success();
@@ -48,7 +45,7 @@ class VoiceCall {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -60,19 +57,18 @@ class VoiceCall {
         xhr.send(JSON.stringify(cargo));
     }
 
-    initialize(cpaasUrl,idToken, accessToken, callbackURL, sdp) {
+    initialize(cpaasUrl, idToken, accessToken, callbackURL, sdp) {
         console.log('Voice Call, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/sessions";
         let cargo = {
-           "wrtcsSession": {
-            //"tParticipantAddress": "sip:ashish08@idx4.com",   Preferences.callToUser
-            "tParticipantAddress": Preferences.callToUser,   
-            "offer": {
-                "sdp": sdp
-            },
-             "clientCorrelator": username.preferred_username
-           }
+            "wrtcsSession": {
+                "tParticipantAddress": Preferences.callToUser,
+                "offer": {
+                    "sdp": sdp
+                },
+                "clientCorrelator": username.preferred_username
+            }
         };
         this.request(url, accessToken, cargo);
     }

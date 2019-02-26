@@ -12,10 +12,8 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        console.log("Call Presense response "+JSON.stringify(this.presence));
+        console.log("CallPresense, presence:", this.presence);
         let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-       // let code = this.presence.presenceListCollection.resourceURL;
-        //let code = this.presence.presenceSourceList.resourceURL;
         console.log("CallPresence, connectorCode, resourceURL:", code);
         return code.substr(code.lastIndexOf('/') + 1);
     }
@@ -41,7 +39,7 @@ class CallPresence {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken,cargo) {
+    request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -64,22 +62,24 @@ class CallPresence {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
+        let url = ("[0]presence/v1/[1]/presenceLists").graft(
+            cpaasUrl,
+            username.preferred_username
+        );
 
         let cargo = {
             "presenceList": {
                 "x-listName": "myList",
                 "presenceContact": [{
                         "presentityUserId": "bob@myapp.com"
-                    },
-                    {
+                    }, {
                         "presentityUserId": "alice@myapp.com"
                     }
                 ]
             }
         }
 
-        this.request(url, accessToken,cargo);
+        this.request(url, accessToken, cargo);
     }
 
 }

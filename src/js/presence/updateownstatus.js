@@ -51,7 +51,10 @@ class UpdateOwnStatus {
     initialize(cpaasUrl, idToken, accessToken, setstatuspresence) {
         console.log('UpdateOwnStatus, initialize');
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceSources";
+        let url = ("[0]presence/v1/[1]/presenceSources").graft(
+            cpaasUrl,
+            username.preferred_username
+        );
         var cargo = {
             "presenceSource": {
                 "presence": {

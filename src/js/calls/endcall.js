@@ -8,18 +8,15 @@ class EndCall {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-
     set skipTo(fn) {
         this.skip = fn;
     }
-
     onSuccess(data) {
         this.makeCallResponse = data;
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-   
     onFailure() {
         this.status.failure();
         this.skip();
@@ -35,10 +32,9 @@ class EndCall {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("DELETE", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess("NA");
-                //self.onSuccess(JSON.parse(this.responseText));
             else
                 self.onFailure();
         };
@@ -47,14 +43,12 @@ class EndCall {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send();
     }
-
-    
-    initialize(cpaasUrl,idToken, accessToken,resourceUrl){
-        console.log('End Call, initialize');
+    initialize(cpaasUrl, idToken, accessToken, resourceUrl) {
+        console.log('EndCall, initialize');
 
         let username = Extract.username(idToken);
         let url = cpaasUrl + resourceUrl;
-       
+
         this.request(url, accessToken, null);
     }
 }

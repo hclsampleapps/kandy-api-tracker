@@ -2,7 +2,7 @@
 class SdpGenerate {
     constructor() {
         window.IceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate || window.RTCIceCandidate;
-        RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
+        window.RTCPeerConnection = webkitRTCPeerConnection || mozRTCPeerConnection;
         var pc_config = {
             "iceServers": [{
                 "url": "stun:stun1.l.google.com:19302"
@@ -20,29 +20,26 @@ class SdpGenerate {
             (err) => this.errorCallback(err)
         );
     }
-
     stopStream() {
-        console.log("Stop Stream");
+        console.log("SdpGenerate, stopStream");
         if (!this.streamReference) return;
-        this.streamReference.getAudioTracks().forEach(function (track) {
+        this.streamReference.getAudioTracks().forEach(function(track) {
             track.stop();
         });
-        this.streamReference.getVideoTracks().forEach(function (track) {
+        this.streamReference.getVideoTracks().forEach(function(track) {
             track.stop();
         });
         this.streamReference = null;
     }
-
     dumpOffer(stream) {
-        console.log("Stream ", stream);
+        console.log("SdpGenerate, dumpOffer, stream", stream);
         this.streamReference = stream;
         this.pc.addStream(stream);
         this.pc.createOffer((offer) => this.rtpOffer(offer), (err) => this.errorCallback(err));
     };
     rtpOffer(offer) {
         this.pc.setLocalDescription(offer);
-        console.log("offer created");
-        console.log(offer.sdp);
+        console.log("SdpGenerate, rtpOffer, sdp", offer.sdp);
         this.sdpData = offer.sdp;
     }
     errorCallback(e) {
@@ -61,21 +58,20 @@ class SdpGenerate {
     initialize() {
         try {
             this.pc = new RTCPeerConnection(this.pc_config);
-            console.log("PC 1", this.pc);
-            this.pc.onicecandidate = function (evt) {
+            console.log("SdpGenerate, initialize, pc", this.pc);
+            this.pc.onicecandidate = function(evt) {
                 if (evt.candidate) {
-                    console.log('ICE candidate:');
-                    console.log(evt.candidate);
+                    console.log('SdpGenerate, ICE candidate:', evt.candidate);
                 } else {
-                    console.log("End of candidates.");
+                    console.log("SdpGenerate, End of candidates.");
                     if (this.pc != null) {
                         var sdp = pc.localDescription;
-                        console.log("sdp" + sdp);
+                        console.log("SdpGenerate, initialize, sdp", sdp);
                     }
                 }
             };
         } catch (e) {
-            console.log("Failed to create PeerConnection, exception: " + e.message);
+            console.log("SdpGenerate, initialize, Failed to create PeerConnection, exception", e.message);
         }
     }
 }

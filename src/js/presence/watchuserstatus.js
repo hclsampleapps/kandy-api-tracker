@@ -51,10 +51,11 @@ class WatchUserStatus {
     initialize(cpaasUrl, idToken, accessToken, connectorCode, presentityUserId) {
         console.log('WatchUserStatus, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/" + presentityUserId + "").graft(
+        let url = ("[0]presence/v1/[1]/presenceLists/[2]/presenceContacts/[3]").graft(
             cpaasUrl,
             username.preferred_username,
-            connectorCode
+            connectorCode,
+            presentityUserId
         );
         var cargo = {
             "presenceContact": {

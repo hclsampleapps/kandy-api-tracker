@@ -1,7 +1,7 @@
 // @file main.js
-whenReady(function () {
+whenReady(function() {
     console.log('begin');
-    
+
     var userToken = new UserToken();
     var userChannel = new UserChannel();
     var webSocketConnection = new WebSocketConnection();
@@ -28,21 +28,20 @@ whenReady(function () {
 
     var sdpGenerate = new SdpGenerate();
     sdpGenerate.initialize();
-    //sdpGenerate.startStream();
 
     var controls = new Controls();
     controls.initialize();
 
     var appBar = new AppBar();
-    appBar.startStream = function () {
+    appBar.startStream = function() {
         sdpGenerate.startStream();
     };
-    appBar.stopStream = function () {
+    appBar.stopStream = function() {
         sdpGenerate.stopStream();
     };
-    appBar.execute = function () {
+    appBar.execute = function() {
         var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
-        
+
         userToken.destroy();
         userChannel.destroy();
         webSocketConnection.destroy();
@@ -65,107 +64,100 @@ whenReady(function () {
         emailSend.destroy();
         emailVerify.destroy();
 
-        emailVerify.proceedTo = function (data) {
-            console.log('email verify Status:' + JSON.stringify(data));
+        emailVerify.proceedTo = function(data) {
+            console.log('emailVerify:', data);
             appBar.abortMonitor();
-        }
-
-        emailVerify.skipTo = function(){
-            console.log('email verify skipped');
+        };
+        emailVerify.skipTo = function() {
+            console.log('emailVerify: skipped');
             appBar.abortMonitor();
-        }
+        };
 
-        emailSend.proceedTo = function (data) {
-            console.log('email send Status:' + JSON.stringify(data));
+        emailSend.proceedTo = function(data) {
+            console.log('emailSend:', data);
             let url = 'https://' + Preferences.baseUrl + data.code.resourceURL;
             (Preferences.toMonitor) ? emailVerify.initialize(url,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
-        }
-
-        emailSend.skipTo = function(){
-            console.log('email send skipped');
+        };
+        emailSend.skipTo = function() {
+            console.log('emailSend: skipped');
             appBar.abortMonitor();
-        }
+        };
 
-        smsVerify.proceedTo = function (data) {
-            console.log('Sms verify Status:' + JSON.stringify(data));
+        smsVerify.proceedTo = function(data) {
+            console.log('smsVerify:', data);
             (Preferences.toMonitor) ? emailSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
         }
-
-        smsVerify.skipTo = function(){
-            console.log('Sms verify skipped');
+        smsVerify.skipTo = function() {
+            console.log('smsVerify: skipped');
             appBar.abortMonitor();
         }
 
-        smsSend.proceedTo = function (data) {
-            console.log('Sms send Status:' + JSON.stringify(data));
-            let url = 'https://' + Preferences.baseUrl+data.code.resourceURL;
+        smsSend.proceedTo = function(data) {
+            console.log('smsSend:', data);
+            let url = 'https://' + Preferences.baseUrl + data.code.resourceURL;
             (Preferences.toMonitor) ? smsVerify.initialize(url,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
         }
-
-        smsSend.skipTo = function(){
-            console.log('Sms send skipped');
+        smsSend.skipTo = function() {
+            console.log('smsSend: skipped');
             appBar.abortMonitor();
         }
 
-        holdCall.proceedTo = function (data) {
-            console.log('Hold Call Status:' + JSON.stringify(data));
+        holdCall.proceedTo = function(data) {
+            console.log('holdCall:', data);
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+        }
+        holdCall.skipTo = function() {
+            console.log('holdCall: skipped');
             (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
         }
 
-        holdCall.skipTo = function(){
-            console.log('Hold Call: skipped');
-            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token
-            ): appBar.abortMonitor();
-        }
-
-        answerCall.proceedTo = function (data) {
-            console.log('End Call Status:' + JSON.stringify(data));
-            let resourceUrl = voiceCall.getCallResponse.wrtcsSession.resourceURL;
+        answerCall.proceedTo = function(data) {
+            console.log('answerCall:', data);
+            let resourceUrl = voiceCall.callResponse.wrtcsSession.resourceURL;
             let sdp = sdpGenerate.sdpData;
             let url = 'https://' + Preferences.baseUrl;
             (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, resourceUrl,sdp
+                userToken.tokenData.access_token, resourceUrl, sdp
             ): appBar.abortMonitor();
         }
-
-        answerCall.skipTo = function(){
-            console.log('Answer Call: skipped');
+        answerCall.skipTo = function() {
+            console.log('answerCall: skipped');
             appBar.abortMonitor();
         }
 
-        endCall.proceedTo = function (data) {
-            console.log('End Call Status:' + JSON.stringify(data));
-            let resourceUrl = voiceCall.getCallResponse.wrtcsSession.resourceURL;
-            let sdp = voiceCall.getCallResponse.wrtcsSession.offer.sdp;
+        endCall.proceedTo = function(data) {
+            console.log('endCall:', data);
+            let resourceUrl = voiceCall.callResponse.wrtcsSession.resourceURL;
+            let sdp = voiceCall.callResponse.wrtcsSession.offer.sdp;
             let url = 'https://' + Preferences.baseUrl;
             (Preferences.toMonitor && Preferences.enableVoice) ? answerCall.initialize(url,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, resourceUrl,sdp
+                userToken.tokenData.access_token, resourceUrl, sdp
             ): appBar.abortMonitor();
         }
-
-        endCall.skipTo = function(){
-            console.log('End Call: skipped');
+        endCall.skipTo = function() {
+            console.log('endCall: skipped');
             appBar.abortMonitor();
         }
 
-        voiceCall.proceedTo = function (data) {
-            console.log('VoiceCallStatus:',data);
+        voiceCall.proceedTo = function(data) {
+            console.log('VoiceCallStatus:', data);
             let resourceUrl = data.wrtcsSession.resourceURL;
             let url = 'https://' + Preferences.baseUrl;
             (Preferences.toMonitor && Preferences.enableVoice) ? endCall.initialize(url,
@@ -173,12 +165,12 @@ whenReady(function () {
                 userToken.tokenData.access_token, resourceUrl
             ): appBar.abortMonitor();
         }
-        voiceCall.skipTo = function () {
+        voiceCall.skipTo = function() {
             console.log('voiceCall: skipped');
             appBar.abortMonitor();
         }
 
-        webrtcSubscription.proceedTo = function (data) {
+        webrtcSubscription.proceedTo = function(data) {
             console.log('webrtcSubscription:', data);
             (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -187,7 +179,7 @@ whenReady(function () {
                 sdpGenerate.sdpData
             ): appBar.abortMonitor();
         };
-        webrtcSubscription.skipTo = function () {
+        webrtcSubscription.skipTo = function() {
             console.log('webrtcSubscription: skipped');
             (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -197,14 +189,14 @@ whenReady(function () {
             ): appBar.abortMonitor();
         };
 
-        updateContact.proceedTo = function (data) {
+        updateContact.proceedTo = function(data) {
             console.log('updateContact:', data);
             (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
                 userChannel.channel.notificationChannel.callbackURL
             ): appBar.abortMonitor();
-            
+
         };
         updateContact.skipTo = function() {
             console.log('updateContact: skipped');
@@ -215,7 +207,7 @@ whenReady(function () {
             ): appBar.abortMonitor();
         };
 
-        searchContact.proceedTo = function (data) {
+        searchContact.proceedTo = function(data) {
             console.log('searchContact:', data);
             (Preferences.toMonitor) ? updateContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -230,7 +222,6 @@ whenReady(function () {
                 Preferences.contactId
             ): appBar.abortMonitor();
         };
-
         searchContact.skipTo = function() {
             console.log('searchContact:skipped');
             (Preferences.toMonitor) ? updateContact.initialize(cpaasUrl,
@@ -254,46 +245,40 @@ whenReady(function () {
                 userToken.tokenData.access_token, Preferences.searchfirstname
             ): appBar.abortMonitor();
         };
-
-        contacts.skipTo = function () {
+        contacts.skipTo = function() {
             console.log('contacts: skipped');
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.searchFirstName
             ): appBar.abortMonitor();
         };
-        contacts.skipTo = function() {
-            console.log('contacts skipped');
-            (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.searchFirstName
-            ): appBar.abortMonitor();
-        };
 
-        adhocPresenceList.skipTo = function () {
+        adhocPresenceList.skipTo = function() {
             console.log('adhocPresenceList, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        adhocPresenceList.proceedTo = function (data) {
+        adhocPresenceList.proceedTo = function(data) {
             console.log('adhocPresenceList:', data);
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        watchUserStatus.skipTo = function () {
+
+        watchUserStatus.skipTo = function() {
             console.log('watchUserStatus, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        watchUserStatus.proceedTo = function (data) {
+        watchUserStatus.proceedTo = function(data) {
             console.log('watchUserStatus:', data);
             (Preferences.toMonitor) ? adhocPresenceList.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.presentityUserId
             ): appBar.abortMonitor();
         };
-        updateOwnStatus.skipTo = function () {
+
+        updateOwnStatus.skipTo = function() {
             console.log('updateOwnStatus, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        updateOwnStatus.proceedTo = function (data) {
+        updateOwnStatus.proceedTo = function(data) {
             console.log('updateOwnStatus:', data);
             (Preferences.toMonitor) ? watchUserStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -302,22 +287,23 @@ whenReady(function () {
             ): appBar.abortMonitor();
         };
 
-        callPresenceListSubscriptions.proceedTo = function (data) {
+        callPresenceListSubscriptions.proceedTo = function(data) {
             console.log('callPresenceListSubscriptions:', data);
             (Preferences.toMonitor) ? updateOwnStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, Preferences.setStatusPresence
             ): appBar.abortMonitor();
         };
-        callPresenceListSubscriptions.skipTo = function () {
+        callPresenceListSubscriptions.skipTo = function() {
             console.log('callPresenceListSubscriptions, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar)
         };
-        callPresence.skipTo = function (data) {
+
+        callPresence.skipTo = function(data) {
             console.log('callPresence:', "skipped");
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar)
         };
-        callPresence.proceedTo = function (data) {
+        callPresence.proceedTo = function(data) {
             console.log('callPresence:', data);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -327,16 +313,16 @@ whenReady(function () {
             ): appBar.abortMonitor();
         };
 
-        sendMessage.skipTo = function () {
+        sendMessage.skipTo = function() {
             console.log('sendMessage, skipped');
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
-        sendMessage.proceedTo = function (data) {
+        sendMessage.proceedTo = function(data) {
             console.log('sendMessage:', data);
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
 
-        callSubscription.proceedTo = function (data) {
+        callSubscription.proceedTo = function(data) {
             console.log('callSubscription:', data);
             (Preferences.toMonitor) ? sendMessage.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -344,23 +330,26 @@ whenReady(function () {
             ): appBar.abortMonitor();
 
         };
-        callSubscription.skipTo = function () {
+        callSubscription.skipTo = function() {
             console.log('callSubscription: skipped');
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
-        outBoundSMS.proceedTo = function (data) {
+
+        outBoundSMS.proceedTo = function(data) {
             console.log('outBoundSMS:', data);
             initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
-        outBoundSMS.skipTo = function (data) {
+        outBoundSMS.skipTo = function(data) {
             console.log('outBoundSMS, skipped');
             initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
-        webSocketConnection.proceedTo = function (data) {
+        
+        webSocketConnection.proceedTo = function(data) {
             console.log('webSocketConnection:', data);
             initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel);
         };
-        userChannel.proceedTo = function (data) {
+
+        userChannel.proceedTo = function(data) {
             console.log('userChannel:', data);
             (Preferences.toMonitor) ? webSocketConnection.initialize(Preferences.baseUrl,
                 userToken.tokenData.id_token,
@@ -368,7 +357,8 @@ whenReady(function () {
                 data.notificationChannel.callbackURL
             ): appBar.abortMonitor();
         };
-        userToken.proceedTo = function (data) {
+
+        userToken.proceedTo = function(data) {
             console.log('userToken:', data);
             (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
                 data.id_token,
@@ -377,14 +367,14 @@ whenReady(function () {
         };
 
         if (Preferences.passwordGrant) {
-            (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, 
-                Preferences.projectName, 
-                Preferences.username, 
+            (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
+                Preferences.projectName,
+                Preferences.username,
                 Preferences.password
             ): appBar.abortMonitor();
         } else {
-            (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl, 
-                Preferences.privateKey, 
+            (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl,
+                Preferences.privateKey,
                 Preferences.privateSecret
             ): appBar.abortMonitor();
         }
@@ -443,36 +433,5 @@ function initiateAddressBook(contacts, cpaasUrl, userToken, appBar) {
         ): appBar.abortMonitor();
     } else {
         appBar.abortMonitor();
-    }
-
-    function openWebsocket(access_token) {
-        console.log("Websocket options",options);
-        let webSocketUrl = "wss://"+Preferences.baseUrl+"/cpaas/notificationchannel/v1/"+access_token;
-      // Create the websocket.
-      let ws = new WebSocket(`wss://${options.server}:${options.port}${options.url}` + (0, _utils.toQueryString)(options.params));
-    console.log("Websocket initilization",ws);
-      // Use a promise to wait for the first message from the websocket.
-      // This indicates whether the WS opened successfully or not.
-      let validateWS = new _promise2.default((resolve, reject) => {
-        const onOpen = function () {
-          ws.onopen = null;
-          ws.onerror = null;
-          resolve(ws);
-        };
-        const onError = function () {
-          ws.onopen = null;
-          ws.onerror = null;
-    
-          // TODO: Fix this?
-          /* eslint-disable-next-line prefer-promise-reject-errors */
-          reject({
-            error: true,
-            message: 'Could not connect to websocket. Received error on open.'
-          });
-        };
-        ws.onopen = onOpen;
-        ws.onerror = onError;
-      });
-      return validateWS;
     }
 }

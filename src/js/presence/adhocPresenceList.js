@@ -49,13 +49,19 @@ class AdhocPresenceList {
         xhr.send(JSON.stringify(cargo));
     }
     initialize(cpaasUrl, idToken, accessToken, presentityUserId) {
-        console.log('adhocPresenceList, initialize');
+        console.log('AdhocPresenceList, initialize');
         let username = Extract.username(idToken);
         let url = ("[0]presence/v1/[1]/adhocPresenceList").graft(
             cpaasUrl,
             username.preferred_username
         );
-        var cargo = { "adhocPresenceList": { "presentityUserId": [presentityUserId] } }
+        var cargo = { 
+            "adhocPresenceList": { 
+                "presentityUserId": [
+                    presentityUserId
+                ] 
+            } 
+        };
 
         this.request(url, accessToken, cargo);
     }

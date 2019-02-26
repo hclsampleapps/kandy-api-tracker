@@ -8,18 +8,15 @@ class HoldCall {
     set proceedTo(fn) {
         this.proceed = fn;
     }
-
     set skipTo(fn) {
         this.skip = fn;
     }
-
     onSuccess(data) {
         this.makeCallResponse = data;
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-   
     onFailure() {
         this.status.failure();
         this.skip();
@@ -35,7 +32,7 @@ class HoldCall {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", url, true);
-        xhr.onload = function () {
+        xhr.onload = function() {
             if (this.status >= 200 && this.status < 401)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -46,19 +43,17 @@ class HoldCall {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
+    initialize(cpaasUrl, idToken, accessToken, resourceUrl, sdp) {
+        console.log('HoldCall, initialize');
 
-    
-    initialize(cpaasUrl,idToken, accessToken,resourceUrl,sdp){
-        console.log('Hold Call, initialize');
-       
         let username = Extract.username(idToken);
         let url = cpaasUrl + resourceUrl + "/update";
         let cargo = {
             "wrtcsOffer": {
-              "sdp": sdp,
-              "clientCorrelator": username.preferred_username
+                "sdp": sdp,
+                "clientCorrelator": username.preferred_username
             }
-         };
+        };
 
         this.request(url, accessToken, cargo);
     }
