@@ -77,3 +77,12 @@ To know more about *GitFlow*, please refer
 
 - [Introducing GitFlow](https://datasift.github.io/gitflow/IntroducingGitFlow.html)
 - [A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
+
+### Coding conventions
+
+Contributors should strictly follow these conventions:
+
+1. File names are in lowercase
+2. Id allocated to any html tags are in lowercase
+3. Variable names are in camelCase
+4. Class names are in PascalCase
