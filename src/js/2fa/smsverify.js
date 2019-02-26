@@ -1,6 +1,7 @@
-class WebrtcSubscription {
+// @file smsverify.js
+class SmsVerify {
     constructor() {
-        this.container = document.querySelector("#webrtcSubscriptionStatus");
+        this.container = document.querySelector("#verifySms");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -21,6 +22,7 @@ class WebrtcSubscription {
     }
     onError() {
         this.status.error();
+        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -29,31 +31,32 @@ class WebrtcSubscription {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
+        xhr.open("PUT", url, true);
         xhr.onload = function () {
-            if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
+            if (this.status == 204 || this.status == 404)
+                self.onSuccess("OTP verified sussessfully");
             else
                 self.onFailure();
         };
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function () {
+            console.log('Send SMS, timeout');
+            self.onError();
+        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, callbackURL) {
-        console.log('CallSubscription, initialize');
-        let username = Extract.username(idToken);
-        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/subscriptions";
+
+    initialize(cpaasUrl, idToken, accessToken) {
+        console.log('SMS verify, initialize');
+        let url = cpaasUrl + '/verify';
+        console.log('via SMS verify URL: ' + cpaasUrl);
         let cargo = {
-
-           "wrtcsNotificationSubscription": {
-             "callbackReference": {
-              "notifyURL": callbackURL
-             },
-             "clientCorrelator": username.preferred_username
-           }
-
+            "code": {
+                "verify": '123456'
+            }
         };
         this.request(url, accessToken, cargo);
     }

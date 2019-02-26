@@ -24,8 +24,10 @@ var Preferences = {
     lastName: "ashish",
     emailAddress: "email",
     homePhoneNumber: "home",
-    businessPhoneNumber: "business",
+    businessPhoneNumber: "+17144850453",
     buddy: "true",
-    contactId: "ashish0090",
-    searchfirstname: "ashish"
+    contactId: "ashish",
+    searchfirstname: "ashish",
+    smsVerificationNumber:'+19549510743',
+    emailVerificationId:'ashish07@idx4.com'
 };

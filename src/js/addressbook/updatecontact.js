@@ -87,10 +87,18 @@ class UpdateContact {
                         {
                             "name": "buddy",
                             "value": buddy
+                        },
+                        {
+                            "name": "name",
+                            "value": contactId
                         }
                     ]
                 },
-                "contactId": contactId
+                "contactId": contactId,
+                "link": [{
+                    "href": "/cpaas/addressbook/v1/"+username.preferred_username+"/default/lists/friends/members/"+contactId,
+                    "rel": "Member"
+                }]
             }
         };
         this.request(url, accessToken, cargo);

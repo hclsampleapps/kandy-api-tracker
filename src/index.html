@@ -114,6 +114,22 @@
                         <td>Webrtc Subscription</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
+                    <tr id="sendSms">
+                        <td>Send SMS</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="verifySms">
+                        <td>Verify SMS</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="sendEmail">
+                        <td>send Email</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="verifyEmail">
+                        <td>Verify email</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -129,6 +145,8 @@
                     <li><a data-toggle="tab" data-controls="pc-pane-4">Presence</a></li>
                     <li><a data-toggle="tab" data-controls="pc-pane-5">Address-book</a></li>
                     <li><a data-toggle="tab" data-controls="pc-pane-6">Voice</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-7">2fa sms</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-8">2fa email</a></li>
                 </ul>
             </div>
             <p class="mui--text-title">Preferences &amp; Controls</p>
@@ -139,6 +157,8 @@
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-4">Presence</a></li>
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-5">Address-book</a></li>
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-6">Voice</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-7">2fa sms</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-8">2fa email</a></li>
             </ul>
             <form>
                 <div class="mui-tabs__pane mui--is-active" id="pc-pane-1">
@@ -298,6 +318,20 @@
                             <input type="checkbox" id="enablepresence">
                             Enable Presence
                         </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-7">
+                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="smsVerificationNumber">
+                        <label>Phone Number</label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-8">
+                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="emailVerificationId">
+                        <label>Email</label>
                     </div>
                 </div>
                 <button type="button" id="activatenext" class="mui-btn mui-btn--primary">Next</button>
