@@ -1,7 +1,7 @@
 // @file smsverify.js
 class SmsVerify {
     constructor() {
-        this.container = document.querySelector("#verifySms");
+        this.container = document.querySelector("#verifysms");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

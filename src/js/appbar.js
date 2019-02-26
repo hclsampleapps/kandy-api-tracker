@@ -40,12 +40,12 @@ class AppBar {
         this.toast.show('Monitoring over');
     }
     showPasswordGrant() {
-        Preferences.prassordGrantBool = true;
+        Preferences.passwordGrant = true;
         Effect.hide(this.accountClientCredentials);
         Effect.show(this.accountPasswordGrant);
     }
     showClientCredentials() {
-        Preferences.prassordGrantBool = false;
+        Preferences.passwordGrant = false;
         Effect.show(this.accountClientCredentials);
         Effect.hide(this.accountPasswordGrant);
     }
@@ -72,15 +72,6 @@ class AppBar {
 
         this.menuPause = document.getElementById('menupause');
         this.menuPause.addEventListener('click', (evt) => this.stopMonitor(evt));
-
-        this.accountPasswordGrant = document.getElementById('accountpasswordgrant');
-        this.accountClientCredentials = document.getElementById('accountclientcredentials');
-
-        this.accountPasswordGrantradio = document.getElementById('accountpasswordgrantradio');
-        this.accountPasswordGrantradio.addEventListener('click', (evt) => this.showPasswordGrant(evt));
-
-        this.accountClientCredentialsradio = document.getElementById('accountclientcredentialsradio');
-        this.accountClientCredentialsradio.addEventListener('click', (evt) => this.showClientCredentials(evt));
 
         this.defaultState();
     }

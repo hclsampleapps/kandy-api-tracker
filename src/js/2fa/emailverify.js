@@ -1,7 +1,7 @@
 // @file emailverify.js
 class EmailVerify {
     constructor() {
-        this.container = document.querySelector("#verifyEmail");
+        this.container = document.querySelector("#verifyemail");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

@@ -1,7 +1,7 @@
 // @file smssend.js
 class SmsSend {
     constructor() {
-        this.container = document.querySelector("#sendSms");
+        this.container = document.querySelector("#sendsms");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

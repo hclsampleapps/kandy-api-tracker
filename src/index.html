@@ -94,7 +94,7 @@
                         <td>Watch User Presence</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="adhocPresenceList">
+                    <tr id="adhocpresencelist">
                         <td>Adhoc Presence List</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
@@ -110,23 +110,23 @@
                         <td>Update Contact</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="webrtcSubscriptionStatus">
+                    <tr id="webrtcsubscription">
                         <td>Webrtc Subscription</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="sendSms">
+                    <tr id="sendsms">
                         <td>Send SMS</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="verifySms">
+                    <tr id="verifysms">
                         <td>Verify SMS</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="sendEmail">
-                        <td>send Email</td>
+                    <tr id="sendemail">
+                        <td>Send Email</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
-                    <tr id="verifyEmail">
+                    <tr id="verifyemail">
                         <td>Verify email</td>
                         <td><span class="status symbol-failure"></span></td>
                     </tr>
@@ -145,8 +145,8 @@
                     <li><a data-toggle="tab" data-controls="pc-pane-4">Presence</a></li>
                     <li><a data-toggle="tab" data-controls="pc-pane-5">Address-book</a></li>
                     <li><a data-toggle="tab" data-controls="pc-pane-6">Voice</a></li>
-                    <li><a data-toggle="tab" data-controls="pc-pane-7">2fa sms</a></li>
-                    <li><a data-toggle="tab" data-controls="pc-pane-8">2fa email</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-7">2FA SMS</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-8">2FA Email</a></li>
                 </ul>
             </div>
             <p class="mui--text-title">Preferences &amp; Controls</p>
@@ -157,8 +157,8 @@
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-4">Presence</a></li>
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-5">Address-book</a></li>
                 <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-6">Voice</a></li>
-                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-7">2fa sms</a></li>
-                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-8">2fa email</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-7">2FA SMS</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-8">2FA Email</a></li>
             </ul>
             <form>
                 <div class="mui-tabs__pane mui--is-active" id="pc-pane-1">
@@ -168,17 +168,17 @@
                         <label>Base URL</label>
                     </div>
                     <div class="mui-textfield">
-                        <div class="mui-radio radio-box" style="display:inline">
-                            <input type="radio"  name="optionsRadios" id="accountpasswordgrantradio"  checked>
+                        <div class="mui-radio">
+                            <input type="radio" name="authways" id="authwaysradiopasswordgrant" checked>
                             <label>Password Grant</label>
                         </div>
-                        <div class="mui-radio" style="display:inline">
-                            <input type="radio" name="optionsRadios" id="accountclientcredentialsradio" >
+                        <div class="mui-radio">
+                            <input type="radio" name="authways" id="authwaysradioclientcredentials">
                             <label>Client Credentials</label>
                         </div>
+                        <label>Authentication Ways</label>
                     </div>
-
-                    <div id="accountpasswordgrant">
+                    <div id="authwayspanelpasswordgrant">
                         <div class="mui-textfield">
                             <input type="text" id="projectname">
                             <label>Project name</label>
@@ -192,7 +192,7 @@
                             <label>Password</label>
                         </div>
                     </div>
-                    <div id="accountclientcredentials" style="display:none">
+                    <div id="authwayspanelclientcredentials">
                         <div class="mui-textfield">
                             <input type="text" id="privatekey">
                             <label>Private Key name</label>
@@ -248,7 +248,7 @@
                         <label>Set status presence</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="presentityUserId">
+                        <input type="text" id="presentityuserid">
                         <label>Presentity user ID</label>
                     </div>
                     <div class="mui-checkbox">
@@ -261,27 +261,27 @@
                 <div class="mui-tabs__pane" id="pc-pane-5">
                     <div class="mui--text-subhead tab-pane-head">Address Book</div>
                     <div class="mui-textfield">
-                        <input type="text" id="primaryContact">
+                        <input type="text" id="primarycontact">
                         <label>Primary contact</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="firstName">
+                        <input type="text" id="firstname">
                         <label>First name</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="lastName">
+                        <input type="text" id="lastname">
                         <label>Last name</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="emailAddress">
+                        <input type="text" id="emailaddress">
                         <label>Email address</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="businessPhoneNumber">
+                        <input type="text" id="businessphonenumber">
                         <label>Business phone number</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="homePhoneNumber">
+                        <input type="text" id="homephonenumber">
                         <label>Home phone number</label>
                     </div>
                     <div class="mui-textfield">
@@ -289,7 +289,7 @@
                         <label>Buddy</label>
                     </div>
                     <div class="mui-textfield">
-                        <input type="text" id="contactId">
+                        <input type="text" id="contactid">
                         <label>Contact ID</label>
                     </div>
                     <div class="mui-textfield">
@@ -304,33 +304,29 @@
                     </div>
                 </div>
                 <div class="mui-tabs__pane" id="pc-pane-6">
-                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui--text-subhead tab-pane-head">Voice</div>
                     <div class="mui-textfield">
-                        <input type="text" id="setstatuspresence">
-                        <label>Set status presence</label>
-                    </div>
-                    <div class="mui-textfield">
-                        <input type="text" id="presentityUserId">
-                        <label>Presentity user ID</label>
+                        <input type="text" id="callToUser">
+                        <label>Call To User</label>
                     </div>
                     <div class="mui-checkbox">
                         <label>
-                            <input type="checkbox" id="enablepresence">
-                            Enable Presence
+                            <input type="checkbox" id="enablevoice">
+                            Enable Voice
                         </label>
                     </div>
                 </div>
                 <div class="mui-tabs__pane" id="pc-pane-7">
-                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui--text-subhead tab-pane-head">2FA SMS</div>
                     <div class="mui-textfield">
-                        <input type="text" id="smsVerificationNumber">
+                        <input type="text" id="smsverificationnumber">
                         <label>Phone Number</label>
                     </div>
                 </div>
                 <div class="mui-tabs__pane" id="pc-pane-8">
-                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui--text-subhead tab-pane-head">2FA Email</div>
                     <div class="mui-textfield">
-                        <input type="text" id="emailVerificationId">
+                        <input type="text" id="emailverificationid">
                         <label>Email</label>
                     </div>
                 </div>

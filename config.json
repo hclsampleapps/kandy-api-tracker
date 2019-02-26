@@ -33,7 +33,7 @@
 			"presence/callpresencelistsubscriptions.js",
 			"presence/updateownstatus.js",
 			"presence/watchuserstatus.js",
-			"presence/adhocPresenceList.js",
+			"presence/adhocpresencelist.js",
 			"addressbook/contacts.js",
 			"addressbook/searchcontact.js",
 			"addressbook/updatecontact.js",

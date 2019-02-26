@@ -169,14 +169,14 @@ whenReady(function() {
             console.log('contacts:', data);
             (Preferences.toMonitor) ? searchcontacts.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.searchfirstname
+                userToken.tokenData.access_token, Preferences.searchFirstName
             ): appBar.abortMonitor();
         };
         contacts.skipTo = function() {
             console.log('contacts skipped');
             (Preferences.toMonitor) ? searchcontacts.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.searchfirstname
+                userToken.tokenData.access_token, Preferences.searchFirstName
             ): appBar.abortMonitor();
         };
         adhocPresenceList.skipTo = function() {
@@ -215,7 +215,7 @@ whenReady(function() {
             console.log('callPresenceListSubscriptions:', data);
             (Preferences.toMonitor) ? updateOwnStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.setstatuspresence
+                userToken.tokenData.access_token, Preferences.setStatusPresence
             ): appBar.abortMonitor();
         };
         callPresenceListSubscriptions.skipTo = function() {
@@ -249,7 +249,7 @@ whenReady(function() {
             console.log('callSubscription:', data);
             (Preferences.toMonitor) ? sendMessage.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
-                userToken.tokenData.access_token, Preferences.chatreceiverid, Preferences.chattext
+                userToken.tokenData.access_token, Preferences.chatReceiverId, Preferences.chatText
             ): appBar.abortMonitor();
 
         };
@@ -285,7 +285,7 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
 
-        if (Preferences.prassordGrantBool) {
+        if (Preferences.passwordGrant) {
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, 
                 Preferences.projectName, 
                 Preferences.username, 
@@ -293,8 +293,8 @@ whenReady(function() {
             ): appBar.abortMonitor();
         } else {
             (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl, 
-                Preferences.privatekey, 
-                Preferences.privatesecret
+                Preferences.privateKey, 
+                Preferences.privateSecret
             ): appBar.abortMonitor();
         }
     }
@@ -306,7 +306,7 @@ function initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription,
         (Preferences.toMonitor) ? outBoundSMS.initialize(cpaasUrl,
             userToken.tokenData.id_token,
             userToken.tokenData.access_token,
-            Preferences.smstext, Preferences.receivernumber, Preferences.sendernumber
+            Preferences.smsText, Preferences.receiverNumber, Preferences.senderNumber
         ): appBar.abortMonitor();
     } else {
         initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);

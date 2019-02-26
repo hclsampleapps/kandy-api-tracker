@@ -1,7 +1,7 @@
 // @file emailsend.js
 class EmailSend {
     constructor() {
-        this.container = document.querySelector("#sendEmail");
+        this.container = document.querySelector("#sendemail");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }

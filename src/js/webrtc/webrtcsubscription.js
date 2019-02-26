@@ -1,6 +1,6 @@
 class WebrtcSubscription {
     constructor() {
-        this.container = document.querySelector("#webrtcSubscriptionStatus");
+        this.container = document.querySelector("#webrtcsubscription");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
