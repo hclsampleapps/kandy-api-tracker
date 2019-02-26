@@ -6,6 +6,7 @@ var Preferences = {
     enableChat: true,
     enablePresence: true,
     enableAddressBook: true,
+    enableVoice: true,
     baseUrl: "nvs-cpaas-oauth.kandy.io",
     projectName: "PUB-hcl107.MPb0QLfe", //   "PUB-My First Project",// "PUB-My Sms Project 2",
     username: "ashish07@idx4.com", // "d3smc2e0j3srxx0g",
@@ -28,6 +29,7 @@ var Preferences = {
     buddy: "true",
     contactId: "ashish",
     searchFirstName: "ashish",
+    callToUser: "ashish07@hcl107.mpb0qlfe.att.com",
     smsVerificationNumber: '+19549510743',
     emailVerificationId: 'ashish07@idx4.com'
 };

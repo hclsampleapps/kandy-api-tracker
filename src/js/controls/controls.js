@@ -26,12 +26,19 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.contactStatus) : Effect.hide(this.tr.contactStatus);
         Preferences.enableAddressBook ? Effect.show(this.tr.searchContact) : Effect.hide(this.tr.searchContact);
         Preferences.enableAddressBook ? Effect.show(this.tr.updateContact) : Effect.hide(this.tr.updateContact);
+
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcSubscription) : Effect.hide(this.tr.webrtcSubscription);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcVoiceCall) : Effect.hide(this.tr.webrtcVoiceCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcEndCall) : Effect.hide(this.tr.webrtcEndCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcAnswerCall) : Effect.hide(this.tr.webrtcAnswerCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcHoldCall) : Effect.hide(this.tr.webrtcHoldCall);
     }
     save(evt) {
         Preferences.enableSMS = !!this.enableSMS.checked;
         Preferences.enableChat = !!this.enableChat.checked;
         Preferences.enablePresence = !!this.enablePresence.checked;
         Preferences.enableAddressBook = !!this.enableAddressBook.checked;
+        Preferences.enableVoice = !!this.enableVoice.checked;
 
         Preferences.baseUrl = this.baseUrl.value;
 
@@ -58,6 +65,7 @@ class Controls {
         Preferences.buddy = this.buddy.value;
         Preferences.contactId = this.contactId.value;
         Preferences.searchFirstName = this.searchFirstName.value;
+        Preferences.callToUser = this.callToUser.value;
 
         Preferences.smsVerificationNumber = this.smsVerificationNumber.value;
         Preferences.emailVerificationId = this.emailVerificationId.value;
@@ -70,6 +78,7 @@ class Controls {
         this.enableChat.checked = Preferences.enableChat;
         this.enablePresence.checked = Preferences.enablePresence;
         this.enableAddressBook.checked = Preferences.enableAddressBook;
+        this.enableVoice.checked = Preferences.enableVoice;
 
         this.baseUrl.value = Preferences.baseUrl;
 
@@ -96,6 +105,7 @@ class Controls {
         this.buddy.value = Preferences.buddy;
         this.contactId.value = Preferences.contactId;
         this.searchFirstName.value = Preferences.searchFirstName;
+        this.callToUser.value = Preferences.callToUser;
 
         this.smsVerificationNumber.value = Preferences.smsVerificationNumber;
         this.emailVerificationId.value = Preferences.emailVerificationId;
@@ -142,11 +152,17 @@ class Controls {
         this.tr.contactStatus = document.getElementById('contactstatus');
         this.tr.searchContact = document.getElementById('searchcontact');
         this.tr.updateContact = document.getElementById('updatecontact');
+        this.tr.webrtcSubscription = document.getElementById('webrtcsubscription');
+        this.tr.webrtcVoiceCall = document.getElementById('webrtcvoicecall');
+        this.tr.webrtcEndCall = document.getElementById('webrtcendcall');
+        this.tr.webrtcAnswerCall = document.getElementById('webrtcanswercall');
+        this.tr.webrtcHoldCall = document.getElementById('webrtcholdcall');
 
         this.enableSMS = document.getElementById('enablesms');
         this.enableChat = document.getElementById('enablechat');
         this.enablePresence = document.getElementById('enablepresence');
         this.enableAddressBook = document.getElementById('enableaddressbook');
+        this.enableVoice = document.getElementById('enablevoice');
 
         this.baseUrl = document.getElementById('baseurl');
 
@@ -173,6 +189,7 @@ class Controls {
         this.buddy = document.getElementById('buddy');
         this.contactId = document.getElementById('contactid');
         this.searchFirstName = document.getElementById('searchfirstname');
+        this.callToUser = document.getElementById('calltouser');
         this.smsVerificationNumber = document.getElementById('smsverificationnumber');
         this.emailVerificationId = document.getElementById('emailverificationid');
 

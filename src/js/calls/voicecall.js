@@ -1,20 +1,34 @@
-// @file updateownstatus.js
-class UpdateOwnStatus {
+// @file voicecall.js
+class VoiceCall {
     constructor() {
-        this.container = document.querySelector("#updateownstatus");
+        this.container = document.querySelector("#webrtcvoicecall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
+    get callResponse() {
+        return this.makeCallResponse;
+    }
     onSuccess(data) {
+        this.makeCallResponse = data;
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
-    set skipTo(fn) {
-        this.skip = fn;
+    onCallEndSuccess(data) {
+        this.status.success();
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.proceedEnd(data);
+    }
+    onSuccessAnswerCall(data) {
+        this.status.success();
+        this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        this.proceedAnswer(data);
     }
     onFailure() {
         this.status.failure();
@@ -22,7 +36,6 @@ class UpdateOwnStatus {
     }
     onError() {
         this.status.error();
-        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -41,31 +54,18 @@ class UpdateOwnStatus {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function() {
-            console.log("timeout");
-            self.onError();
-        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl, idToken, accessToken, setstatuspresence) {
-        console.log('UpdateOwnStatus, initialize');
+
+    initialize(cpaasUrl, idToken, accessToken, callbackURL, sdp) {
+        console.log('Voice Call, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceSources").graft(
-            cpaasUrl,
-            username.preferred_username
-        );
-        var cargo = {
-            "presenceSource": {
-                "presence": {
-                    "person": {
-                        "overriding-willingness": {
-                            "overridingWillingnessValue": "Open"
-                        },
-                        "activities": {
-                            "activityValue": setstatuspresence
-                        }
-                    }
+        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/sessions";
+        let cargo = {
+            "wrtcsSession": {
+                "tParticipantAddress": Preferences.callToUser,
+                "offer": {
+                    "sdp": sdp
                 },
                 "clientCorrelator": username.preferred_username
             }

@@ -1,20 +1,21 @@
-// @file adhocPresenceList.js
-class AdhocPresenceList {
+// @file endcall.js
+class EndCall {
     constructor() {
-        this.container = document.querySelector("#adhocpresencelist");
+        this.container = document.querySelector("#webrtcendcall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
+        this.makeCallResponse = data;
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
-    }
-    set skipTo(fn) {
-        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
@@ -22,7 +23,6 @@ class AdhocPresenceList {
     }
     onError() {
         this.status.error();
-        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -31,38 +31,24 @@ class AdhocPresenceList {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
+        xhr.open("DELETE", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
+                self.onSuccess("NA");
             else
                 self.onFailure();
         };
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function() {
-            console.log("timeout");
-            self.onError();
-        }
-        xhr.send(JSON.stringify(cargo));
+        xhr.send();
     }
-    initialize(cpaasUrl, idToken, accessToken, presentityUserId) {
-        console.log('AdhocPresenceList, initialize');
-        let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/adhocPresenceList").graft(
-            cpaasUrl,
-            username.preferred_username
-        );
-        var cargo = { 
-            "adhocPresenceList": { 
-                "presentityUserId": [
-                    presentityUserId
-                ] 
-            } 
-        };
+    initialize(cpaasUrl, idToken, accessToken, resourceUrl) {
+        console.log('EndCall, initialize');
 
-        this.request(url, accessToken, cargo);
+        let username = Extract.username(idToken);
+        let url = cpaasUrl + resourceUrl;
+
+        this.request(url, accessToken, null);
     }
 }

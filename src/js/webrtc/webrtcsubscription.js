@@ -42,18 +42,20 @@ class WebrtcSubscription {
         xhr.send(JSON.stringify(cargo));
     }
     initialize(cpaasUrl,idToken, accessToken, callbackURL) {
-        console.log('CallSubscription, initialize');
+        console.log('WebrtcSubscription, initialize');
+        console.log("idToken",idToken);
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "webrtcsignaling/v1/" + username.preferred_username + "/subscriptions";
+        let url = ("[0]webrtcsignaling/v1/[1]/subscriptions").graft(
+            cpaasUrl,
+            username.preferred_username
+        );
         let cargo = {
-
            "wrtcsNotificationSubscription": {
              "callbackReference": {
               "notifyURL": callbackURL
              },
              "clientCorrelator": username.preferred_username
            }
-
         };
         this.request(url, accessToken, cargo);
     }
