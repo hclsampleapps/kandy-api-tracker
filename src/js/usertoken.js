@@ -48,11 +48,24 @@ class UserToken {
     }
     initialize(cpaasUrl, projectName, username, password) {
         console.log('UserToken, initialize');
+
         let cargo = {
             client_id: encodeURIComponent(projectName),
             username: username,
             password: password,
             grant_type: 'password',
+            scope: 'openid'
+        };
+        this.request(cpaasUrl + "auth/v1/token", cargo);
+
+    }
+    initializeSecret(cpaasUrl, client_id, client_secret) {
+        console.log('UserToken, initialize');
+
+        let cargo = {
+            client_id: client_id,
+            client_secret: client_secret,
+            grant_type: 'client_credentials',
             scope: 'openid'
         };
         this.request(cpaasUrl + "auth/v1/token", cargo);

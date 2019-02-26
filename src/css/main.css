@@ -166,6 +166,10 @@ footer a {
     width: 40%;
 }
 
+.radio-box {
+    margin-right: 10px; 
+}
+
 .toast-box {
     position: fixed;
     display: inline-block;

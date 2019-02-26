@@ -28,6 +28,7 @@ whenReady(function() {
     var appBar = new AppBar();
     appBar.execute = function() {
         var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
+        
         userToken.destroy();
         userChannel.destroy();
         webSocketConnection.destroy();
@@ -283,7 +284,19 @@ whenReady(function() {
                 data.access_token
             ): appBar.abortMonitor();
         };
-        (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, Preferences.projectName, Preferences.username, Preferences.password): appBar.abortMonitor();
+
+        if (Preferences.prassordGrantBool) {
+            (Preferences.toMonitor) ? userToken.initialize(cpaasUrl, 
+                Preferences.projectName, 
+                Preferences.username, 
+                Preferences.password
+            ): appBar.abortMonitor();
+        } else {
+            (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl, 
+                Preferences.privatekey, 
+                Preferences.privatesecret
+            ): appBar.abortMonitor();
+        }
     }
     appBar.initialize();
 });
