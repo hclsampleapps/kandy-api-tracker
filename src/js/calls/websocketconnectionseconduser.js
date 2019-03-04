@@ -1,27 +1,40 @@
-// @file websocketconnection.js
-class WebSocketConnection {
+// @file websocketconnectionseconduser.js
+class WebSocketConnectionSecondUser {
     constructor() {
-        this.container = document.querySelector("#websocket");
-        this.xhrLog = new XHRLog(this.container);
-        this.status = new Status(this.container.querySelector(".status"));
+        // this.container = document.querySelector("#websocket");
+        // this.xhrLog = new XHRLog(this.container);
+        // this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+
+    
+    set messageTo(fn){
+        this.messageResponse = fn;
+    }
+
     onSuccess(data) {
-        this.status.success();
-        this.xhrLog.initialize(data);
+        //this.status.success();
+        //this.xhrLog.initialize(data);
         this.proceed(data);
     }
+
+    onMessage(data) {
+        //this.status.success();
+        //this.xhrLog.initialize(data);
+        this.messageResponse(data);
+    }
+
     onFailure() {
-        this.status.failure();
+        //this.status.failure();
     }
     onError() {
-        this.status.error();
+        //this.status.error();
     }
     destroy() {
-        this.status.failure();
-        this.xhrLog.destroy();
+       // this.status.failure();
+       // this.xhrLog.destroy();
     }
     request(url) {
         var self = this;
@@ -39,7 +52,8 @@ class WebSocketConnection {
 
             ws.onmessage = function (evt) { 
                 var received_msg = evt.data;
-                alert("user 1 Message is received...");
+                //alert("user 2 Message is received...");
+                self.onMessage(JSON.parse(received_msg));
              };
 
             ws.onerror = function() {
@@ -51,7 +65,7 @@ class WebSocketConnection {
         }
     }
     initialize(baseUrl, idToken, accessToken, callbackURL) {
-        console.log("WebSocketConnection, initialize");
+        console.log("WebSocketConnection Second User, initialize");
         let username = Extract.username(idToken);
         let url = "wss://[0]/cpaas/notificationchannel/v1/[1]/channels/[2]/websocket?access_token=[3]".graft(
             baseUrl,

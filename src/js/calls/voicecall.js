@@ -11,6 +11,7 @@ class VoiceCall {
     set skipTo(fn) {
         this.skip = fn;
     }
+
     get callResponse() {
         return this.makeCallResponse;
     }
