@@ -55,7 +55,7 @@ class UserChannel {
             notificationChannel: {
                 channelLifetime: 3600,
                 channelType: "Websockets",
-                clientCorrelator: "sampleCorrelator",
+                clientCorrelator: username.preferred_username,
                 'x-connCheckRole': "client"
             }
         };

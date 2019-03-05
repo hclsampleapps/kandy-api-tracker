@@ -40,6 +40,7 @@
 			"websocketconnection.js",
 			"userchannel.js",
 			"webrtc/webrtcsubscription.js",
+			"webrtc/webrtcsubscriptionseconduser.js",
 			"calls/sdpgenerate.js",
 			"calls/voicecall.js",
 			"calls/answercall.js",

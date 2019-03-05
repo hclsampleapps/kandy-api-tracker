@@ -67,6 +67,10 @@ class Controls {
         Preferences.searchFirstName = this.searchFirstName.value;
         Preferences.callToUser = this.callToUser.value;
 
+        Preferences.projectNameSecondUser = this.projectNameSecondUser.value;
+        Preferences.usernameSecondUser = this.usernameSecondUser.value;
+        Preferences.passwordSecondUser = this.passwordSecondUser.value;
+
         Preferences.smsVerificationNumber = this.smsVerificationNumber.value;
         Preferences.emailVerificationId = this.emailVerificationId.value;
 
@@ -106,7 +110,9 @@ class Controls {
         this.contactId.value = Preferences.contactId;
         this.searchFirstName.value = Preferences.searchFirstName;
         this.callToUser.value = Preferences.callToUser;
-
+        this.projectNameSecondUser.value = Preferences.projectNameSecondUser;
+        this.usernameSecondUser.value = Preferences.usernameSecondUser;
+        this.passwordSecondUser.value = Preferences.passwordSecondUser;
         this.smsVerificationNumber.value = Preferences.smsVerificationNumber;
         this.emailVerificationId.value = Preferences.emailVerificationId;
 
@@ -172,6 +178,7 @@ class Controls {
         this.projectName = document.getElementById('projectname');
         this.username = document.getElementById('username');
         this.password = document.getElementById('password');
+        
 
         this.smsText = document.getElementById('smstext');
         this.senderNumber = document.getElementById('sendernumber');
@@ -195,6 +202,10 @@ class Controls {
 
         this.activateNext = document.getElementById('activatenext');
         this.savePreference = document.getElementById('savepreference');
+
+        this.projectNameSecondUser = document.getElementById('projectNameSecondUser');
+        this.usernameSecondUser = document.getElementById('usernameSecondUser');
+        this.passwordSecondUser = document.getElementById('passwordSecondUser');
 
         this.authWays = {};
         this.authWays.radioPasswordGrant = document.getElementById('authwaysradiopasswordgrant');

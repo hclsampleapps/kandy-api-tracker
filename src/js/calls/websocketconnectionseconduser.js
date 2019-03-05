@@ -4,6 +4,7 @@ class WebSocketConnectionSecondUser {
         // this.container = document.querySelector("#websocket");
         // this.xhrLog = new XHRLog(this.container);
         // this.status = new Status(this.container.querySelector(".status"));
+        this.ws = null;
     }
     set proceedTo(fn) {
         this.proceed = fn;
@@ -35,28 +36,41 @@ class WebSocketConnectionSecondUser {
     destroy() {
        // this.status.failure();
        // this.xhrLog.destroy();
+      
+    }
+
+    closeSocket(){
+        
+        if(this.ws != null){
+            console.log("Web Socket close user 2");
+            //this.ws.close();
+            this.ws.onclose  = function() {
+                console.log("Connection is closed...2");
+            };
+        }
     }
     request(url) {
         var self = this;
         if ("WebSocket" in window) {
             console.log("WebSocket is supported by your browser!");
-            var ws = new WebSocket(url);
+            this.ws = new WebSocket(url);
             let status = {
                 status: "success"
             };
-            ws.onopen = function() {
+            this.ws.onopen = function() {
                 // Web Socket is connected, send data using send()
                 // ws.send("Message to send");
                 self.onSuccess(JSON.stringify(status));
             };
 
-            ws.onmessage = function (evt) { 
+            this.ws.onmessage = function (evt) { 
                 var received_msg = evt.data;
                 //alert("user 2 Message is received...");
+                console.log("user 2 Message is received...");
                 self.onMessage(JSON.parse(received_msg));
              };
 
-            ws.onerror = function() {
+             this.ws.onerror = function() {
                 self.onError();
             };
         } else {
@@ -73,6 +87,7 @@ class WebSocketConnectionSecondUser {
             callbackURL,
             accessToken
         );
+        console.log("websocketseconduser url "+ url);
         this.request(url);
     }
 }
