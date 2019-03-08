@@ -14,7 +14,7 @@ class CallPresence {
     get connectorCode() {
         console.log("CallPresense, presence:", this.presence);
         var collection = this.presence.presenceListCollection;
-        if (collection.presenceList.hasOwnProperty('resourceURL')) {
+        if (collection.presenceList.length > 0 && collection.presenceList[0].hasOwnProperty('resourceURL')) {
             let resourceUrl = collection.presenceList[0].resourceURL;
             console.log("CallPresence, connectorCode, resourceURL:", resourceUrl);
             return resourceUrl.substr(resourceUrl.lastIndexOf('/') + 1);
