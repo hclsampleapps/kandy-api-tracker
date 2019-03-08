@@ -25,10 +25,7 @@ whenReady(function () {
     var smsVerify = new SmsVerify();
     var emailSend = new EmailSend();
     var emailVerify = new EmailVerify();
-    var userTokenSecondUser = new UserTokenSecondUser();
-    var userchannelSecondUser = new UserChannerSecondUser();
     var websocketconnectionSecondUser = new WebSocketConnectionSecondUser();
-    var webrtcSubscriptionSecondUser = new WebrtcSubscriptionSecondUser();
 
     var sdpGenerate = new SdpGenerate();
     sdpGenerate.initialize();
@@ -43,6 +40,7 @@ whenReady(function () {
     appBar.stopStream = function () {
         sdpGenerate.stopStream();
     };
+
     appBar.execute = function () {
         var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
 
@@ -118,29 +116,14 @@ whenReady(function () {
 
         holdCall.proceedTo = function (data) {
             console.log('holdCall:', data);
-            // (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token
-            // ): appBar.abortMonitor();
         }
         holdCall.skipTo = function () {
             console.log('holdCall: skipped');
-            // (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token
-            // ): appBar.abortMonitor();
         }
 
         answerCall.proceedTo = function (data) {
             console.log('answerCall:', data);
-            // let resourceUrl = voiceCall.callResponse.wrtcsSession.resourceURL;
-            // let sdp = sdpGenerate.sdpData;
-            // let url = 'https://' + Preferences.baseUrl;
-            // (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token, resourceUrl, sdp
-            // ): appBar.abortMonitor();
-            //appBar.abortMonitor();
+
         }
         answerCall.skipTo = function () {
             console.log('answerCall: skipped');
@@ -149,15 +132,7 @@ whenReady(function () {
 
         endCall.proceedTo = function (data) {
             console.log('endCall:', data);
-            // let resourceUrl = voiceCall.callResponse.wrtcsSession.resourceURL;
-            // let sdp = voiceCall.callResponse.wrtcsSession.offer.sdp;
-            // let url = 'https://' + Preferences.baseUrl;
-            // (Preferences.toMonitor && Preferences.enableVoice) ? answerCall.initialize(url,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token, resourceUrl, sdp
-            // ): appBar.abortMonitor();
-            appBar.abortMonitor();
-            
+
         }
         endCall.skipTo = function () {
             console.log('endCall: skipped');
@@ -166,17 +141,18 @@ whenReady(function () {
 
         voiceCall.proceedTo = function (data) {
             console.log('VoiceCallStatus:', data);
-            let resourceUrl = data.wrtcsSession.resourceURL;
-            let url = 'https://' + Preferences.baseUrl;
-            // (Preferences.toMonitor && Preferences.enableVoice) ? endCall.initialize(url,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token, resourceUrl
-            // ): appBar.abortMonitor();
-            //appBar.abortMonitor();
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+           
         }
         voiceCall.skipTo = function () {
             console.log('voiceCall: skipped');
-            appBar.abortMonitor();
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         }
 
 
@@ -185,7 +161,8 @@ whenReady(function () {
             (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL
+                userChannel.channel.notificationChannel.callbackURL,
+                Preferences.userFirst
             ): appBar.abortMonitor();
 
         };
@@ -194,7 +171,8 @@ whenReady(function () {
             (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL
+                userChannel.channel.notificationChannel.callbackURL,
+                Preferences.userFirst
             ): appBar.abortMonitor();
         };
 
@@ -336,17 +314,6 @@ whenReady(function () {
         };
 
 
-        webrtcSubscriptionSecondUser.proceedTo = function (data) {
-            console.log('webrtcSubscriptionSecondUser:', data);
-            (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL,
-                sdpGenerate.sdpData
-            ): appBar.abortMonitor();
-            
-        };
-
         websocketconnectionSecondUser.messageTo = function (data) {
             console.log('websocketconnectionSecondUser received message: ' + JSON.stringify(data));
 
@@ -356,20 +323,20 @@ whenReady(function () {
                 let sdp = sdpGenerate.sdpData;
                 let url = 'https://' + Preferences.baseUrl;
                 (Preferences.toMonitor && Preferences.enableVoice) ? answerCall.initialize(url,
-                    userTokenSecondUser.tokenData.id_token,
-                    userTokenSecondUser.tokenData.access_token, resourceUrl, sdp
+                    userToken.tokenDataSecondUser.id_token,
+                    userToken.tokenDataSecondUser.access_token, resourceUrl, sdp
                 ): appBar.abortMonitor();
 
-            }else if(data.hasOwnProperty('wrtcsOfferNotification')){
+            } else if (data.hasOwnProperty('wrtcsOfferNotification')) {
 
                 let resourceUrl = data.wrtcsOfferNotification.link[0].href;
                 let url = 'https://' + Preferences.baseUrl;
                 (Preferences.toMonitor && Preferences.enableVoice) ? endCall.initialize(url,
-                    userTokenSecondUser.tokenData.id_token,
-                    userTokenSecondUser.tokenData.access_token, resourceUrl
+                    userToken.tokenDataSecondUser.id_token,
+                    userToken.tokenDataSecondUser.access_token, resourceUrl
                 ): appBar.abortMonitor();
 
-            }else{
+            } else {
                 appBar.abortMonitor();
             }
 
@@ -377,113 +344,115 @@ whenReady(function () {
 
         websocketconnectionSecondUser.proceedTo = function (data) {
             console.log('websocketconnectionSecondUser:', data);
-            appBar.closeSocketUser2 = function(){
-                websocketconnectionSecondUser.closeSocket()
+            appBar.closeWebsocketUser2 = function () {
+                console.log('AppBar CloseSocketUser2:');
+                websocketconnectionSecondUser.closeSocket();
             };
-            (Preferences.toMonitor) ? webrtcSubscriptionSecondUser.initialize(cpaasUrl,
-                userTokenSecondUser.tokenData.id_token,
-                userTokenSecondUser.tokenData.access_token,
-                userchannelSecondUser.channel.notificationChannel.callbackURL
+            (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
+                userToken.tokenDataSecondUser.id_token,
+                userToken.tokenDataSecondUser.access_token,
+                userChannel.channelSecondUser.notificationChannel.callbackURL
             ): appBar.abortMonitor();
         };
 
-        userchannelSecondUser.proceedTo = function (data) {
-            console.log('userchannelSecondUser:', data);
-            (Preferences.toMonitor) ? websocketconnectionSecondUser.initialize(Preferences.baseUrl,
-                userTokenSecondUser.tokenData.id_token,
-                userTokenSecondUser.tokenData.access_token,
-                data.notificationChannel.callbackURL
-            ): appBar.abortMonitor();
-        };
+        webrtcSubscription.proceedTo = function (data, userType) {
+            console.log('webrtcSubscription: ' + userType, data);
+            if (userType == Preferences.userFirst) {
 
-        userTokenSecondUser.proceedTo = function (data) {
-            console.log('userToken SecondUser:', data);
-            (Preferences.toMonitor) ? userchannelSecondUser.initialize(cpaasUrl,
-                data.id_token,
-                data.access_token
-            ): appBar.abortMonitor();
-        };
+                (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
+                    Preferences.projectNameSecondUser,
+                    Preferences.usernameSecondUser,
+                    Preferences.passwordSecondUser,
+                    Preferences.userSecond
+                ): appBar.abortMonitor();
 
-        webrtcSubscription.proceedTo = function (data) {
-            console.log('webrtcSubscription:', data);
-            (Preferences.toMonitor) ? userTokenSecondUser.initialize(cpaasUrl,
-                Preferences.projectNameSecondUser,
-                Preferences.usernameSecondUser,
-                Preferences.passwordSecondUser
-            ): appBar.abortMonitor();
-            // (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token,
-            //     userChannel.channel.notificationChannel.callbackURL,
-            //     sdpGenerate.sdpData
-            // ): appBar.abortMonitor();
-            
+            } else {
+                (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
+                    userToken.tokenData.id_token,
+                    userToken.tokenData.access_token,
+                    userChannel.channel.notificationChannel.callbackURL,
+                    sdpGenerate.sdpData
+                ): appBar.abortMonitor();
+            }
+
+
         };
         webrtcSubscription.skipTo = function () {
             console.log('webrtcSubscription: skipped');
-            // (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
-            //     userToken.tokenData.id_token,
-            //     userToken.tokenData.access_token,
-            //     userChannel.channel.notificationChannel.callbackURL,
-            //     sdpGenerate.sdpData
-            // ): appBar.abortMonitor();
             appBar.abortMonitor();
         };
 
         webSocketConnection.messageTo = function (data) {
             console.log('websocketconnection user 1 received message: ' + JSON.stringify(data));
-            let resourceUrl = data.wrtcsAcceptanceNotification.link[0].href;
-            console.log('websocketconnection user 1 resourceUrl: ' + resourceUrl);
-            let sdp = sdpGenerate.sdpData;
-            let url = 'https://' + Preferences.baseUrl;
 
             if (data.hasOwnProperty('wrtcsAcceptanceNotification')) {
+                let resourceUrl = data.wrtcsAcceptanceNotification.link[0].href;
+                console.log('websocketconnection user 1 resourceUrl: ' + resourceUrl);
+                let sdp = sdpGenerate.sdpData;
+                let url = 'https://' + Preferences.baseUrl;
                 (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
                     userToken.tokenData.id_token,
                     userToken.tokenData.access_token, resourceUrl, sdp
                 ): appBar.abortMonitor();
-            }else{
-
+            }else if (data.hasOwnProperty('wrtcsEventNotification')) {
+                    console.log("Ringing notification");
             }
-            
-            //appBar.abortMonitor();
+
+
         };
 
         webSocketConnection.proceedTo = function (data) {
-            console.log('webSocketConnection:', data);
-            appBar.closeSocketUser1 = function(){
-                webSocketConnection.closeSocket()
+            console.log('webSocketConnection: ', data);
+            appBar.closeWebsocketUser1 = function () {
+                webSocketConnection.closeSocket();
             };
-            //initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel);
-            (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL
-            ): appBar.abortMonitor();
+            initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel);
         };
 
-        userChannel.proceedTo = function (data) {
-            console.log('userChannel:', data);
-            (Preferences.toMonitor) ? webSocketConnection.initialize(Preferences.baseUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token,
-                data.notificationChannel.callbackURL
-            ): appBar.abortMonitor();
+        userChannel.proceedTo = function (data, userType) {
+            console.log('userChannel: ' + userType, data);
+            if (userType == Preferences.userFirst) {
+
+                (Preferences.toMonitor) ? webSocketConnection.initialize(Preferences.baseUrl,
+                    userToken.tokenData.id_token,
+                    userToken.tokenData.access_token,
+                    data.notificationChannel.callbackURL
+                ): appBar.abortMonitor();
+
+            } else {
+                (Preferences.toMonitor) ? websocketconnectionSecondUser.initialize(Preferences.baseUrl,
+                    userToken.tokenDataSecondUser.id_token,
+                    userToken.tokenDataSecondUser.access_token,
+                    data.notificationChannel.callbackURL
+                ): appBar.abortMonitor();
+            }
+
         };
 
-        userToken.proceedTo = function (data) {
-            console.log('userToken:', data);
-            (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
-                data.id_token,
-                data.access_token
-            ): appBar.abortMonitor();
+        userToken.proceedTo = function (data, userType) {
+            console.log('userToken: ' + userType, data);
+            if (userType == Preferences.userFirst) {
+                (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
+                    data.id_token,
+                    data.access_token,
+                    Preferences.userFirst
+                ): appBar.abortMonitor();
+            } else {
+                (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
+                    data.id_token,
+                    data.access_token,
+                    Preferences.userSecond
+                ): appBar.abortMonitor();
+            }
         };
 
         if (Preferences.passwordGrant) {
+            console.log("Preferences.userFirst " + Preferences.userFirst);
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
                 Preferences.projectName,
                 Preferences.username,
-                Preferences.password
+                Preferences.password,
+                Preferences.userFirst
             ): appBar.abortMonitor();
         } else {
             (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl,

@@ -10,10 +10,12 @@ class WebrtcSubscription {
     set skipTo(fn) {
         this.skip = fn;
     }
-    onSuccess(data) {
-        this.status.success();
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceed(data);
+    onSuccess(data,userType) {
+        if(userType == Preferences.userFirst){
+            this.status.success();
+            this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        }
+        this.proceed(data,userType);
     }
     onFailure() {
         this.status.failure();
@@ -26,13 +28,13 @@ class WebrtcSubscription {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken, cargo) {
+    request(url, accessToken, cargo,userType) {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
+                self.onSuccess(JSON.parse(this.responseText),userType);
             else
                 self.onFailure();
         };
@@ -41,7 +43,7 @@ class WebrtcSubscription {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, callbackURL) {
+    initialize(cpaasUrl,idToken, accessToken, callbackURL,userType) {
         console.log('WebrtcSubscription, initialize');
         console.log("idToken",idToken);
         let username = Extract.username(idToken);
@@ -57,6 +59,6 @@ class WebrtcSubscription {
              "clientCorrelator": username.preferred_username
            }
         };
-        this.request(url, accessToken, cargo);
+        this.request(url, accessToken, cargo,userType);
     }
 }

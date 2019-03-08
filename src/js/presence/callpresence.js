@@ -13,7 +13,8 @@ class CallPresence {
     }
     get connectorCode() {
         console.log("CallPresense, presence:", this.presence);
-        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        //let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        let code = this.presence.presenceListCollection.resourceURL;
         console.log("CallPresence, connectorCode, resourceURL:", code);
         return code.substr(code.lastIndexOf('/') + 1);
     }

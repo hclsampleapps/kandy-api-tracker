@@ -35,14 +35,18 @@ class WebSocketConnection {
     }
 
     closeSocket() {
-        console.log("this.ws again",this.ws);
-        if (this.ws != null) {
-            console.log("Web Socket close user 1");
-            //this.ws.close();
-            this.ws.onclose  = function(event) {
-                console.log("Connection is closed...1");
-            };
-        }
+        console.log("close websockt of user 1");
+        if (this.ws.close) {
+            console.log("close websockt of user 1 If condition");
+            this.ws.close();
+          } else {
+            console.log("close websockt of user 1 Else condition");
+            this.ws.onclose = null;
+          }
+        
+          this.ws.onmessage = null;
+          this.ws.onopen = null;
+          this.ws.onerror = null;
     }
 
     request(url) {

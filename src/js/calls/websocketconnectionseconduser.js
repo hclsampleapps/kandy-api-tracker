@@ -40,14 +40,19 @@ class WebSocketConnectionSecondUser {
     }
 
     closeSocket(){
+        console.log("close websockt of user 2");
+        if (this.ws.close) {
+            console.log("close websockt of user 2 If condition");
+            this.ws.close();
+            //this.ws.disconnect();
+          } else {
+            console.log("close websockt of user 2 Else condition");
+            this.ws.onclose = null;
+          }
         
-        if(this.ws != null){
-            console.log("Web Socket close user 2");
-            //this.ws.close();
-            this.ws.onclose  = function() {
-                console.log("Connection is closed...2");
-            };
-        }
+          this.ws.onmessage = null;
+          this.ws.onopen = null;
+          this.ws.onerror = null;
     }
     request(url) {
         var self = this;

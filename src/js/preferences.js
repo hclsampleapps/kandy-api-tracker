@@ -32,7 +32,9 @@ var Preferences = {
     callToUser: "sip:arti07@test.ojfs.att.com",
     smsVerificationNumber: '+19549510743',
     emailVerificationId: 'ashish07@idx4.com',
-    projectNameSecondUser: "PUB-test.dj93", //   "PUB-My First Project",// "PUB-My Sms Project 2",
+    projectNameSecondUser: "PUB-test.ojfs", //   "PUB-My First Project",// "PUB-My Sms Project 2",
     usernameSecondUser: "arti07@mail-cart.com", // "d3smc2e0j3srxx0g",
     passwordSecondUser: "Test@123",
+    userFirst: 'userFirst',
+    userSecond: 'userSecond'
 };

@@ -27,10 +27,12 @@ class AppBar {
     }
 
     set closeWebsocketUser1(fn){
+        console.log("closewebsocket of user 1 function ",fn);
             this.closeSocketUser1 = fn;
     }
 
     set closeWebsocketUser2(fn){
+        console.log("closewebsocket of user 2 function ",fn);
         this.closeSocketUser2 = fn;
     }
 
@@ -53,8 +55,8 @@ class AppBar {
         Effect.show(this.menuPlay);
         this.toast.show('Monitoring stopped');
         this.stopCall();
-         this.closeSocketUser1();
-         this.closeSocketUser2();
+        this.closeSocketUser1();
+        this.closeSocketUser2();
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
