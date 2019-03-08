@@ -1,6 +1,6 @@
 // @file appbar.js
 class AppBar {
-    constructor() {        
+    constructor() {
         this.toast = new Toast();
     }
     openHome(evt) {
@@ -17,10 +17,22 @@ class AppBar {
     set execute(fn) {
         this.proceed = fn;
     }
+
+    set stopStream(fn) {
+        this.stopCall = fn;
+    }
+
+    set startStream(fn) {
+        this.startCall = fn;
+    }
+
     startMonitor(evt) {
         evt.preventDefault();
         this.defaultState();
         Preferences.toMonitor = true;
+        if (Preferences.enableVoice) {
+            this.startCall();
+        }
         this.proceed();
         Effect.hide(this.menuPlay);
         Effect.show(this.menuPause);
@@ -29,13 +41,27 @@ class AppBar {
     stopMonitor(evt) {
         evt.preventDefault();
         Preferences.toMonitor = false;
+        Effect.hide(this.menuPause);
+        Effect.show(this.menuPlay);
         this.toast.show('Monitoring stopped');
+        this.stopCall();
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
         Effect.hide(this.menuPause);
         Preferences.toMonitor = false;
         this.toast.show('Monitoring over');
+        this.stopCall();
+    }
+    showPasswordGrant() {
+        Preferences.passwordGrant = true;
+        Effect.hide(this.accountClientCredentials);
+        Effect.show(this.accountPasswordGrant);
+    }
+    showClientCredentials() {
+        Preferences.passwordGrant = false;
+        Effect.show(this.accountClientCredentials);
+        Effect.hide(this.accountPasswordGrant);
     }
     defaultState() {
         Effect.show(this.menuSetting);

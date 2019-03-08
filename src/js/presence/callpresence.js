@@ -12,9 +12,13 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-        console.log("CallPresence, connectorCode, resourceURL:", code);
-        return code.substr(code.lastIndexOf('/') + 1);
+        console.log("CallPresense, presence:", this.presence);
+        var collection = this.presence.presenceListCollection;
+        if (collection.presenceList.length > 0 && collection.presenceList[0].hasOwnProperty('resourceURL')) {
+            let resourceUrl = collection.presenceList[0].resourceURL;
+            console.log("CallPresence, connectorCode, resourceURL:", resourceUrl);
+            return resourceUrl.substr(resourceUrl.lastIndexOf('/') + 1);
+        }
     }
     onSuccess(data) {
         this.status.success();
@@ -38,7 +42,7 @@ class CallPresence {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken) {
+    request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -56,13 +60,29 @@ class CallPresence {
             console.log("timeout");
             self.onError();
         }
-        xhr.send();
+        xhr.send(JSON.stringify(cargo));
     }
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
-        let url = cpaasUrl + "presence/v1/" + username.preferred_username + "/presenceLists";
-        this.request(url, accessToken);
+        let url = ("[0]presence/v1/[1]/presenceLists").graft(
+            cpaasUrl,
+            username.preferred_username
+        );
+
+        let cargo = {
+            "presenceList": {
+                "x-listName": "myList",
+                "presenceContact": [{
+                        "presentityUserId": "bob@myapp.com"
+                    }, {
+                        "presentityUserId": "alice@myapp.com"
+                    }
+                ]
+            }
+        }
+
+        this.request(url, accessToken, cargo);
     }
 
 }

@@ -1,20 +1,19 @@
-// @file updateownstatus.js
-class UpdateOwnStatus {
+class WebrtcSubscription {
     constructor() {
-        this.container = document.querySelector("#updateownstatus");
+        this.container = document.querySelector("#webrtcsubscription");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
-    }
-    set skipTo(fn) {
-        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
@@ -22,7 +21,6 @@ class UpdateOwnStatus {
     }
     onError() {
         this.status.error();
-        this.skip();
     }
     destroy() {
         this.status.failure();
@@ -32,7 +30,7 @@ class UpdateOwnStatus {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -41,34 +39,23 @@ class UpdateOwnStatus {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function() {
-            console.log("timeout");
-            self.onError();
-        }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl, idToken, accessToken, setstatuspresence) {
-        console.log('UpdateOwnStatus, initialize');
+    initialize(cpaasUrl,idToken, accessToken, callbackURL) {
+        console.log('WebrtcSubscription, initialize');
+        console.log("idToken",idToken);
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceSources").graft(
+        let url = ("[0]webrtcsignaling/v1/[1]/subscriptions").graft(
             cpaasUrl,
             username.preferred_username
         );
-        var cargo = {
-            "presenceSource": {
-                "presence": {
-                    "person": {
-                        "overriding-willingness": {
-                            "overridingWillingnessValue": "Open"
-                        },
-                        "activities": {
-                            "activityValue": setstatuspresence
-                        }
-                    }
-                },
-                "clientCorrelator": username.preferred_username
-            }
+        let cargo = {
+           "wrtcsNotificationSubscription": {
+             "callbackReference": {
+              "notifyURL": callbackURL
+             },
+             "clientCorrelator": username.preferred_username
+           }
         };
         this.request(url, accessToken, cargo);
     }

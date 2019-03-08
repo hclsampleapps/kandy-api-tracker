@@ -1,20 +1,20 @@
-// @file updateownstatus.js
-class UpdateOwnStatus {
+// @file smssend.js
+class SmsSend {
     constructor() {
-        this.container = document.querySelector("#updateownstatus");
+        this.container = document.querySelector("#sendsms");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set skipTo(fn) {
+        this.skip = fn;
+    }
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
-    }
-    set skipTo(fn) {
-        this.skip = fn;
     }
     onFailure() {
         this.status.failure();
@@ -32,7 +32,7 @@ class UpdateOwnStatus {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
@@ -41,33 +41,29 @@ class UpdateOwnStatus {
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-        xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
-        xhr.ontimeout = function() {
-            console.log("timeout");
+        xhr.timeout = 15000; // in milliseconds
+        xhr.ontimeout = function () {
+            console.log('Send SMS, timeout');
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl, idToken, accessToken, setstatuspresence) {
-        console.log('UpdateOwnStatus, initialize');
+
+    initialize(cpaasUrl, idToken, accessToken) {
+        console.log('SMS Send, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceSources").graft(
-            cpaasUrl,
-            username.preferred_username
-        );
-        var cargo = {
-            "presenceSource": {
-                "presence": {
-                    "person": {
-                        "overriding-willingness": {
-                            "overridingWillingnessValue": "Open"
-                        },
-                        "activities": {
-                            "activityValue": setstatuspresence
-                        }
-                    }
+        let url = cpaasUrl + 'auth/v1/' + username.preferred_username + '/codes';
+        console.log('via SMS URL: ' + cpaasUrl);
+        let cargo = {
+            "code": {
+                "address": [Preferences.smsVerificationNumber],
+                "method": "sms",
+                "format": {
+                    "length": 6,
+                    "type": "numeric"
                 },
-                "clientCorrelator": username.preferred_username
+                "expiry": 120,
+                "message": "Your code is {code}"
             }
         };
         this.request(url, accessToken, cargo);
