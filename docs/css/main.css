@@ -1,0 +1,216 @@
+/**
+ * Body CSS
+ */
+html,
+body {
+    height: 100%;
+    background-color: ghostwhite;
+    overflow-x: visible;
+    overflow-y: visible;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
+}
+
+/**
+ * Header CSS
+ */
+header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    background-color: #303F9F !important;
+}
+
+header ul.mui-list--inline {
+    margin-bottom: 0;
+}
+
+header a {
+    color: white;
+}
+
+header table {
+    width: 100%;
+}
+
+header table tr {
+    vertical-align: middle;
+}
+
+header td {
+    padding: 0 15px;
+}
+
+header .applogo {
+    width: 36px;
+}
+
+header .apptitle {
+    vertical-align: middle;
+    line-height: 15px;
+    font-family: 'century gothic';
+}
+
+header .appbox {
+    display: flex;
+    align-items: center;
+}
+
+/**
+ * Footer CSS
+ */
+footer {
+    box-sizing: border-box;
+    height: 100px;
+    background-color: lightslategray;
+    border-top: 1px solid slategrey;
+    padding-top: 35px;
+    color: white;
+}
+
+footer a {
+    color: deepskyblue;
+}
+
+
+/**
+ * Content CSS
+ */
+#content-wrapper {
+    min-height: 100%;
+
+    /* sticky footer */
+    box-sizing: border-box;
+    margin-bottom: -100px;
+    padding-bottom: 100px;
+    margin-top: 72px;
+}
+
+.symbol-success {
+    color: green;
+}
+
+.symbol-success:after {
+    content: " ✓ "
+}
+
+.symbol-failure {
+    color: firebrick;
+}
+
+.symbol-failure:after {
+    content: " ✗ "
+}
+
+.symbol-error {
+    color: red;
+}
+
+.symbol-error:after {
+    content: " ⚠ ";
+}
+
+.mui-table td {
+    border-bottom: 1px solid #eee;
+}
+
+.hide {
+    display: none;
+}
+
+.xhrlog {
+    background: darkslategrey;
+    color: white;
+    width: 75%;
+    height: 75%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: scroll;
+}
+
+.xhrlog .modal-title {
+    padding: 10px 10px 0 10px;
+}
+
+.xhrlog pre {
+    padding: 10px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.more-menu {
+    display: none;
+}
+
+.tab-pane-head {
+    visibility: hidden;
+}
+
+.toast-box1 {
+    background-color: slategray;
+    border: 1px solid white;
+    border-radius: 3px;
+    color: white;
+    position: absolute;
+    bottom: 2em;
+    margin-left: auto; 
+    margin-right: auto; 
+    padding: 5px 10px;
+    left: 0; 
+    right: 0; 
+    width: 40%;
+}
+
+.toast-box {
+    position: fixed;
+    display: inline-block;
+    bottom: 2%;
+    left: 5%;
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+    z-index: 999
+}
+
+.toast-box-msg {
+    display: inline-block;
+    background-color: rgba(0,0,0,0.9);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 3px;
+    margin: 5px auto;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5), 0 0 2px rgba(0,0,0,0.5);
+    opacity: 1;
+}
+
+@media only screen and (max-width: 768px) {
+    .mui-tabs__bar {
+        display: none;
+    }
+
+    .mui-tabs__bar.mui-tabs__bar--justified {
+        display: none;
+        table-layout: unset;
+    }
+
+    .more-menu {
+        display: block;
+        position: relative;
+        float: right;
+    }
+
+    .mui-dropdown__menu {
+        right: 0;
+        left: auto;
+    }
+
+    .tab-pane-head {
+        visibility: visible;
+        margin: 15px 0 10px 0;
+    }
+}
