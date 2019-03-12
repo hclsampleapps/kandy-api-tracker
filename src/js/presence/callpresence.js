@@ -13,10 +13,13 @@ class CallPresence {
     }
     get connectorCode() {
         console.log("CallPresense, presence:", this.presence);
-        //let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
-        let code = this.presence.presenceListCollection.resourceURL;
+        let code = this.presence.presenceListCollection.presenceList[0].resourceURL;
+        //let code = this.presence.presenceListCollection.resourceURL;
+        //let code = this.presence.presenceList.resourceURL;
         console.log("CallPresence, connectorCode, resourceURL:", code);
+
         return code.substr(code.lastIndexOf('/') + 1);
+
     }
     onSuccess(data) {
         this.status.success();
@@ -60,6 +63,7 @@ class CallPresence {
         }
         xhr.send(JSON.stringify(cargo));
     }
+    
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);

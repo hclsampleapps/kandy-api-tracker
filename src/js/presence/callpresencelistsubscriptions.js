@@ -61,7 +61,7 @@ class CallPresenceListSubscriptions {
                 "callbackReference": {
                     "notifyURL": callbackURL
                 },
-                "clientCorrelator": username.preferred_username,
+                "clientCorrelator": "sampleCorrelator",
                 "duration": 86400
             }
         };

@@ -274,6 +274,7 @@ whenReady(function () {
         };
         callPresence.proceedTo = function (data) {
             console.log('callPresence:', data);
+            console.log('callPresence.connectorCode: ', callPresence.connectorCode);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
