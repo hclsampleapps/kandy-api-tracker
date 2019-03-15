@@ -219,7 +219,7 @@ whenReady(function() {
                 Preferences.homePhoneNumber,
                 Preferences.businessPhoneNumber,
                 Preferences.buddy,
-                Preferences.contactId
+                contacts.contactData.contact.contactId
             ): appBar.abortMonitor();
         };
         searchContact.skipTo = function() {
@@ -234,7 +234,7 @@ whenReady(function() {
                 Preferences.homePhoneNumber,
                 Preferences.businessPhoneNumber,
                 Preferences.buddy,
-                Preferences.contactId
+                contacts.contactData.contact.contactId
             ): appBar.abortMonitor();
         };
 
@@ -243,7 +243,7 @@ whenReady(function() {
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, 
-                Preferences.searchfirstname
+                Preferences.searchFirstName
             ): appBar.abortMonitor();
         };
         contacts.skipTo = function() {

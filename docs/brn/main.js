@@ -1307,8 +1307,12 @@ class Contacts {
     set skipTo(fn) {
         this.skip = fn;
     }
+    get contactData() {
+        return this.contact;
+    }
     onSuccess(data) {
         this.status.success();
+        this.contact = data;
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
@@ -2541,7 +2545,7 @@ whenReady(function() {
                 Preferences.homePhoneNumber,
                 Preferences.businessPhoneNumber,
                 Preferences.buddy,
-                Preferences.contactId
+                contacts.contactData.contact.contactId
             ): appBar.abortMonitor();
         };
         searchContact.skipTo = function() {
@@ -2556,7 +2560,7 @@ whenReady(function() {
                 Preferences.homePhoneNumber,
                 Preferences.businessPhoneNumber,
                 Preferences.buddy,
-                Preferences.contactId
+                contacts.contactData.contact.contactId
             ): appBar.abortMonitor();
         };
 
@@ -2565,7 +2569,7 @@ whenReady(function() {
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token, 
-                Preferences.searchfirstname
+                Preferences.searchFirstName
             ): appBar.abortMonitor();
         };
         contacts.skipTo = function() {
