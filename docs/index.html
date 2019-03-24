@@ -1,0 +1,366 @@
+<!doctype html>
+<html class="no-js" lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Kandy API Tracker</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="lib/mui/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/mdl/mdl-button.css">
+    <link rel="stylesheet" type="text/css" href="dzn/main.css">
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+    <!-- Add your site or application content here -->
+    <header class="mui-appbar mui--z1 mui-btn--raised">
+        <table>
+            <tr>
+                <td class="mui--appbar-height mui--text-subhead appbox">
+                    <img src="img/icon.png" class="applogo">&nbsp;<span class="apptitle">API<br>Tracker</span></td>
+                <td class="mui--appbar-height" align="right">
+                    <button id="menuplay" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Start Monitor">
+                        <i class="material-icons">play_circle_filled</i>
+                    </button>
+                    <button id="menupause" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Stop Monitor">
+                        <i class="material-icons">pause_circle_filled</i>
+                    </button>
+                    <button id="menuhome" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Home">
+                        <i class="material-icons">home</i>
+                    </button>
+                    <button id="menusetting" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" title="Setting">
+                        <i class="material-icons">settings</i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </header>
+    <div id="content-wrapper" class="mui-container">
+        <br />
+        <div id="checkupreport" class="mui-panel">
+            <p class="mui--text-title">API's Health Checkup Report</p>
+            <table class="mui-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="token">
+                        <td>Token API</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="channel">
+                        <td>Channel API</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="websocket">
+                        <td>WebSocket Connection</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="outboundsms">
+                        <td>OutBound SMS</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="subscription">
+                        <td>Chat Subscription</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="chat">
+                        <td>Chat</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="callpresence">
+                        <td>Presence Lists</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="callpresencelistsubscriptions">
+                        <td>Presence List Subscriptions</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="updateownstatus">
+                        <td>UpdateOwnPresence</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="watchuserstatus">
+                        <td>Watch User Presence</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="adhocpresencelist">
+                        <td>Adhoc Presence List</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="contactstatus">
+                        <td>Contact</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="searchcontact">
+                        <td>Search Contact</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="updatecontact">
+                        <td>Update Contact</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="webrtcsubscription">
+                        <td>Webrtc Subscription</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="webrtcvoicecall">
+                        <td>Make Call</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="webrtcendcall">
+                        <td>End Call</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="webrtcanswercall">
+                        <td>Answer Call</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="webrtcholdcall">
+                        <td>Hold Call</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="sendsms">
+                        <td>Send SMS</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="verifysms">
+                        <td>Verify SMS</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="sendemail">
+                        <td>Send Email</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                    <tr id="verifyemail">
+                        <td>Verify email</td>
+                        <td><span class="status symbol-failure"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="preferencecontrols" class="mui-panel">
+            <div class="mui-dropdown more-menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-mui-toggle="dropdown">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul id="pc-menu" class="mui-dropdown__menu">
+                    <li><a data-toggle="tab" data-controls="pc-pane-1">Account</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-2">SMS</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-3">Chat</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-4">Presence</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-5">Address-book</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-6">Voice</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-7">2FA SMS</a></li>
+                    <li><a data-toggle="tab" data-controls="pc-pane-8">2FA Email</a></li>
+                </ul>
+            </div>
+            <p class="mui--text-title">Preferences &amp; Controls</p>
+            <ul id="pc-tabs" class="mui-tabs__bar mui-tabs__bar--justified">
+                <li class="mui--is-active"><a data-mui-toggle="tab" data-mui-controls="pc-pane-1">Account</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-2">SMS</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-3">Chat</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-4">Presence</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-5">Address-book</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-6">Voice</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-7">2FA SMS</a></li>
+                <li><a data-mui-toggle="tab" data-mui-controls="pc-pane-8">2FA Email</a></li>
+            </ul>
+            <form>
+                <div class="mui-tabs__pane mui--is-active" id="pc-pane-1">
+                    <div class="mui--text-subhead tab-pane-head">Account</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="baseurl">
+                        <label>Base URL</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <div class="mui-radio">
+                            <input type="radio" name="authways" id="authwaysradiopasswordgrant" checked>
+                            <label>Password Grant</label>
+                        </div>
+                        <div class="mui-radio">
+                            <input type="radio" name="authways" id="authwaysradioclientcredentials">
+                            <label>Client Credentials</label>
+                        </div>
+                        <label>Authentication Ways</label>
+                    </div>
+                    <div id="authwayspanelpasswordgrant">
+                        <div class="mui-textfield">
+                            <input type="text" id="projectname">
+                            <label>Project name</label>
+                        </div>
+                        <div class="mui-textfield">
+                            <input type="text" id="username">
+                            <label>Username</label>
+                        </div>
+                        <div class="mui-textfield">
+                            <input type="password" id="password">
+                            <label>Password</label>
+                        </div>
+                    </div>
+                    <div id="authwayspanelclientcredentials">
+                        <div class="mui-textfield">
+                            <input type="text" id="privatekey">
+                            <label>Private Key name</label>
+                        </div>
+                        <div class="mui-textfield">
+                            <input type="text" id="privatesecret">
+                            <label>Private Secret</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-2">
+                    <div class="mui--text-subhead tab-pane-head">SMS</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="smstext">
+                        <label>SMS text</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="sendernumber">
+                        <label>Sender number</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="receivernumber">
+                        <label>Receiver number</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablesms">
+                            Enable SMS
+                        </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-3">
+                    <div class="mui--text-subhead tab-pane-head">Chat</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="chattext">
+                        <label>Chat text</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="chatreceiverid">
+                        <label>Chat receiver ID</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablechat">
+                            Enable Chat
+                        </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-4">
+                    <div class="mui--text-subhead tab-pane-head">Presence</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="setstatuspresence">
+                        <label>Set status presence</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="presentityuserid">
+                        <label>Presentity user ID</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablepresence">
+                            Enable Presence
+                        </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-5">
+                    <div class="mui--text-subhead tab-pane-head">Address Book</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="primarycontact">
+                        <label>Primary contact</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="firstname">
+                        <label>First name</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="lastname">
+                        <label>Last name</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="emailaddress">
+                        <label>Email address</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="businessphonenumber">
+                        <label>Business phone number</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="homephonenumber">
+                        <label>Home phone number</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="buddy">
+                        <label>Buddy</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="contactid">
+                        <label>Contact ID</label>
+                    </div>
+                    <div class="mui-textfield">
+                        <input type="text" id="searchfirstname">
+                        <label>Search first name</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enableaddressbook">
+                            Enable Address-book
+                        </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-6">
+                    <div class="mui--text-subhead tab-pane-head">Voice</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="calltouser">
+                        <label>Call To User</label>
+                    </div>
+                    <div class="mui-checkbox">
+                        <label>
+                            <input type="checkbox" id="enablevoice">
+                            Enable Voice
+                        </label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-7">
+                    <div class="mui--text-subhead tab-pane-head">2FA SMS</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="smsverificationnumber">
+                        <label>Phone Number</label>
+                    </div>
+                </div>
+                <div class="mui-tabs__pane" id="pc-pane-8">
+                    <div class="mui--text-subhead tab-pane-head">2FA Email</div>
+                    <div class="mui-textfield">
+                        <input type="text" id="emailverificationid">
+                        <label>Email</label>
+                    </div>
+                </div>
+                <button type="button" id="activatenext" class="mui-btn mui-btn--primary">Next</button>
+                <button type="button" id="savepreference" class="mui-btn mui-btn--raised mui-btn--primary">Save</button>
+            </form>
+        </div>
+        <div id="toastbox" class="toast-box">
+            <div class="toast-box-msg">Toast message sample</div>
+        </div>
+    </div>
+    <footer>
+        <div class="mui-container mui--text-center">
+            Made with ♥ by <a href="https://www.hcl.com">HCL Technologies Ltd.</a>
+        </div>
+    </footer>
+    <script src="lib/mui/mui.min.js"></script>
+    <!-- <script src="lib/babel/babel.min.js"></script> -->
+    <script type="text/javascript" src="brn/main.js"></script>
+</body>
+
+</html>

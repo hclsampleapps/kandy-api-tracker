@@ -11,8 +11,12 @@ class Contacts {
     set skipTo(fn) {
         this.skip = fn;
     }
+    get contactData() {
+        return this.contact;
+    }
     onSuccess(data) {
         this.status.success();
+        this.contact = data;
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.proceed(data);
     }
