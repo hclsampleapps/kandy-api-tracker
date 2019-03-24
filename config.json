@@ -1,16 +1,47 @@
 {
 	"source": "src/",
-	"destination": "bin/",
-	"package": [
-		"index.html",
-		"manifest.json",
-		"background.js",
-		"favicon.ico",
-		"css/",
-		"font/",
-		"img/",
-		"lib/"
-	],
+	"build": {
+		"bin": {
+			"destination": "bin/",
+			"package": [
+				"index.html",
+				"manifest.json",
+				"background.js",
+				"favicon.ico",
+				"css/",
+				"font/",
+				"img/",
+				"lib/"
+			],
+			"task": [
+				"remakeDest -> ",
+				"copyPkg -> root.build.bin.package",
+				"consolidateCode -> root.code"
+			]
+		},
+		"web": {
+			"destination": "docs/",
+			"package": [
+				"index.html",
+				"favicon.ico",
+				"css/main.css",
+				"img/icon.png",
+				"lib/"
+			],
+			"task": [
+				"remakeDest -> ",
+				"makeDir -> css/",
+				"makeDir -> img/",
+				"copyPkg -> root.build.web.package",
+				"consolidateCode -> root.code",
+				"replaceText -> index.html, css/material-icons.css, https://fonts.googleapis.com/icon?family=Material+Icons",
+				"renameDir -> js, brn",
+				"replaceText -> index.html, js/main.js, brn/main.js",
+				"renameDir -> css, dzn",
+				"replaceText -> index.html, css/main.css, dzn/main.css"
+			]
+		}
+	},
 	"code": {
 		"directory": "js/",
 		"files": [
