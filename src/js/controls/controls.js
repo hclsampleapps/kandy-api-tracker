@@ -28,7 +28,7 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.updateContact) : Effect.hide(this.tr.updateContact);
 
         Preferences.enableVoice ? Effect.show(this.tr.webrtcSubscription) : Effect.hide(this.tr.webrtcSubscription);
-        Preferences.enableVoice ? Effect.show(this.tr.webrtcVoiceCall) : Effect.hide(this.tr.webrtcVoiceCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcmakecall) : Effect.hide(this.tr.webrtcmakecall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcEndCall) : Effect.hide(this.tr.webrtcEndCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcAnswerCall) : Effect.hide(this.tr.webrtcAnswerCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcHoldCall) : Effect.hide(this.tr.webrtcHoldCall);
@@ -159,7 +159,7 @@ class Controls {
         this.tr.searchContact = document.getElementById('searchcontact');
         this.tr.updateContact = document.getElementById('updatecontact');
         this.tr.webrtcSubscription = document.getElementById('webrtcsubscription');
-        this.tr.webrtcVoiceCall = document.getElementById('webrtcvoicecall');
+        this.tr.webrtcmakecall = document.getElementById('webrtcmakecall');
         this.tr.webrtcEndCall = document.getElementById('webrtcendcall');
         this.tr.webrtcAnswerCall = document.getElementById('webrtcanswercall');
         this.tr.webrtcHoldCall = document.getElementById('webrtcholdcall');

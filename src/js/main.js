@@ -17,7 +17,7 @@ whenReady(function () {
     var searchContact = new SearchContact();
     var updateContact = new UpdateContact();
     var webrtcSubscription = new WebrtcSubscription();
-    var voiceCall = new VoiceCall();
+    var makeCall = new MakeCall();
     var endCall = new EndCall();
     var answerCall = new AnswerCall();
     var holdCall = new HoldCall();
@@ -58,7 +58,7 @@ whenReady(function () {
         contacts.destroy();;
         updateContact.destroy();
         webrtcSubscription.destroy();
-        voiceCall.destroy();
+        makeCall.destroy();
         endCall.destroy();
         answerCall.destroy();
         smsSend.destroy();
@@ -114,6 +114,15 @@ whenReady(function () {
             appBar.abortMonitor();
         }
 
+        endCall.proceedTo = function (data) {
+            console.log('endCall:', data);
+            appBar.abortMonitor();
+        }
+        endCall.skipTo = function() {
+            console.log('endCall, skipped');
+            appBar.abortMonitor();
+        }
+
         holdCall.proceedTo = function (data) {
             console.log('holdCall:', data);
             (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
@@ -128,31 +137,25 @@ whenReady(function () {
 
         answerCall.proceedTo = function (data) {
             console.log('answerCall:', data);
-            appBar.abortMonitor();
-        }
-        answerCall.skipTo = function() {
-            console.log('answerCall, skipped');
-            appBar.abortMonitor();
-        }
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
 
-        endCall.proceedTo = function (data) {
-            console.log('endCall:', data);
-            appBar.abortMonitor();
         }
-        endCall.skipTo = function() {
-            console.log('endCall, skipped');
-            appBar.abortMonitor();
-        }
-
-        voiceCall.proceedTo = function (data) {
-            console.log('VoiceCallStatus:', data);
+        answerCall.skipTo = function () {
+            console.log('answerCall: skipped');
             (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
         }
-        voiceCall.skipTo = function () {
-            console.log('voiceCall, skipped');
+
+        makeCall.proceedTo = function (data) {
+            console.log('makeCallStatus:', data);
+        }
+        makeCall.skipTo = function () {
+            console.log('makeCall: skipped');
             (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
@@ -373,7 +376,7 @@ whenReady(function () {
                     Preferences.userSecond
                 ): appBar.abortMonitor();
             } else {
-                (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
+                (Preferences.toMonitor && Preferences.enableVoice) ? makeCall.initialize(cpaasUrl,
                     userToken.tokenData.id_token,
                     userToken.tokenData.access_token,
                     userChannel.channel.notificationChannel.callbackURL,
@@ -393,6 +396,7 @@ whenReady(function () {
                 console.log('websocketconnection user 1 resourceUrl: ' + resourceUrl);
                 let sdp = sdpGenerate.sdpData;
                 let url = 'https://' + Preferences.baseUrl;
+                
                 (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
                     userToken.tokenData.id_token,
                     userToken.tokenData.access_token, resourceUrl, sdp

@@ -41,7 +41,7 @@
 			"userchannel.js",
 			"webrtc/webrtcsubscription.js",
 			"calls/sdpgenerate.js",
-			"calls/voicecall.js",
+			"calls/makecall.js",
 			"calls/answercall.js",
 			"calls/endcall.js",
 			"calls/holdcall.js",
