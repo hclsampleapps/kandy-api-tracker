@@ -10,8 +10,7 @@ class WebSocketConnectionSecondUser {
         this.proceed = fn;
     }
 
-    
-    set messageTo(fn){
+    set messageTo(fn) {
         this.messageResponse = fn;
     }
 
@@ -34,25 +33,24 @@ class WebSocketConnectionSecondUser {
         //this.status.error();
     }
     destroy() {
-       // this.status.failure();
-       // this.xhrLog.destroy();
-      
+        // this.status.failure();
+        // this.xhrLog.destroy();
     }
 
-    closeSocket(){
+    closeSocket() {
         console.log("close websockt of user 2");
         if (this.ws.close) {
             console.log("close websockt of user 2 If condition");
             this.ws.close();
             //this.ws.disconnect();
-          } else {
+        } else {
             console.log("close websockt of user 2 Else condition");
             this.ws.onclose = null;
-          }
-        
-          this.ws.onmessage = null;
-          this.ws.onopen = null;
-          this.ws.onerror = null;
+        }
+
+        this.ws.onmessage = null;
+        this.ws.onopen = null;
+        this.ws.onerror = null;
     }
     request(url) {
         var self = this;
@@ -68,14 +66,14 @@ class WebSocketConnectionSecondUser {
                 self.onSuccess(JSON.stringify(status));
             };
 
-            this.ws.onmessage = function (evt) { 
+            this.ws.onmessage = function(evt) {
                 var received_msg = evt.data;
                 //alert("user 2 Message is received...");
                 console.log("user 2 Message is received...");
                 self.onMessage(JSON.parse(received_msg));
-             };
+            };
 
-             this.ws.onerror = function() {
+            this.ws.onerror = function() {
                 self.onError();
             };
         } else {
@@ -92,7 +90,7 @@ class WebSocketConnectionSecondUser {
             callbackURL,
             accessToken
         );
-        console.log("websocketseconduser url "+ url);
+        console.log("websocketseconduser url " + url);
         this.request(url);
     }
 }
