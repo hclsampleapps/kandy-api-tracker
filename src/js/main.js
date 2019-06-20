@@ -27,6 +27,8 @@ whenReady(function () {
     var emailVerify = new EmailVerify();
     var websocketconnectionSecondUser = new WebSocketConnectionSecondUser();
 
+    // var pre = new Preferences() 
+    // console.log('new Preferences : ', pre)
     var sdpGenerate = new SdpGenerate();
     sdpGenerate.initialize();
 
@@ -285,6 +287,7 @@ whenReady(function () {
         callPresence.proceedTo = function (data) {
             console.log('callPresence:', data);
             console.log('callPresence.connectorCode: ', callPresence.connectorCode);
+            console.log('call : ', callPresence.connectorCode);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
@@ -449,12 +452,14 @@ whenReady(function () {
         };
 
         if (Preferences.passwordGrant) {
-            console.log("Preferences.userFirst " + Preferences.userFirst);
+            console.log("Preferences.userFirst " + Preferences.projectNamee);
+            // console.log('Preferences object : ', Preferences)
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
                 Preferences.projectName,
                 Preferences.username,
                 Preferences.password,
-                Preferences.userFirst
+                Preferences.userFirst,
+                // "userFirst"
             ): appBar.abortMonitor();
         } else {
             (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl,

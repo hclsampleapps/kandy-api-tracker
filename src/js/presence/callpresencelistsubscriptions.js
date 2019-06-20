@@ -51,6 +51,7 @@ class CallPresenceListSubscriptions {
     initialize(cpaasUrl, idToken, accessToken, callbackURL, connectorCode) {
         console.log('CallPresenceListSubscriptions, initialize');
         let username = Extract.username(idToken);
+        console.log('connector code : ', connectorCode);
         let url = "[0]presence/v1/[1]/subscriptions/presenceListSubscriptions/[2]".graft(
             cpaasUrl,
             username.preferred_username,

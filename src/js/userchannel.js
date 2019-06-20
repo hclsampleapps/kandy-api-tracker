@@ -15,7 +15,7 @@ class UserChannel {
         return this.channelSecondUser;
     }
     onSuccess(data,userType) {
-        
+        console.log('UserChannel usertype : ', userType);
         if(userType == Preferences.userFirst){
             this.channel = data;
             this.status.success();

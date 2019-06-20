@@ -35,6 +35,8 @@ var Preferences = {
     projectNameSecondUser: "PUB-test.ojfs",
     usernameSecondUser: "arti07@mail-cart.com",
     passwordSecondUser: "Test@123",
-    userFirst: 'userFirst',
-    userSecond: 'userSecond'
+    userFirst: "userFirst",
+    userSecond: "userSecond"
 };
+
+console.log('Preferences UserFirst : ',Preferences);

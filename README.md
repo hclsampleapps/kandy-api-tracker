@@ -86,3 +86,46 @@ Contributors should strictly follow these conventions:
 2. Id allocated to any html tags are in lowercase
 3. Variable names are in camelCase
 4. Class names are in PascalCase
+
+
+Before tracking for API , User have to fill the following details for all preference controls as mentioned below : 
+
+### Account
+- Base URL
+- Account Client ID
+- User Email
+- Password
+
+### SMS
+- SMS text
+- Sender Address - in E164 format
+- Receiver Address - in E164 format
+
+### Chat
+- Chat text
+- Receiver primary contact ID
+
+### Presence
+- Set Status Presence for any user
+- Presentity user primary contact ID
+
+### Address Book 
+- Primary contact ID of the user
+- First Name
+- Last Name
+- User's Email Address
+- Business Phone Number
+- Home Phone Number
+- Buddy
+- Contact ID (should be unique ID)
+- Search by First Name 
+
+### Voice/Audio 
+- Account Client ID
+- End User's Email 
+- Password
+- Receiver's primary contact ID in SIP format (sip:janedoe@domain.com)
+
+### 2FA
+- For SMS verification, provide any valid contact number to receive the OTP
+- For Email verification, provide any valid user's email ID to receive the OTP

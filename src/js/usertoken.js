@@ -17,7 +17,7 @@ class UserToken {
     }
 
     onSuccess(data,userType) {
-        
+        console.log("userToken class",userType)
         if(userType == Preferences.userFirst){
             this.token = data;
             this.status.success();
@@ -56,7 +56,7 @@ class UserToken {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl, projectName, username, password,userType) {
+    initialize(cpaasUrl,projectName,username,password,userType) {
         console.log('UserToken '+ userType +' initialize');
 
         let cargo = {
