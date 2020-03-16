@@ -13,7 +13,7 @@
   "author": "Abhishek Kumar (kumarab@hcl.com)",
   "license": "MIT",
   "devDependencies": {
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "shelljs": "^0.8.3"
   }
 }
