@@ -1,53 +1,57 @@
-// @file websocketconnection.js
-class WebSocketConnection {
+// @file websocketconnectionseconduser.js
+class WebSocketConnectionSecondUser {
     constructor() {
-        this.container = document.querySelector("#websocket");
-        this.xhrLog = new XHRLog(this.container);
-        this.status = new Status(this.container.querySelector(".status"));
+        // this.container = document.querySelector("#websocket");
+        // this.xhrLog = new XHRLog(this.container);
+        // this.status = new Status(this.container.querySelector(".status"));
         this.ws = null;
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+
     set messageTo(fn) {
         this.messageResponse = fn;
     }
 
+    onSuccess(data) {
+        //this.status.success();
+        //this.xhrLog.initialize(data);
+        this.proceed(data);
+    }
+
     onMessage(data) {
+        //this.status.success();
+        //this.xhrLog.initialize(data);
         this.messageResponse(data);
     }
 
-    onSuccess(data) {
-        this.status.success();
-        this.xhrLog.initialize(data);
-        this.proceed(data);
-    }
     onFailure() {
-        this.status.failure();
+        //this.status.failure();
     }
     onError() {
-        this.status.error();
+        //this.status.error();
     }
     destroy() {
-        this.status.failure();
-        this.xhrLog.destroy();
+        // this.status.failure();
+        // this.xhrLog.destroy();
     }
 
     closeSocket() {
-        console.log("close websockt of user 1");
+        console.log("close websockt of user 2");
         if (this.ws.close) {
-            console.log("close websockt of user 1 If condition");
+            console.log("close websockt of user 2 If condition");
             this.ws.close();
-          } else {
-            console.log("close websockt of user 1 Else condition");
+            //this.ws.disconnect();
+        } else {
+            console.log("close websockt of user 2 Else condition");
             this.ws.onclose = null;
-          }
-        
-          this.ws.onmessage = null;
-          this.ws.onopen = null;
-          this.ws.onerror = null;
-    }
+        }
 
+        this.ws.onmessage = null;
+        this.ws.onopen = null;
+        this.ws.onerror = null;
+    }
     request(url) {
         var self = this;
         if ("WebSocket" in window) {
@@ -56,30 +60,29 @@ class WebSocketConnection {
             let status = {
                 status: "success"
             };
-            this.ws.onopen = function () {
+            this.ws.onopen = function() {
                 // Web Socket is connected, send data using send()
                 // ws.send("Message to send");
                 self.onSuccess(JSON.stringify(status));
             };
 
-            this.ws.onmessage = function (evt) {
+            this.ws.onmessage = function(evt) {
                 var received_msg = evt.data;
-                console.log("user 1 Message is received...");
+                //alert("user 2 Message is received...");
+                console.log("user 2 Message is received...");
                 self.onMessage(JSON.parse(received_msg));
             };
 
-            this.ws.onerror = function () {
+            this.ws.onerror = function() {
                 self.onError();
             };
-
-            console.log("this.ws ",this.ws);
         } else {
             self.onError();
             console.log("WebSocket is not supported by your browser!");
         }
     }
     initialize(baseUrl, idToken, accessToken, callbackURL) {
-        console.log("WebSocketConnection, initialize");
+        console.log("WebSocketConnection Second User, initialize");
         let username = Extract.username(idToken);
         let url = "wss://[0]/cpaas/notificationchannel/v1/[1]/channels/[2]/websocket?access_token=[3]".graft(
             baseUrl,
@@ -87,7 +90,7 @@ class WebSocketConnection {
             callbackURL,
             accessToken
         );
-        console.log("websocket url " + url);
+        console.log("websocketseconduser url " + url);
         this.request(url);
     }
 }

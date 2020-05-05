@@ -28,7 +28,7 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.updateContact) : Effect.hide(this.tr.updateContact);
 
         Preferences.enableVoice ? Effect.show(this.tr.webrtcSubscription) : Effect.hide(this.tr.webrtcSubscription);
-        Preferences.enableVoice ? Effect.show(this.tr.webrtcVoiceCall) : Effect.hide(this.tr.webrtcVoiceCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcMakeCall) : Effect.hide(this.tr.webrtcMakeCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcEndCall) : Effect.hide(this.tr.webrtcEndCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcAnswerCall) : Effect.hide(this.tr.webrtcAnswerCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcHoldCall) : Effect.hide(this.tr.webrtcHoldCall);
@@ -66,6 +66,10 @@ class Controls {
         Preferences.contactId = this.contactId.value;
         Preferences.searchFirstName = this.searchFirstName.value;
         Preferences.callToUser = this.callToUser.value;
+
+        Preferences.projectNameSecondUser = this.projectNameSecondUser.value;
+        Preferences.usernameSecondUser = this.usernameSecondUser.value;
+        Preferences.passwordSecondUser = this.passwordSecondUser.value;
 
         Preferences.smsVerificationNumber = this.smsVerificationNumber.value;
         Preferences.emailVerificationId = this.emailVerificationId.value;
@@ -106,7 +110,9 @@ class Controls {
         this.contactId.value = Preferences.contactId;
         this.searchFirstName.value = Preferences.searchFirstName;
         this.callToUser.value = Preferences.callToUser;
-
+        this.projectNameSecondUser.value = Preferences.projectNameSecondUser;
+        this.usernameSecondUser.value = Preferences.usernameSecondUser;
+        this.passwordSecondUser.value = Preferences.passwordSecondUser;
         this.smsVerificationNumber.value = Preferences.smsVerificationNumber;
         this.emailVerificationId.value = Preferences.emailVerificationId;
 
@@ -153,7 +159,7 @@ class Controls {
         this.tr.searchContact = document.getElementById('searchcontact');
         this.tr.updateContact = document.getElementById('updatecontact');
         this.tr.webrtcSubscription = document.getElementById('webrtcsubscription');
-        this.tr.webrtcVoiceCall = document.getElementById('webrtcvoicecall');
+        this.tr.webrtcMakeCall = document.getElementById('webrtcmakecall');
         this.tr.webrtcEndCall = document.getElementById('webrtcendcall');
         this.tr.webrtcAnswerCall = document.getElementById('webrtcanswercall');
         this.tr.webrtcHoldCall = document.getElementById('webrtcholdcall');
@@ -172,6 +178,7 @@ class Controls {
         this.projectName = document.getElementById('projectname');
         this.username = document.getElementById('username');
         this.password = document.getElementById('password');
+        
 
         this.smsText = document.getElementById('smstext');
         this.senderNumber = document.getElementById('sendernumber');
@@ -195,6 +202,10 @@ class Controls {
 
         this.activateNext = document.getElementById('activatenext');
         this.savePreference = document.getElementById('savepreference');
+
+        this.projectNameSecondUser = document.getElementById('projectNameSecondUser');
+        this.usernameSecondUser = document.getElementById('usernameSecondUser');
+        this.passwordSecondUser = document.getElementById('passwordSecondUser');
 
         this.authWays = {};
         this.authWays.radioPasswordGrant = document.getElementById('authwaysradiopasswordgrant');

@@ -52,21 +52,23 @@ class EmailSend {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('Email Send, initialize');
         let username = Extract.username(idToken);
+        console.log('Email username : ', username);
         let url = cpaasUrl + 'auth/v1/' + username.preferred_username + '/codes';
         console.log('via Email URL: ' + cpaasUrl);
         let cargo = {
-            code: {
-                address: [Preferences.emailVerificationId],
-                method: "email",
-                format: {
-                    length: 10,
-                    type: "alphanumeric"
+            "code": {
+                "address": [Preferences.emailVerificationId],
+                "method": "email",
+                "format": {
+                    "length": 10,
+                    "type": "alphanumeric"
                 },
-                expiry: 3600,
-                message: "Your code is {code}",
-                subject: "Auth code from ribbon"
+                "expiry": 3600,
+                "message": "Your code is {code}",
+                "subject": "Auth code from ribbon"
             }
         };
+        console.log('OTP : ', cargo.code.message);
         this.request(url, accessToken, cargo);
     }
 }

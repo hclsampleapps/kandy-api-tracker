@@ -165,30 +165,35 @@ var Preferences = {
     enableAddressBook: true,
     enableVoice: false,
     baseUrl: "nvs-cpaas-oauth.kandy.io",
-    projectName: "PUB-hcl107.MPb0QLfe",
-    username: "ashish07@idx4.com",
-    password: "test123",
+    projectName: "PUB-test.ojfs",
+    username: "vikas07@mail-cart.com",
+    password: "Test@123",
     privateKey:  "PRIV-sample1",
     privateSecret: "b013f26f-329a-4156-a01c-38263505f965",
     smsText: "hello",
-    senderNumber: "+12074666511",
-    receiverNumber: "+17433333068",
+    senderNumber: "+16504256646",
+    receiverNumber: "+15107311282",
     chatText: "hi",
-    chatReceiverId: "ashish07@hcl107.MPb0QLfe.att.com",
+    chatReceiverId: "arti07@test.ojfs.att.com",
     setStatusPresence: "Busy",
-    presentityUserId: "ashish07@idx4.com",
-    primaryContact: "ashish07@idx4.com",
+    presentityUserId: "arti07@mail-cart.com",
+    primaryContact: "arti07@mail-cart.com",
     firstName: "ashish",
     lastName: "ashish",
-    emailAddress: "email",
-    homePhoneNumber: "home",
+    emailAddress: "arti07@mail-cart.com",
+    homePhoneNumber: "+12074666511",
     businessPhoneNumber: "+17144850453",
     buddy: "true",
-    contactId: "ashish",
+    contactId: "ashish@lx.in",
     searchFirstName: "ashish",
-    callToUser: "ashish07@hcl107.mpb0qlfe.att.com",
+    callToUser: "sip:arti07@test.ojfs.att.com",
     smsVerificationNumber: '+19549510743',
-    emailVerificationId: 'ashish07@idx4.com'
+    emailVerificationId: 'arti07@mail-cart.com',
+    projectNameSecondUser: "PUB-test.ojfs",
+    usernameSecondUser: "arti07@mail-cart.com",
+    passwordSecondUser: "Test@123",
+    userFirst: 'userFirst',
+    userSecond: 'userSecond'
 };// @file toast.js
 class Toast {
     constructor() {
@@ -398,7 +403,7 @@ class Controls {
         Preferences.enableAddressBook ? Effect.show(this.tr.updateContact) : Effect.hide(this.tr.updateContact);
 
         Preferences.enableVoice ? Effect.show(this.tr.webrtcSubscription) : Effect.hide(this.tr.webrtcSubscription);
-        Preferences.enableVoice ? Effect.show(this.tr.webrtcVoiceCall) : Effect.hide(this.tr.webrtcVoiceCall);
+        Preferences.enableVoice ? Effect.show(this.tr.webrtcMakeCall) : Effect.hide(this.tr.webrtcMakeCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcEndCall) : Effect.hide(this.tr.webrtcEndCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcAnswerCall) : Effect.hide(this.tr.webrtcAnswerCall);
         Preferences.enableVoice ? Effect.show(this.tr.webrtcHoldCall) : Effect.hide(this.tr.webrtcHoldCall);
@@ -436,6 +441,10 @@ class Controls {
         Preferences.contactId = this.contactId.value;
         Preferences.searchFirstName = this.searchFirstName.value;
         Preferences.callToUser = this.callToUser.value;
+
+        Preferences.projectNameSecondUser = this.projectNameSecondUser.value;
+        Preferences.usernameSecondUser = this.usernameSecondUser.value;
+        Preferences.passwordSecondUser = this.passwordSecondUser.value;
 
         Preferences.smsVerificationNumber = this.smsVerificationNumber.value;
         Preferences.emailVerificationId = this.emailVerificationId.value;
@@ -476,7 +485,9 @@ class Controls {
         this.contactId.value = Preferences.contactId;
         this.searchFirstName.value = Preferences.searchFirstName;
         this.callToUser.value = Preferences.callToUser;
-
+        this.projectNameSecondUser.value = Preferences.projectNameSecondUser;
+        this.usernameSecondUser.value = Preferences.usernameSecondUser;
+        this.passwordSecondUser.value = Preferences.passwordSecondUser;
         this.smsVerificationNumber.value = Preferences.smsVerificationNumber;
         this.emailVerificationId.value = Preferences.emailVerificationId;
 
@@ -523,7 +534,7 @@ class Controls {
         this.tr.searchContact = document.getElementById('searchcontact');
         this.tr.updateContact = document.getElementById('updatecontact');
         this.tr.webrtcSubscription = document.getElementById('webrtcsubscription');
-        this.tr.webrtcVoiceCall = document.getElementById('webrtcvoicecall');
+        this.tr.webrtcMakeCall = document.getElementById('webrtcmakecall');
         this.tr.webrtcEndCall = document.getElementById('webrtcendcall');
         this.tr.webrtcAnswerCall = document.getElementById('webrtcanswercall');
         this.tr.webrtcHoldCall = document.getElementById('webrtcholdcall');
@@ -542,6 +553,7 @@ class Controls {
         this.projectName = document.getElementById('projectname');
         this.username = document.getElementById('username');
         this.password = document.getElementById('password');
+        
 
         this.smsText = document.getElementById('smstext');
         this.senderNumber = document.getElementById('sendernumber');
@@ -565,6 +577,10 @@ class Controls {
 
         this.activateNext = document.getElementById('activatenext');
         this.savePreference = document.getElementById('savepreference');
+
+        this.projectNameSecondUser = document.getElementById('projectNameSecondUser');
+        this.usernameSecondUser = document.getElementById('usernameSecondUser');
+        this.passwordSecondUser = document.getElementById('passwordSecondUser');
 
         this.authWays = {};
         this.authWays.radioPasswordGrant = document.getElementById('authwaysradiopasswordgrant');
@@ -604,6 +620,16 @@ class AppBar {
         this.startCall = fn;
     }
 
+    set closeWebsocketUser1(fn){
+        console.log("closewebsocket of user 1 function ",fn);
+            this.closeSocketUser1 = fn;
+    }
+
+    set closeWebsocketUser2(fn){
+        console.log("closewebsocket of user 2 function ",fn);
+        this.closeSocketUser2 = fn;
+    }
+
     startMonitor(evt) {
         evt.preventDefault();
         this.defaultState();
@@ -623,6 +649,8 @@ class AppBar {
         Effect.show(this.menuPlay);
         this.toast.show('Monitoring stopped');
         this.stopCall();
+        this.closeSocketUser1();
+        this.closeSocketUser2();
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
@@ -630,6 +658,8 @@ class AppBar {
         Preferences.toMonitor = false;
         this.toast.show('Monitoring over');
         this.stopCall();
+        this.closeSocketUser1();
+        this.closeSocketUser2();
     }
     showPasswordGrant() {
         Preferences.passwordGrant = true;
@@ -680,11 +710,21 @@ class UserToken {
     get tokenData() {
         return this.token;
     }
-    onSuccess(data) {
-        this.status.success();
-        this.token = data;
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceed(data);
+
+    get tokenDataSecondUser() {
+        return this.tokenSecondUser;
+    }
+
+    onSuccess(data,userType) {
+        
+        if(userType == Preferences.userFirst){
+            this.token = data;
+            this.status.success();
+            this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        }else{
+            this.tokenSecondUser = data;
+        }        
+        this.proceed(data,userType);
     }
     onFailure() {
         this.status.failure();
@@ -692,13 +732,13 @@ class UserToken {
     onError() {
         this.status.error();
     }
-    request(url, cargo) {
+    request(url, cargo,userType) {
         var self = this;
         let xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
+                self.onSuccess(JSON.parse(this.responseText),userType);
             else
                 self.onFailure();
         };
@@ -715,8 +755,8 @@ class UserToken {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl, projectName, username, password) {
-        console.log('UserToken, initialize');
+    initialize(cpaasUrl, projectName, username, password,userType) {
+        console.log('UserToken '+ userType +' initialize');
 
         let cargo = {
             client_id: encodeURIComponent(projectName),
@@ -725,7 +765,7 @@ class UserToken {
             grant_type: 'password',
             scope: 'openid'
         };
-        this.request(cpaasUrl + "auth/v1/token", cargo);
+        this.request(cpaasUrl + "auth/v1/token", cargo,userType);
 
     }
     initializeSecret(cpaasUrl, client_id, client_secret) {
@@ -957,7 +997,6 @@ class CallPresence {
         this.status.success();
         this.xhrLog.initialize(JSON.stringify(data, null, 4));
         this.presence = data;
-
         this.proceed(data);
     }
     set skipTo(fn) {
@@ -995,6 +1034,7 @@ class CallPresence {
         }
         xhr.send(JSON.stringify(cargo));
     }
+    
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
@@ -1081,7 +1121,7 @@ class CallPresenceListSubscriptions {
                 "callbackReference": {
                     "notifyURL": callbackURL
                 },
-                "clientCorrelator": username.preferred_username,
+                "clientCorrelator": "sampleCorrelator",
                 "duration": 86400
             }
         };
@@ -1563,10 +1603,19 @@ class WebSocketConnection {
         this.container = document.querySelector("#websocket");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
+        this.ws = null;
     }
     set proceedTo(fn) {
         this.proceed = fn;
     }
+    set messageTo(fn) {
+        this.messageResponse = fn;
+    }
+
+    onMessage(data) {
+        this.messageResponse(data);
+    }
+
     onSuccess(data) {
         this.status.success();
         this.xhrLog.initialize(data);
@@ -1581,23 +1630,49 @@ class WebSocketConnection {
     destroy() {
         this.status.failure();
         this.xhrLog.destroy();
+
     }
+
+    closeSocket() {
+        console.log("close websockt of user 1");
+        if (this.ws.close) {
+            console.log("close websockt of user 1 If condition");
+            this.ws.close();
+          } else {
+            console.log("close websockt of user 1 Else condition");
+            this.ws.onclose = null;
+          }
+        
+          this.ws.onmessage = null;
+          this.ws.onopen = null;
+          this.ws.onerror = null;
+    }
+
     request(url) {
         var self = this;
         if ("WebSocket" in window) {
             console.log("WebSocket is supported by your browser!");
-            var ws = new WebSocket(url);
+            this.ws = new WebSocket(url);
             let status = {
                 status: "success"
             };
-            ws.onopen = function() {
+            this.ws.onopen = function () {
                 // Web Socket is connected, send data using send()
                 // ws.send("Message to send");
                 self.onSuccess(JSON.stringify(status));
             };
-            ws.onerror = function() {
+
+            this.ws.onmessage = function (evt) {
+                var received_msg = evt.data;
+                console.log("user 1 Message is received...");
+                self.onMessage(JSON.parse(received_msg));
+            };
+
+            this.ws.onerror = function () {
                 self.onError();
             };
+
+            console.log("this.ws ",this.ws);
         } else {
             self.onError();
             console.log("WebSocket is not supported by your browser!");
@@ -1612,6 +1687,7 @@ class WebSocketConnection {
             callbackURL,
             accessToken
         );
+        console.log("websocket url " + url);
         this.request(url);
     }
 }// @file userchannel.js
@@ -1627,11 +1703,20 @@ class UserChannel {
     get channelData() {
         return this.channel;
     }
-    onSuccess(data) {
-        this.status.success();
-        this.channel = data;
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceed(data);
+    get channelDataSecondUser() {
+        return this.channelSecondUser;
+    }
+    onSuccess(data,userType) {
+        
+        if(userType == Preferences.userFirst){
+            this.channel = data;
+            this.status.success();
+            this.xhrLog.initialize(JSON.stringify(data, null, 4));     
+        }else{
+            this.channelSecondUser = data;
+        }
+        this.proceed(data,userType);
+        
     }
     onFailure() {
         this.status.failure();
@@ -1639,15 +1724,19 @@ class UserChannel {
     onError() {
         this.status.error();
     }
-    request(url, accessToken, cargo) {
+    request(url, accessToken, cargo,userType) {
         var self = this;
         let xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
-            else
-                self.onFailure();
+                self.onSuccess(JSON.parse(this.responseText),userType);
+            else{
+                if(userType == Preferences.userFirst){
+                    self.onFailure();
+                }
+            }
+                
         };
         xhr.onerror = self.onError;
         xhr.setRequestHeader("Content-type", "application/json");
@@ -1663,7 +1752,7 @@ class UserChannel {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl, idToken, accessToken) {
+    initialize(cpaasUrl, idToken, accessToken,userType) {
         console.log('UserChannel, initialize');
         let username = Extract.username(idToken);
         let url = cpaasUrl + "notificationchannel/v1/" + username.preferred_username + "/channels";
@@ -1671,11 +1760,11 @@ class UserChannel {
             notificationChannel: {
                 channelLifetime: 3600,
                 channelType: "Websockets",
-                clientCorrelator: "sampleCorrelator",
+                clientCorrelator: username.preferred_username,
                 'x-connCheckRole': "client"
             }
         };
-        this.request(url, accessToken, cargo);
+        this.request(url, accessToken, cargo,userType);
     }
 }class WebrtcSubscription {
     constructor() {
@@ -1689,10 +1778,12 @@ class UserChannel {
     set skipTo(fn) {
         this.skip = fn;
     }
-    onSuccess(data) {
-        this.status.success();
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceed(data);
+    onSuccess(data,userType) {
+        if(userType == Preferences.userFirst){
+            this.status.success();
+            this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        }
+        this.proceed(data,userType);
     }
     onFailure() {
         this.status.failure();
@@ -1705,13 +1796,13 @@ class UserChannel {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    request(url, accessToken, cargo) {
+    request(url, accessToken, cargo,userType) {
         var self = this;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function () {
             if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
+                self.onSuccess(JSON.parse(this.responseText),userType);
             else
                 self.onFailure();
         };
@@ -1720,7 +1811,7 @@ class UserChannel {
         xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
         xhr.send(JSON.stringify(cargo));
     }
-    initialize(cpaasUrl,idToken, accessToken, callbackURL) {
+    initialize(cpaasUrl,idToken, accessToken, callbackURL,userType) {
         console.log('WebrtcSubscription, initialize');
         console.log("idToken",idToken);
         let username = Extract.username(idToken);
@@ -1736,7 +1827,7 @@ class UserChannel {
              "clientCorrelator": username.preferred_username
            }
         };
-        this.request(url, accessToken, cargo);
+        this.request(url, accessToken, cargo,userType);
     }
 }// @file sdpgenerate.js
 class SdpGenerate {
@@ -1814,10 +1905,10 @@ class SdpGenerate {
             console.log("SdpGenerate, initialize, Failed to create PeerConnection, exception", e.message);
         }
     }
-}// @file voicecall.js
-class VoiceCall {
+}// @file makecall.js
+class MakeCall {
     constructor() {
-        this.container = document.querySelector("#webrtcvoicecall");
+        this.container = document.querySelector("#webrtcmakecall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -1827,6 +1918,7 @@ class VoiceCall {
     set skipTo(fn) {
         this.skip = fn;
     }
+
     get callResponse() {
         return this.makeCallResponse;
     }
@@ -1923,7 +2015,7 @@ class AnswerCall {
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", url, true);
         xhr.onload = function() {
-            if (this.status >= 200 && this.status < 401)
+            if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
                 self.onFailure();
@@ -2058,6 +2150,101 @@ class HoldCall {
         };
 
         this.request(url, accessToken, cargo);
+    }
+}// @file websocketconnectionseconduser.js
+class WebSocketConnectionSecondUser {
+    constructor() {
+        // this.container = document.querySelector("#websocket");
+        // this.xhrLog = new XHRLog(this.container);
+        // this.status = new Status(this.container.querySelector(".status"));
+        this.ws = null;
+    }
+    set proceedTo(fn) {
+        this.proceed = fn;
+    }
+
+    set messageTo(fn) {
+        this.messageResponse = fn;
+    }
+
+    onSuccess(data) {
+        //this.status.success();
+        //this.xhrLog.initialize(data);
+        this.proceed(data);
+    }
+
+    onMessage(data) {
+        //this.status.success();
+        //this.xhrLog.initialize(data);
+        this.messageResponse(data);
+    }
+
+    onFailure() {
+        //this.status.failure();
+    }
+    onError() {
+        //this.status.error();
+    }
+    destroy() {
+        // this.status.failure();
+        // this.xhrLog.destroy();
+    }
+
+    closeSocket() {
+        console.log("close websockt of user 2");
+        if (this.ws.close) {
+            console.log("close websockt of user 2 If condition");
+            this.ws.close();
+            //this.ws.disconnect();
+        } else {
+            console.log("close websockt of user 2 Else condition");
+            this.ws.onclose = null;
+        }
+
+        this.ws.onmessage = null;
+        this.ws.onopen = null;
+        this.ws.onerror = null;
+    }
+    request(url) {
+        var self = this;
+        if ("WebSocket" in window) {
+            console.log("WebSocket is supported by your browser!");
+            this.ws = new WebSocket(url);
+            let status = {
+                status: "success"
+            };
+            this.ws.onopen = function() {
+                // Web Socket is connected, send data using send()
+                // ws.send("Message to send");
+                self.onSuccess(JSON.stringify(status));
+            };
+
+            this.ws.onmessage = function(evt) {
+                var received_msg = evt.data;
+                //alert("user 2 Message is received...");
+                console.log("user 2 Message is received...");
+                self.onMessage(JSON.parse(received_msg));
+            };
+
+            this.ws.onerror = function() {
+                self.onError();
+            };
+        } else {
+            self.onError();
+            console.log("WebSocket is not supported by your browser!");
+        }
+    }
+    initialize(baseUrl, idToken, accessToken, callbackURL) {
+        console.log("WebSocketConnection Second User, initialize");
+        let username = Extract.username(idToken);
+        let url = "wss://[0]/cpaas/notificationchannel/v1/[1]/channels/[2]/websocket?access_token=[3]".graft(
+            baseUrl,
+            username.preferred_username,
+            callbackURL,
+            accessToken
+        );
+        console.log("websocketseconduser url " + url);
+        this.request(url);
     }
 }// @file smssend.js
 class SmsSend {
@@ -2325,7 +2512,7 @@ class EmailVerify {
         this.request(url, accessToken, cargo);
     }
 }// @file main.js
-whenReady(function() {
+whenReady(function () {
     console.log('begin');
 
     var userToken = new UserToken();
@@ -2343,7 +2530,7 @@ whenReady(function() {
     var searchContact = new SearchContact();
     var updateContact = new UpdateContact();
     var webrtcSubscription = new WebrtcSubscription();
-    var voiceCall = new VoiceCall();
+    var makeCall = new MakeCall();
     var endCall = new EndCall();
     var answerCall = new AnswerCall();
     var holdCall = new HoldCall();
@@ -2351,6 +2538,7 @@ whenReady(function() {
     var smsVerify = new SmsVerify();
     var emailSend = new EmailSend();
     var emailVerify = new EmailVerify();
+    var websocketconnectionSecondUser = new WebSocketConnectionSecondUser();
 
     var sdpGenerate = new SdpGenerate();
     sdpGenerate.initialize();
@@ -2359,13 +2547,14 @@ whenReady(function() {
     controls.initialize();
 
     var appBar = new AppBar();
-    appBar.startStream = function() {
+    appBar.startStream = function () {
         sdpGenerate.startStream();
     };
-    appBar.stopStream = function() {
+    appBar.stopStream = function () {
         sdpGenerate.stopStream();
     };
-    appBar.execute = function() {
+
+    appBar.execute = function () {
         var cpaasUrl = 'https://' + Preferences.baseUrl + '/cpaas/';
 
         userToken.destroy();
@@ -2382,15 +2571,16 @@ whenReady(function() {
         contacts.destroy();;
         updateContact.destroy();
         webrtcSubscription.destroy();
-        voiceCall.destroy();
+        makeCall.destroy();
         endCall.destroy();
         answerCall.destroy();
         smsSend.destroy();
         smsVerify.destroy();
         emailSend.destroy();
         emailVerify.destroy();
+        websocketconnectionSecondUser.destroy();
 
-        emailVerify.proceedTo = function(data) {
+        emailVerify.proceedTo = function (data) {
             console.log('emailVerify:', data);
             appBar.abortMonitor();
         };
@@ -2399,7 +2589,7 @@ whenReady(function() {
             appBar.abortMonitor();
         };
 
-        emailSend.proceedTo = function(data) {
+        emailSend.proceedTo = function (data) {
             console.log('emailSend:', data);
             let url = 'https://' + Preferences.baseUrl + data.code.resourceURL;
             (Preferences.toMonitor) ? emailVerify.initialize(url,
@@ -2412,7 +2602,7 @@ whenReady(function() {
             appBar.abortMonitor();
         };
 
-        smsVerify.proceedTo = function(data) {
+        smsVerify.proceedTo = function (data) {
             console.log('smsVerify:', data);
             (Preferences.toMonitor) ? emailSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2424,7 +2614,7 @@ whenReady(function() {
             appBar.abortMonitor();
         }
 
-        smsSend.proceedTo = function(data) {
+        smsSend.proceedTo = function (data) {
             console.log('smsSend:', data);
             let url = 'https://' + Preferences.baseUrl + data.code.resourceURL;
             (Preferences.toMonitor) ? smsVerify.initialize(url,
@@ -2437,7 +2627,16 @@ whenReady(function() {
             appBar.abortMonitor();
         }
 
-        holdCall.proceedTo = function(data) {
+        endCall.proceedTo = function (data) {
+            console.log('endCall:', data);
+            appBar.abortMonitor();
+        }
+        endCall.skipTo = function() {
+            console.log('endCall, skipped');
+            appBar.abortMonitor();
+        }
+
+        holdCall.proceedTo = function (data) {
             console.log('holdCall:', data);
             (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2446,94 +2645,56 @@ whenReady(function() {
         }
         holdCall.skipTo = function() {
             console.log('holdCall, skipped');
+            appBar.abortMonitor();
+        }
+
+        answerCall.proceedTo = function (data) {
+            console.log('answerCall:', data);
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
+
+        }
+        answerCall.skipTo = function () {
+            console.log('answerCall: skipped');
             (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token
             ): appBar.abortMonitor();
         }
 
-        answerCall.proceedTo = function(data) {
-            console.log('answerCall:', data);
-            let resourceUrl = voiceCall.callResponse.wrtcsSession.resourceURL;
-            let sdp = sdpGenerate.sdpData;
-            let url = 'https://' + Preferences.baseUrl;
-            (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token, resourceUrl, sdp
-            ): appBar.abortMonitor();
+        makeCall.proceedTo = function (data) {
+            console.log('makeCallStatus:', data);
         }
-        answerCall.skipTo = function() {
-            console.log('answerCall, skipped');
-            appBar.abortMonitor();
+        makeCall.skipTo = function () {
+            console.log('makeCall: skipped');
+            (Preferences.toMonitor) ? smsSend.initialize(cpaasUrl,
+                userToken.tokenData.id_token,
+                userToken.tokenData.access_token
+            ): appBar.abortMonitor();
         }
 
-        endCall.proceedTo = function(data) {
-            console.log('endCall:', data);
-            let resourceUrl = voiceCall.callResponse.wrtcsSession.resourceURL;
-            let sdp = voiceCall.callResponse.wrtcsSession.offer.sdp;
-            let url = 'https://' + Preferences.baseUrl;
-            (Preferences.toMonitor && Preferences.enableVoice) ? answerCall.initialize(url,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token, resourceUrl, sdp
-            ): appBar.abortMonitor();
-        }
-        endCall.skipTo = function() {
-            console.log('endCall, skipped');
-            appBar.abortMonitor();
-        }
-
-        voiceCall.proceedTo = function(data) {
-            console.log('VoiceCallStatus:', data);
-            let resourceUrl = data.wrtcsSession.resourceURL;
-            let url = 'https://' + Preferences.baseUrl;
-            (Preferences.toMonitor && Preferences.enableVoice) ? endCall.initialize(url,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token, resourceUrl
-            ): appBar.abortMonitor();
-        }
-        voiceCall.skipTo = function() {
-            console.log('voiceCall, skipped');
-            appBar.abortMonitor();
-        }
-
-        webrtcSubscription.proceedTo = function(data) {
-            console.log('webrtcSubscription:', data);
-            (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL,
-                sdpGenerate.sdpData
-            ): appBar.abortMonitor();
-        };
-        webrtcSubscription.skipTo = function() {
-            console.log('webrtcSubscription, skipped');
-            (Preferences.toMonitor && Preferences.enableVoice) ? voiceCall.initialize(cpaasUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL,
-                sdpGenerate.sdpData
-            ): appBar.abortMonitor();
-        };
-
-        updateContact.proceedTo = function(data) {
+        updateContact.proceedTo = function (data) {
             console.log('updateContact:', data);
             (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL
+                userChannel.channel.notificationChannel.callbackURL,
+                Preferences.userFirst
             ): appBar.abortMonitor();
-
         };
         updateContact.skipTo = function() {
             console.log('updateContact, skipped');
             (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
-                userChannel.channel.notificationChannel.callbackURL
+                userChannel.channel.notificationChannel.callbackURL,
+                Preferences.userFirst
             ): appBar.abortMonitor();
         };
 
-        searchContact.proceedTo = function(data) {
+        searchContact.proceedTo = function (data) {
             console.log('searchContact:', data);
             (Preferences.toMonitor) ? updateContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2564,7 +2725,7 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
 
-        contacts.proceedTo = function(data) {
+        contacts.proceedTo = function (data) {
             console.log('contacts:', data);
             (Preferences.toMonitor) ? searchContact.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2581,20 +2742,20 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
 
-        adhocPresenceList.skipTo = function() {
+        adhocPresenceList.skipTo = function () {
             console.log('adhocPresenceList, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        adhocPresenceList.proceedTo = function(data) {
+        adhocPresenceList.proceedTo = function (data) {
             console.log('adhocPresenceList:', data);
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
 
-        watchUserStatus.skipTo = function() {
+        watchUserStatus.skipTo = function () {
             console.log('watchUserStatus, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        watchUserStatus.proceedTo = function(data) {
+        watchUserStatus.proceedTo = function (data) {
             console.log('watchUserStatus:', data);
             (Preferences.toMonitor) ? adhocPresenceList.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2603,11 +2764,11 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
 
-        updateOwnStatus.skipTo = function() {
+        updateOwnStatus.skipTo = function () {
             console.log('updateOwnStatus, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar);
         };
-        updateOwnStatus.proceedTo = function(data) {
+        updateOwnStatus.proceedTo = function (data) {
             console.log('updateOwnStatus:', data);
             (Preferences.toMonitor) ? watchUserStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2617,7 +2778,7 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
 
-        callPresenceListSubscriptions.proceedTo = function(data) {
+        callPresenceListSubscriptions.proceedTo = function (data) {
             console.log('callPresenceListSubscriptions:', data);
             (Preferences.toMonitor) ? updateOwnStatus.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2625,7 +2786,7 @@ whenReady(function() {
                 Preferences.setStatusPresence
             ): appBar.abortMonitor();
         };
-        callPresenceListSubscriptions.skipTo = function() {
+        callPresenceListSubscriptions.skipTo = function () {
             console.log('callPresenceListSubscriptions, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar)
         };
@@ -2634,8 +2795,9 @@ whenReady(function() {
             console.log('callPresence, skipped');
             initiateAddressBook(contacts, cpaasUrl, userToken, appBar)
         };
-        callPresence.proceedTo = function(data) {
+        callPresence.proceedTo = function (data) {
             console.log('callPresence:', data);
+            console.log('callPresence.connectorCode: ', callPresence.connectorCode);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
@@ -2644,16 +2806,16 @@ whenReady(function() {
             ): appBar.abortMonitor();
         };
 
-        sendMessage.skipTo = function() {
+        sendMessage.skipTo = function () {
             console.log('sendMessage, skipped');
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
-        sendMessage.proceedTo = function(data) {
+        sendMessage.proceedTo = function (data) {
             console.log('sendMessage:', data);
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
 
-        callSubscription.proceedTo = function(data) {
+        callSubscription.proceedTo = function (data) {
             console.log('callSubscription:', data);
             (Preferences.toMonitor) ? sendMessage.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
@@ -2668,42 +2830,144 @@ whenReady(function() {
             initiatePresence(callPresence, cpaasUrl, userToken, appBar, contacts);
         };
 
-        outBoundSMS.proceedTo = function(data) {
+        outBoundSMS.proceedTo = function (data) {
             console.log('outBoundSMS:', data);
             initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
-        outBoundSMS.skipTo = function(data) {
+        outBoundSMS.skipTo = function (data) {
             console.log('outBoundSMS, skipped');
             initiateChat(callSubscription, cpaasUrl, userToken, appBar, callPresence, contacts, userChannel);
         };
-        
-        webSocketConnection.proceedTo = function(data) {
-            console.log('webSocketConnection:', data);
+
+        websocketconnectionSecondUser.messageTo = function (data) {
+            console.log('websocketconnectionSecondUser received message: ' + JSON.stringify(data));
+
+            if (data.hasOwnProperty('wrtcsSessionInvitationNotification')) {
+
+                let resourceUrl = data.wrtcsSessionInvitationNotification.link[0].href;
+                let sdp = sdpGenerate.sdpData;
+                let url = 'https://' + Preferences.baseUrl;
+                (Preferences.toMonitor && Preferences.enableVoice) ? answerCall.initialize(url,
+                    userToken.tokenDataSecondUser.id_token,
+                    userToken.tokenDataSecondUser.access_token, resourceUrl, sdp
+                ): appBar.abortMonitor();
+
+            } else if (data.hasOwnProperty('wrtcsOfferNotification')) {
+
+                let resourceUrl = data.wrtcsOfferNotification.link[0].href;
+                let url = 'https://' + Preferences.baseUrl;
+                (Preferences.toMonitor && Preferences.enableVoice) ? endCall.initialize(url,
+                    userToken.tokenDataSecondUser.id_token,
+                    userToken.tokenDataSecondUser.access_token, resourceUrl
+                ): appBar.abortMonitor();
+
+            } else {
+                appBar.abortMonitor();
+            }
+        };
+
+        websocketconnectionSecondUser.proceedTo = function (data) {
+            console.log('websocketconnectionSecondUser:', data);
+            appBar.closeWebsocketUser2 = function () {
+                console.log('AppBar CloseSocketUser2:');
+                websocketconnectionSecondUser.closeSocket();
+            };
+            (Preferences.toMonitor) ? webrtcSubscription.initialize(cpaasUrl,
+                userToken.tokenDataSecondUser.id_token,
+                userToken.tokenDataSecondUser.access_token,
+                userChannel.channelSecondUser.notificationChannel.callbackURL
+            ): appBar.abortMonitor();
+        };
+
+        webrtcSubscription.proceedTo = function (data, userType) {
+            console.log('webrtcSubscription: ' + userType, data);
+            if (userType == Preferences.userFirst) {
+                (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
+                    Preferences.projectNameSecondUser,
+                    Preferences.usernameSecondUser,
+                    Preferences.passwordSecondUser,
+                    Preferences.userSecond
+                ): appBar.abortMonitor();
+            } else {
+                (Preferences.toMonitor && Preferences.enableVoice) ? makeCall.initialize(cpaasUrl,
+                    userToken.tokenData.id_token,
+                    userToken.tokenData.access_token,
+                    userChannel.channel.notificationChannel.callbackURL,
+                    sdpGenerate.sdpData
+                ): appBar.abortMonitor();
+            }
+        };
+        webrtcSubscription.skipTo = function () {
+            console.log('webrtcSubscription, skipped');
+            appBar.abortMonitor();
+        };
+
+        webSocketConnection.messageTo = function (data) {
+            console.log('websocketconnection user 1 received message: ' + JSON.stringify(data));
+            if (data.hasOwnProperty('wrtcsAcceptanceNotification')) {
+                let resourceUrl = data.wrtcsAcceptanceNotification.link[0].href;
+                console.log('websocketconnection user 1 resourceUrl: ' + resourceUrl);
+                let sdp = sdpGenerate.sdpData;
+                let url = 'https://' + Preferences.baseUrl;
+                
+                (Preferences.toMonitor && Preferences.enableVoice) ? holdCall.initialize(url,
+                    userToken.tokenData.id_token,
+                    userToken.tokenData.access_token, resourceUrl, sdp
+                ): appBar.abortMonitor();
+            }else if (data.hasOwnProperty('wrtcsEventNotification')) {
+                    console.log("Ringing notification");
+            }
+        };
+
+        webSocketConnection.proceedTo = function (data) {
+            console.log('webSocketConnection: ', data);
+            appBar.closeWebsocketUser1 = function () {
+                webSocketConnection.closeSocket();
+            };
             initiateSMS(outBoundSMS, userToken, cpaasUrl, appBar, callSubscription, callPresence, contacts, userChannel);
         };
 
-        userChannel.proceedTo = function(data) {
-            console.log('userChannel:', data);
-            (Preferences.toMonitor) ? webSocketConnection.initialize(Preferences.baseUrl,
-                userToken.tokenData.id_token,
-                userToken.tokenData.access_token,
-                data.notificationChannel.callbackURL
-            ): appBar.abortMonitor();
+        userChannel.proceedTo = function (data, userType) {
+            console.log('userChannel: ' + userType, data);
+            if (userType == Preferences.userFirst) {
+                (Preferences.toMonitor) ? webSocketConnection.initialize(Preferences.baseUrl,
+                    userToken.tokenData.id_token,
+                    userToken.tokenData.access_token,
+                    data.notificationChannel.callbackURL
+                ): appBar.abortMonitor();
+            } else {
+                (Preferences.toMonitor) ? websocketconnectionSecondUser.initialize(Preferences.baseUrl,
+                    userToken.tokenDataSecondUser.id_token,
+                    userToken.tokenDataSecondUser.access_token,
+                    data.notificationChannel.callbackURL
+                ): appBar.abortMonitor();
+            }
         };
 
-        userToken.proceedTo = function(data) {
-            console.log('userToken:', data);
-            (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
-                data.id_token,
-                data.access_token
-            ): appBar.abortMonitor();
+        userToken.proceedTo = function (data, userType) {
+            console.log('userToken: ' + userType, data);
+            if (userType == Preferences.userFirst) {
+                (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
+                    data.id_token,
+                    data.access_token,
+                    Preferences.userFirst
+                ): appBar.abortMonitor();
+            } else {
+                (Preferences.toMonitor) ? userChannel.initialize(cpaasUrl,
+                    data.id_token,
+                    data.access_token,
+                    Preferences.userSecond
+                ): appBar.abortMonitor();
+            }
         };
 
         if (Preferences.passwordGrant) {
+            console.log("Preferences.userFirst " + Preferences.userFirst);
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
                 Preferences.projectName,
                 Preferences.username,
-                Preferences.password
+                Preferences.password,
+                Preferences.userFirst
             ): appBar.abortMonitor();
         } else {
             (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl,
@@ -2769,4 +3033,5 @@ function initiateAddressBook(contacts, cpaasUrl, userToken, appBar) {
     } else {
         appBar.abortMonitor();
     }
+
 }

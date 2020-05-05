@@ -1,7 +1,7 @@
-// @file voicecall.js
-class VoiceCall {
+// @file makecall.js
+class MakeCall {
     constructor() {
-        this.container = document.querySelector("#webrtcvoicecall");
+        this.container = document.querySelector("#webrtcmakecall");
         this.xhrLog = new XHRLog(this.container);
         this.status = new Status(this.container.querySelector(".status"));
     }
@@ -11,6 +11,7 @@ class VoiceCall {
     set skipTo(fn) {
         this.skip = fn;
     }
+
     get callResponse() {
         return this.makeCallResponse;
     }

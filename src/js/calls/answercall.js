@@ -33,7 +33,7 @@ class AnswerCall {
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", url, true);
         xhr.onload = function() {
-            if (this.status >= 200 && this.status < 401)
+            if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
             else
                 self.onFailure();

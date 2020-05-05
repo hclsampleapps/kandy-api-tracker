@@ -26,6 +26,16 @@ class AppBar {
         this.startCall = fn;
     }
 
+    set closeWebsocketUser1(fn){
+        console.log("closewebsocket of user 1 function ",fn);
+            this.closeSocketUser1 = fn;
+    }
+
+    set closeWebsocketUser2(fn){
+        console.log("closewebsocket of user 2 function ",fn);
+        this.closeSocketUser2 = fn;
+    }
+
     startMonitor(evt) {
         evt.preventDefault();
         this.defaultState();
@@ -45,6 +55,8 @@ class AppBar {
         Effect.show(this.menuPlay);
         this.toast.show('Monitoring stopped');
         this.stopCall();
+        this.closeSocketUser1();
+        this.closeSocketUser2();
     }
     abortMonitor() {
         Effect.show(this.menuPlay);
@@ -52,6 +64,8 @@ class AppBar {
         Preferences.toMonitor = false;
         this.toast.show('Monitoring over');
         this.stopCall();
+        this.closeSocketUser1();
+        this.closeSocketUser2();
     }
     showPasswordGrant() {
         Preferences.passwordGrant = true;

@@ -60,10 +60,10 @@ class UpdateOwnStatus {
                 "presence": {
                     "person": {
                         "overriding-willingness": {
-                            "overridingWillingnessValue": "Open"
+                            "overridingWillingnessValue": setstatuspresence
                         },
                         "activities": {
-                            "activityValue": setstatuspresence
+                            "activityValue": "Available"
                         }
                     }
                 },

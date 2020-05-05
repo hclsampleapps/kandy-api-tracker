@@ -52,6 +52,7 @@ class SmsSend {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('SMS Send, initialize');
         let username = Extract.username(idToken);
+        console.log()
         let url = cpaasUrl + 'auth/v1/' + username.preferred_username + '/codes';
         console.log('via SMS URL: ' + cpaasUrl);
         let cargo = {
@@ -66,6 +67,7 @@ class SmsSend {
                 "message": "Your code is {code}"
             }
         };
+        console.log('OTP : ', cargo.code.message);
         this.request(url, accessToken, cargo);
     }
 }

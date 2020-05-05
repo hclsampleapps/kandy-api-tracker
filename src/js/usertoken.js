@@ -11,11 +11,21 @@ class UserToken {
     get tokenData() {
         return this.token;
     }
-    onSuccess(data) {
-        this.status.success();
-        this.token = data;
-        this.xhrLog.initialize(JSON.stringify(data, null, 4));
-        this.proceed(data);
+
+    get tokenDataSecondUser() {
+        return this.tokenSecondUser;
+    }
+
+    onSuccess(data,userType) {
+        console.log("userToken class",userType)
+        if(userType == Preferences.userFirst){
+            this.token = data;
+            this.status.success();
+            this.xhrLog.initialize(JSON.stringify(data, null, 4));
+        }else{
+            this.tokenSecondUser = data;
+        }        
+        this.proceed(data,userType);
     }
     onFailure() {
         this.status.failure();
@@ -23,13 +33,13 @@ class UserToken {
     onError() {
         this.status.error();
     }
-    request(url, cargo) {
+    request(url, cargo,userType) {
         var self = this;
         let xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
-                self.onSuccess(JSON.parse(this.responseText));
+                self.onSuccess(JSON.parse(this.responseText),userType);
             else
                 self.onFailure();
         };
@@ -46,8 +56,8 @@ class UserToken {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl, projectName, username, password) {
-        console.log('UserToken, initialize');
+    initialize(cpaasUrl,projectName,username,password,userType) {
+        console.log('UserToken '+ userType +' initialize');
 
         let cargo = {
             client_id: encodeURIComponent(projectName),
@@ -56,7 +66,7 @@ class UserToken {
             grant_type: 'password',
             scope: 'openid'
         };
-        this.request(cpaasUrl + "auth/v1/token", cargo);
+        this.request(cpaasUrl + "auth/v1/token", cargo,userType);
 
     }
     initializeSecret(cpaasUrl, client_id, client_secret) {
