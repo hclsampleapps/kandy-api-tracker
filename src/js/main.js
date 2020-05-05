@@ -450,7 +450,7 @@ whenReady(function () {
         };
 
         if (Preferences.passwordGrant) {
-            console.log('Preferences.userFirst ' + Preferences.projectNamee);
+            console.log('Preferences.userFirst ' + Preferences.projectName);
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
                 Preferences.projectName,
                 Preferences.username,
