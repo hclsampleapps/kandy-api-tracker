@@ -44,8 +44,7 @@ class WebrtcSubscription {
         xhr.send(JSON.stringify(cargo));
     }
     initialize(cpaasUrl,idToken, accessToken, callbackURL,userType) {
-        console.log('WebrtcSubscription, initialize');
-        console.log("idToken",idToken);
+        console.log('WebrtcSubscription, initialize, idToken:', idToken);
         let username = Extract.username(idToken);
         let url = ("[0]webrtcsignaling/v1/[1]/subscriptions").graft(
             cpaasUrl,

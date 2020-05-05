@@ -1,9 +1,9 @@
 // @file callpresence.js
 class CallPresence {
     constructor() {
-        this.container = document.querySelector("#callpresence");
+        this.container = document.querySelector('#callpresence');
         this.xhrLog = new XHRLog(this.container);
-        this.status = new Status(this.container.querySelector(".status"));
+        this.status = new Status(this.container.querySelector('.status'));
     }
     set proceedTo(fn) {
         this.proceed = fn;
@@ -12,14 +12,13 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        console.log("CallPresense, presence:", this.presence);
+        console.log('CallPresense, presence:', this.presence);
         // let code = this.presence.presenceListCollection;
         var collection = this.presence.presenceListCollection;
-        console.log("CallPresence, connectorCode, resourceURL:", collection);
-        console.log(collection.presenceList.length);
+        console.log('CallPresence, connectorCode, resourceURL:', collection, 'presenceList.length:', collection.presenceList.length);
         if (collection.presenceList[0].hasOwnProperty('resourceURL')) {
             let resourceUrl = collection.presenceList[0].resourceURL;
-            console.log("CallPresence, connectorCode, resourceURL:", resourceUrl);
+            console.log('CallPresence, connectorCode, resourceURL:', resourceUrl);
             return resourceUrl.substr(resourceUrl.lastIndexOf('/') + 1);
         }
     }
@@ -47,7 +46,7 @@ class CallPresence {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
+        xhr.open('GET', url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
@@ -55,11 +54,11 @@ class CallPresence {
                 self.onFailure();
         };
         xhr.onerror = self.onError;
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
         xhr.ontimeout = function() {
-            console.log("timeout");
+            console.log('timeout');
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
@@ -68,18 +67,18 @@ class CallPresence {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceLists").graft(
+        let url = ('[0]presence/v1/[1]/presenceLists').graft(
             cpaasUrl,
             username.preferred_username
         );
 
         let cargo = {
-            "presenceList": {
-                "x-listName": "myList",
-                "presenceContact": [{
-                        "presentityUserId": "bob@myapp.com"
+            'presenceList': {
+                'x-listName': 'myList',
+                'presenceContact': [{
+                        'presentityUserId': 'bob@myapp.com'
                     }, {
-                        "presentityUserId": "alice@myapp.com"
+                        'presentityUserId': 'alice@myapp.com'
                     }
                 ]
             }

@@ -27,8 +27,6 @@ whenReady(function () {
     var emailVerify = new EmailVerify();
     var websocketconnectionSecondUser = new WebSocketConnectionSecondUser();
 
-    // var pre = new Preferences() 
-    // console.log('new Preferences : ', pre)
     var sdpGenerate = new SdpGenerate();
     sdpGenerate.initialize();
 
@@ -405,7 +403,7 @@ whenReady(function () {
                     userToken.tokenData.access_token, resourceUrl, sdp
                 ): appBar.abortMonitor();
             }else if (data.hasOwnProperty('wrtcsEventNotification')) {
-                    console.log("Ringing notification");
+                    console.log('Ringing notification');
             }
         };
 
@@ -452,14 +450,12 @@ whenReady(function () {
         };
 
         if (Preferences.passwordGrant) {
-            console.log("Preferences.userFirst " + Preferences.projectNamee);
-            // console.log('Preferences object : ', Preferences)
+            console.log('Preferences.userFirst ' + Preferences.projectNamee);
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
                 Preferences.projectName,
                 Preferences.username,
                 Preferences.password,
                 Preferences.userFirst,
-                // "userFirst"
             ): appBar.abortMonitor();
         } else {
             (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl,

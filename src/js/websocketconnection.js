@@ -31,7 +31,6 @@ class WebSocketConnection {
     destroy() {
         this.status.failure();
         this.xhrLog.destroy();
-
     }
 
     closeSocket() {
