@@ -164,36 +164,36 @@ var Preferences = {
     enablePresence: true,
     enableAddressBook: true,
     enableVoice: false,
-    baseUrl: "nvs-cpaas-oauth.kandy.io",
-    projectName: "PUB-test.ojfs",
-    username: "vikas07@mail-cart.com",
+    baseUrl: "baseurl.domain.com",
+    projectName: "PUB-project.name",
+    username: "user1@domain.com",
     password: "Test@123",
-    privateKey:  "PRIV-sample1",
+    privateKey:  "PRIV-sample",
     privateSecret: "b013f26f-329a-4156-a01c-38263505f965",
     smsText: "hello",
-    senderNumber: "+16504256646",
-    receiverNumber: "+15107311282",
+    senderNumber: "+16543219870",
+    receiverNumber: "+16543219871",
     chatText: "hi",
-    chatReceiverId: "arti07@test.ojfs.att.com",
+    chatReceiverId: "user2@project.name.domain.com",
     setStatusPresence: "Busy",
-    presentityUserId: "arti07@mail-cart.com",
-    primaryContact: "arti07@mail-cart.com",
-    firstName: "ashish",
-    lastName: "ashish",
-    emailAddress: "arti07@mail-cart.com",
-    homePhoneNumber: "+12074666511",
-    businessPhoneNumber: "+17144850453",
+    presentityUserId: "user2@domain.com",
+    primaryContact: "user2@domain.com",
+    firstName: "Tony",
+    lastName: "Stark",
+    emailAddress: "user2@domain.com",
+    homePhoneNumber: "+16543219873",
+    businessPhoneNumber: "+16543219874",
     buddy: "true",
-    contactId: "ashish@lx.in",
-    searchFirstName: "ashish",
-    callToUser: "sip:arti07@test.ojfs.att.com",
-    smsVerificationNumber: '+19549510743',
-    emailVerificationId: 'arti07@mail-cart.com',
-    projectNameSecondUser: "PUB-test.ojfs",
-    usernameSecondUser: "arti07@mail-cart.com",
+    contactId: "user3@domain.com",
+    searchFirstName: "user3",
+    callToUser: "sip:user2@project.name.domain.com",
+    smsVerificationNumber: '+16543219875',
+    emailVerificationId: 'user2@domain.com',
+    projectNameSecondUser: "PUB-project.name",
+    usernameSecondUser: "user2@domain.com",
     passwordSecondUser: "Test@123",
-    userFirst: 'userFirst',
-    userSecond: 'userSecond'
+    userFirst: "Tony",
+    userSecond: "Bruce"
 };// @file toast.js
 class Toast {
     constructor() {
@@ -716,7 +716,7 @@ class UserToken {
     }
 
     onSuccess(data,userType) {
-        
+        console.log("userToken class",userType)
         if(userType == Preferences.userFirst){
             this.token = data;
             this.status.success();
@@ -755,7 +755,7 @@ class UserToken {
         this.status.failure();
         this.xhrLog.destroy();
     }
-    initialize(cpaasUrl, projectName, username, password,userType) {
+    initialize(cpaasUrl,projectName,username,password,userType) {
         console.log('UserToken '+ userType +' initialize');
 
         let cargo = {
@@ -974,9 +974,9 @@ class CallSubscription {
 }// @file callpresence.js
 class CallPresence {
     constructor() {
-        this.container = document.querySelector("#callpresence");
+        this.container = document.querySelector('#callpresence');
         this.xhrLog = new XHRLog(this.container);
-        this.status = new Status(this.container.querySelector(".status"));
+        this.status = new Status(this.container.querySelector('.status'));
     }
     set proceedTo(fn) {
         this.proceed = fn;
@@ -985,11 +985,13 @@ class CallPresence {
         return this.presence;
     }
     get connectorCode() {
-        console.log("CallPresense, presence:", this.presence);
+        console.log('CallPresense, presence:', this.presence);
+        // let code = this.presence.presenceListCollection;
         var collection = this.presence.presenceListCollection;
-        if (collection.presenceList.length > 0 && collection.presenceList[0].hasOwnProperty('resourceURL')) {
+        console.log('CallPresence, connectorCode, resourceURL:', collection, 'presenceList.length:', collection.presenceList.length);
+        if (collection.presenceList[0].hasOwnProperty('resourceURL')) {
             let resourceUrl = collection.presenceList[0].resourceURL;
-            console.log("CallPresence, connectorCode, resourceURL:", resourceUrl);
+            console.log('CallPresence, connectorCode, resourceURL:', resourceUrl);
             return resourceUrl.substr(resourceUrl.lastIndexOf('/') + 1);
         }
     }
@@ -1017,7 +1019,7 @@ class CallPresence {
     request(url, accessToken, cargo) {
         var self = this;
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
+        xhr.open('GET', url, true);
         xhr.onload = function() {
             if (this.status >= 200 && this.status < 400)
                 self.onSuccess(JSON.parse(this.responseText));
@@ -1025,11 +1027,11 @@ class CallPresence {
                 self.onFailure();
         };
         xhr.onerror = self.onError;
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         xhr.timeout = 15000; // Set timeout to 4 seconds (4000 milliseconds)
         xhr.ontimeout = function() {
-            console.log("timeout");
+            console.log('timeout');
             self.onError();
         }
         xhr.send(JSON.stringify(cargo));
@@ -1038,18 +1040,18 @@ class CallPresence {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('CallPresence, initialize');
         let username = Extract.username(idToken);
-        let url = ("[0]presence/v1/[1]/presenceLists").graft(
+        let url = ('[0]presence/v1/[1]/presenceLists').graft(
             cpaasUrl,
             username.preferred_username
         );
 
         let cargo = {
-            "presenceList": {
-                "x-listName": "myList",
-                "presenceContact": [{
-                        "presentityUserId": "bob@myapp.com"
+            'presenceList': {
+                'x-listName': 'myList',
+                'presenceContact': [{
+                        'presentityUserId': 'bob@myapp.com'
                     }, {
-                        "presentityUserId": "alice@myapp.com"
+                        'presentityUserId': 'alice@myapp.com'
                     }
                 ]
             }
@@ -1111,6 +1113,7 @@ class CallPresenceListSubscriptions {
     initialize(cpaasUrl, idToken, accessToken, callbackURL, connectorCode) {
         console.log('CallPresenceListSubscriptions, initialize');
         let username = Extract.username(idToken);
+        console.log('connector code : ', connectorCode);
         let url = "[0]presence/v1/[1]/subscriptions/presenceListSubscriptions/[2]".graft(
             cpaasUrl,
             username.preferred_username,
@@ -1189,10 +1192,10 @@ class UpdateOwnStatus {
                 "presence": {
                     "person": {
                         "overriding-willingness": {
-                            "overridingWillingnessValue": "Open"
+                            "overridingWillingnessValue": setstatuspresence
                         },
                         "activities": {
-                            "activityValue": setstatuspresence
+                            "activityValue": "Available"
                         }
                     }
                 },
@@ -1630,7 +1633,6 @@ class WebSocketConnection {
     destroy() {
         this.status.failure();
         this.xhrLog.destroy();
-
     }
 
     closeSocket() {
@@ -1707,7 +1709,7 @@ class UserChannel {
         return this.channelSecondUser;
     }
     onSuccess(data,userType) {
-        
+        console.log('UserChannel usertype : ', userType);
         if(userType == Preferences.userFirst){
             this.channel = data;
             this.status.success();
@@ -1812,8 +1814,7 @@ class UserChannel {
         xhr.send(JSON.stringify(cargo));
     }
     initialize(cpaasUrl,idToken, accessToken, callbackURL,userType) {
-        console.log('WebrtcSubscription, initialize');
-        console.log("idToken",idToken);
+        console.log('WebrtcSubscription, initialize, idToken:', idToken);
         let username = Extract.username(idToken);
         let url = ("[0]webrtcsignaling/v1/[1]/subscriptions").graft(
             cpaasUrl,
@@ -2300,6 +2301,7 @@ class SmsSend {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('SMS Send, initialize');
         let username = Extract.username(idToken);
+        console.log()
         let url = cpaasUrl + 'auth/v1/' + username.preferred_username + '/codes';
         console.log('via SMS URL: ' + cpaasUrl);
         let cargo = {
@@ -2314,6 +2316,7 @@ class SmsSend {
                 "message": "Your code is {code}"
             }
         };
+        console.log('OTP : ', cargo.code.message);
         this.request(url, accessToken, cargo);
     }
 }// @file smsverify.js
@@ -2432,21 +2435,23 @@ class EmailSend {
     initialize(cpaasUrl, idToken, accessToken) {
         console.log('Email Send, initialize');
         let username = Extract.username(idToken);
+        console.log('Email username : ', username);
         let url = cpaasUrl + 'auth/v1/' + username.preferred_username + '/codes';
         console.log('via Email URL: ' + cpaasUrl);
         let cargo = {
-            code: {
-                address: [Preferences.emailVerificationId],
-                method: "email",
-                format: {
-                    length: 10,
-                    type: "alphanumeric"
+            "code": {
+                "address": [Preferences.emailVerificationId],
+                "method": "email",
+                "format": {
+                    "length": 10,
+                    "type": "alphanumeric"
                 },
-                expiry: 3600,
-                message: "Your code is {code}",
-                subject: "Auth code from ribbon"
+                "expiry": 3600,
+                "message": "Your code is {code}",
+                "subject": "Auth code from ribbon"
             }
         };
+        console.log('OTP : ', cargo.code.message);
         this.request(url, accessToken, cargo);
     }
 }// @file emailverify.js
@@ -2798,6 +2803,7 @@ whenReady(function () {
         callPresence.proceedTo = function (data) {
             console.log('callPresence:', data);
             console.log('callPresence.connectorCode: ', callPresence.connectorCode);
+            console.log('call : ', callPresence.connectorCode);
             (Preferences.toMonitor) ? callPresenceListSubscriptions.initialize(cpaasUrl,
                 userToken.tokenData.id_token,
                 userToken.tokenData.access_token,
@@ -2915,7 +2921,7 @@ whenReady(function () {
                     userToken.tokenData.access_token, resourceUrl, sdp
                 ): appBar.abortMonitor();
             }else if (data.hasOwnProperty('wrtcsEventNotification')) {
-                    console.log("Ringing notification");
+                    console.log('Ringing notification');
             }
         };
 
@@ -2962,12 +2968,12 @@ whenReady(function () {
         };
 
         if (Preferences.passwordGrant) {
-            console.log("Preferences.userFirst " + Preferences.userFirst);
+            console.log('Preferences.userFirst ' + Preferences.projectNamee);
             (Preferences.toMonitor) ? userToken.initialize(cpaasUrl,
                 Preferences.projectName,
                 Preferences.username,
                 Preferences.password,
-                Preferences.userFirst
+                Preferences.userFirst,
             ): appBar.abortMonitor();
         } else {
             (Preferences.toMonitor) ? userToken.initializeSecret(cpaasUrl,
